@@ -30,3 +30,5 @@ D:\Source\Repos\DroneController\DroneController\bin\EntityFramework.xml
 D:\Source\Repos\DroneController\DroneController\obj\Debug\DroneController.csprojResolveAssemblyReference.cache
 D:\Source\Repos\DroneController\DroneController\obj\Debug\DroneController.dll
 D:\Source\Repos\DroneController\DroneController\obj\Debug\DroneController.pdb
+D:\Source\Repos\DroneController\DroneController\bin\EntityFramework.SqlServer.dll
+D:\Source\Repos\DroneController\DroneController\bin\EntityFramework.SqlServer.xml

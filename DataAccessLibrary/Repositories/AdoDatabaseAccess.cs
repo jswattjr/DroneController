@@ -4,9 +4,13 @@ namespace DataAccessLibrary.Repositories
     using System.Data.Entity;
     using System.Linq;
     using DataAccessLibrary.Models;
+    using System.Data.Entity.SqlServer;
 
     public class AdoDatabaseAccess : DbContext
     {
+        // internal dll hack
+        private static SqlProviderServices instance = SqlProviderServices.Instance;
+   
         // Your context has been configured to use a 'AdoDatabaseAccess' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
         // 'DataAccessLibrary.Repositories.DroneEntity' database on your LocalDb instance. 
