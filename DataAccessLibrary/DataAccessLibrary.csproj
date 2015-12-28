@@ -51,10 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IDroneRepository.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IEntityRepository.cs" />
     <Compile Include="Models\DroneEntity.cs" />
+    <Compile Include="Models\SettingEntity.cs" />
     <Compile Include="Repositories\AdoDatabaseAccess.cs" />
-    <Compile Include="Repositories\DroneRepository.cs" />
+    <Compile Include="Repositories\GenericEntityRepository.cs" />
     <Compile Include="RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

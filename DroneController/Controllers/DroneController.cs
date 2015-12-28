@@ -16,7 +16,7 @@ namespace DroneController.Controllers
         [Route("drones")]
         public IHttpActionResult get()
         {
-            IDroneRepository repo = RepositoryFactory.getDroneRepository();
+            IEntityRepository<DroneEntity> repo = RepositoryFactory.getDroneRepository();
             return Ok(repo.getAll());
         }
 
@@ -24,7 +24,7 @@ namespace DroneController.Controllers
         [Route("drones/{id}")]
         public IHttpActionResult getById(string id)
         {
-            IDroneRepository repo = RepositoryFactory.getDroneRepository();
+            IEntityRepository<DroneEntity> repo = RepositoryFactory.getDroneRepository();
             DroneEntity target = repo.getById(new Guid(id));
             if (null != target)
             {
@@ -35,5 +35,25 @@ namespace DroneController.Controllers
                 return NotFound();
             }
         }
+
+        [HttpGet]
+        [Route("drones/discover")]
+        public IHttpActionResult discover()
+        {
+            String settingName = "discoveryPollLength";
+            IEntityRepository<SettingEntity> settingsRepo = RepositoryFactory.getSettingRepository();
+            SettingEntity pollLength = settingsRepo.getByName(settingName);
+            if (null == pollLength)
+            {
+                pollLength = new SettingEntity();
+                pollLength.name = settingName;
+                pollLength.value = "60";
+                pollLength = settingsRepo.create(pollLength);
+                return Ok("Setting Created");
+            }
+            return Ok("Setting Exists");
+        }
+
+
     }
 }
