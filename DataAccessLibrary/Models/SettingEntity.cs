@@ -11,10 +11,9 @@ namespace DataAccessLibrary.Models
 {
     public class SettingEntity : IEntity
     {
-        [Key, Column(Order=0)]
+        [Key]
         public Guid id { get; set; }
 
-        [Key, Column(Order = 1)]
         public String name { get; set; }
 
         public void Set(IEntity entity)

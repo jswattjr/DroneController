@@ -43,7 +43,7 @@ namespace DataAccessLibrary.Repositories
         }
         public T getByName(String name)
         {
-            T target = dbAccess.Find(name);
+            T target = dbAccess.Where(b => b.name == name).FirstOrDefault();
             return target;
         }
 
