@@ -21,7 +21,7 @@ namespace DataAccessLibrary.Models
             SettingEntity setting = entity as SettingEntity;
             if ( null != setting)
             {
-                key = setting.key;
+                name = setting.name;
                 value = setting.value;
             }
             else
@@ -29,8 +29,6 @@ namespace DataAccessLibrary.Models
                 throw new ArgumentException("Entity passed into SettingEntity 'Set' function is not a SettingEntity");
             }
         }
-
-        public String key { get; set; }
         public String value { get; set; }
     }
 }

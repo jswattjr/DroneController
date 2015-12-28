@@ -15,10 +15,17 @@ namespace DroneController
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                name: "drones",
+                routeTemplate: "drones/{id}",
+                defaults: new { controller = "Drone", id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "settings",
+                routeTemplate: "settings/{name}",
+                defaults: new { controller = "Settings", name = RouteParameter.Optional }
+            );
+
 
             // this code adds a custom formatter that takes text/html and returns text/json
             config.Formatters.Add(new BrowserJsonFormatter());

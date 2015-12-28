@@ -9,9 +9,12 @@ namespace DataAccessLibrary.Repositories
 {
     class GenericEntityRepository<T> : IEntityRepository<T> where T : class, IEntity
     {
+        AdoDatabaseAccess dbContext;
         System.Data.Entity.DbSet<T> dbAccess;
 
-        public GenericEntityRepository(System.Data.Entity.DbSet<T> dbAccess){
+        public GenericEntityRepository(System.Data.Entity.DbSet<T> dbAccess, AdoDatabaseAccess dbContext)
+        {
+            this.dbContext = dbContext;
             this.dbAccess = dbAccess;
         }
 
@@ -19,6 +22,7 @@ namespace DataAccessLibrary.Repositories
         {
             entity.id = Guid.NewGuid();
             dbAccess.Add(entity);
+            dbContext.SaveChanges();
             return entity;
         }
 
@@ -28,6 +32,7 @@ namespace DataAccessLibrary.Repositories
             if (null != target)
             {
                 dbAccess.Remove(target);
+                dbContext.SaveChanges();
             }
         }
 
@@ -51,6 +56,7 @@ namespace DataAccessLibrary.Repositories
         {
             T target = getById(entity.id);
             target.Set(entity);
+            dbContext.SaveChanges();
             return target;
         }
     }

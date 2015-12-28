@@ -14,7 +14,7 @@ namespace DroneController.Controllers
     {
         [HttpGet]
         [Route("settings")]
-        IHttpActionResult get()
+        public IHttpActionResult get()
         {
             IEntityRepository<SettingEntity> repo = RepositoryFactory.getSettingRepository();
             return Ok(repo.getAll());
@@ -22,7 +22,7 @@ namespace DroneController.Controllers
 
         [HttpGet]
         [Route("settings/{setting}")]
-        IHttpActionResult getSettingValue(string setting)
+        public IHttpActionResult getSettingValue(string setting)
         {
             IEntityRepository<SettingEntity> repo = RepositoryFactory.getSettingRepository();
             SettingEntity settingEntity = repo.getByName(setting);

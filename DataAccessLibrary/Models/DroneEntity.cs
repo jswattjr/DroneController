@@ -24,6 +24,10 @@ namespace DataAccessLibrary.Models
         public void copy(DroneEntity entity)
         {
             // copy all settings from entity to this entity;
+            this.name = entity.name;
+            this.serialPort = entity.serialPort;
         }
+
+        public String serialPort { get; set; }
     }
 }

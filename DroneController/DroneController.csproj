@@ -113,6 +113,10 @@
       <Project>{26443762-30e5-4720-b26d-2b831a7a8219}</Project>
       <Name>DataAccessLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DroneManager\DroneManager.csproj">
+      <Project>{fd29626e-9f38-4fd4-9eb1-0131d656d4fa}</Project>
+      <Name>DroneManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

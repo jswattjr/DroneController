@@ -7,11 +7,14 @@ using System.Web.Http;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.Interfaces;
 using DataAccessLibrary;
+using DroneManager;
 
 namespace DroneController.Controllers
 {
     public class DroneController : ApiController
     {
+        static DroneManagementStation droneMgr = new DroneManagementStation();
+
         [HttpGet]
         [Route("drones")]
         public IHttpActionResult get()
@@ -40,6 +43,7 @@ namespace DroneController.Controllers
         [Route("drones/discover")]
         public IHttpActionResult discover()
         {
+            /*
             String settingName = "discoveryPollLength";
             IEntityRepository<SettingEntity> settingsRepo = RepositoryFactory.getSettingRepository();
             SettingEntity pollLength = settingsRepo.getByName(settingName);
@@ -51,7 +55,9 @@ namespace DroneController.Controllers
                 pollLength = settingsRepo.create(pollLength);
                 return Ok("Setting Created");
             }
-            return Ok("Setting Exists");
+            */
+            droneMgr.discover();
+            return Ok();
         }
 
 
