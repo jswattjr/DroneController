@@ -32,3 +32,9 @@ D:\Source\Repos\DroneController\DroneController\obj\Debug\DroneController.dll
 D:\Source\Repos\DroneController\DroneController\obj\Debug\DroneController.pdb
 D:\Source\Repos\DroneController\DroneController\bin\EntityFramework.SqlServer.dll
 D:\Source\Repos\DroneController\DroneController\bin\EntityFramework.SqlServer.xml
+D:\Source\Repos\DroneController\DroneController\bin\DroneConnection.dll
+D:\Source\Repos\DroneController\DroneController\bin\DroneManager.dll
+D:\Source\Repos\DroneController\DroneController\bin\MAVLink.dll
+D:\Source\Repos\DroneController\DroneController\bin\DroneConnection.pdb
+D:\Source\Repos\DroneController\DroneController\bin\DroneManager.pdb
+D:\Source\Repos\DroneController\DroneController\bin\MAVLink.pdb

@@ -7,13 +7,36 @@ using System.IO.Ports;
 using System.Collections;
 using DroneConnection;
 using System.Threading;
+using DataAccessLibrary;
+using DataAccessLibrary.Interfaces;
+using DataAccessLibrary.Models;
+using DroneManager.Models;
 
 namespace DroneManager
 {
     public class DroneManagementStation
     {
-        public List<DroneLink> connections = new List<DroneLink>();
+        IEntityRepository<DroneEntity> droneRepo = RepositoryFactory.getDroneRepository();
+        public List<Drone> connections = new List<Drone>();
         public List<Task<DroneLink>> discoveryTasks = new List<Task<DroneLink>>();
+
+        public Drone getById(Guid guid)
+        {
+            Drone result = connections.FirstOrDefault(drone => drone.id == guid);
+            if (null == result)
+            {
+                DroneEntity entity = droneRepo.getById(guid);
+                if (null == entity)
+                {
+                    return null;
+                }
+                return new Drone(entity);
+            }
+            else
+            {
+                return result;
+            }
+        }
 
         public void discover()
         {
@@ -37,7 +60,20 @@ namespace DroneManager
                 DroneLink connection = task.Result;
                 if (connection.state.Equals(DroneLink.ConnectionState.CONNECTED))
                 {
-                    this.connections.Add(connection);
+                    // TODO: Look up existing record
+                    Boolean droneExists = false;
+                    if (droneExists)
+                    {
+
+                    }
+                    else
+                    {
+                        Drone drone = new Drone();
+                        drone.serialPort = connection.port.PortName;
+                        drone.connection = connection;
+                        drone.copy(droneRepo.create((DroneEntity)drone));
+                        this.connections.Add(drone);
+                    }
                     processedTasks.Add(task);
                 }
                 else if (connection.state.Equals(DroneLink.ConnectionState.DISCOVERING))
