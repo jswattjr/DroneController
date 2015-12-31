@@ -13,44 +13,47 @@ namespace DroneManager
     public class DroneManagementStation
     {
         public List<DroneLink> connections = new List<DroneLink>();
+        public List<Task<DroneLink>> discoveryTasks = new List<Task<DroneLink>>();
+
         public void discover()
         {
+            checkTasks();
             string[] ports = SerialPort.GetPortNames();
-            List<DroneLink> discoveryThreads = new List<DroneLink>();
             foreach (string portName in ports)
             {
                 SerialPort port = new SerialPort(portName);
                 if (!port.IsOpen)
                 {
-                    discoveryThreads.Add(DroneLink.connect(port));
+                    discoveryTasks.Add(Task<DroneLink>.Factory.StartNew(() => DroneLink.connect(port)));
                 }
             }
+        }
 
-            Thread.Sleep(10);
-
-            foreach (DroneLink link in discoveryThreads){
-                if (link.state == DroneLink.ConnectionState.CONNECTED)
+        public void checkTasks()
+        {
+            List<Task<DroneLink>> processedTasks = new List<Task<DroneLink>>();
+            foreach (Task<DroneLink> task in discoveryTasks)
+            {
+                DroneLink connection = task.Result;
+                if (connection.state.Equals(DroneLink.ConnectionState.CONNECTED))
                 {
-                    connections.Add(link);
+                    this.connections.Add(connection);
+                    processedTasks.Add(task);
+                }
+                else if (connection.state.Equals(DroneLink.ConnectionState.DISCOVERING))
+                {
+                    continue;
                 }
                 else
                 {
-                    try
-                    {
-                        link.close();
-                    }
-                    catch
-                    {
-
-                    }
+                    // TODO: log removal of task
+                    processedTasks.Add(task);
                 }
             }
-
-        }
-
-        void connect()
-        {
-
+            foreach (Task<DroneLink> processedTask in processedTasks)
+            {
+                discoveryTasks.Remove(processedTask);
+            }
         }
     }
 }
