@@ -38,3 +38,6 @@ D:\Source\Repos\DroneController\DroneController\bin\MAVLink.dll
 D:\Source\Repos\DroneController\DroneController\bin\DroneConnection.pdb
 D:\Source\Repos\DroneController\DroneController\bin\DroneManager.pdb
 D:\Source\Repos\DroneController\DroneController\bin\MAVLink.pdb
+D:\Source\Repos\DroneController\DroneController\bin\NLog.config
+D:\Source\Repos\DroneController\DroneController\bin\NLog.dll
+D:\Source\Repos\DroneController\DroneController\bin\NLog.xml

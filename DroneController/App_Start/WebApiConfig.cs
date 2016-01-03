@@ -26,6 +26,11 @@ namespace DroneController
                 defaults: new { controller = "Settings", name = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "logs",
+                routeTemplate: "logs/{page}",
+                defaults: new { controller = "Logs", page = RouteParameter.Optional }
+            );
 
             // this code adds a custom formatter that takes text/html and returns text/json
             config.Formatters.Add(new BrowserJsonFormatter());

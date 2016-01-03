@@ -24,5 +24,12 @@ namespace DataAccessLibrary
             GenericEntityRepository<SettingEntity> repo = new GenericEntityRepository<SettingEntity>(dbContext.SettingEntities, dbContext);
             return repo;
         }
+
+        public static LogRepository getLogsRepository()
+        {
+            LogDatabaseAccess dbContext = new LogDatabaseAccess();
+            LogRepository repo = new LogRepository(dbContext.NLogs, dbContext);
+            return repo;
+        }
     }
 }

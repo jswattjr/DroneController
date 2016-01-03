@@ -38,6 +38,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -54,13 +58,19 @@
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IEntityRepository.cs" />
     <Compile Include="Models\DroneEntity.cs" />
+    <Compile Include="Repositories\LogDatabaseAccess.cs" />
+    <Compile Include="Models\NLogEntity.cs" />
     <Compile Include="Models\SettingEntity.cs" />
     <Compile Include="Repositories\AdoDatabaseAccess.cs" />
     <Compile Include="Repositories\GenericEntityRepository.cs" />
+    <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="RepositoryFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="sqlscripts\createlogdatabase.sql" />
+    <Content Include="sqlscripts\DefaultAppPool_user.sql" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

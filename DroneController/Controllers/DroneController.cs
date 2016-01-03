@@ -6,17 +6,20 @@ using System.Net.Http;
 using System.Web.Http;
 using DroneManager.Models;
 using DroneManager;
+using NLog;
 
 namespace DroneController.Controllers
 {
     public class DroneController : ApiController
     {
         static DroneManagementStation droneMgr = new DroneManagementStation();
+        static Logger logger = LogManager.GetCurrentClassLogger();
 
         [HttpGet]
         [Route("drones")]
         public IHttpActionResult get()
         {
+            logger.Debug("Entering /drones GET");
             return Ok(droneMgr.connections);
         }
 
@@ -24,6 +27,7 @@ namespace DroneController.Controllers
         [Route("drones/{id}")]
         public IHttpActionResult getById(string id)
         {
+            logger.Debug("Fetching /drones/{0}", id);
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
@@ -39,6 +43,7 @@ namespace DroneController.Controllers
         [Route("drones/discover")]
         public IHttpActionResult discover()
         {
+            logger.Debug("Entering /discover");
             droneMgr.discover();
             return Ok();
         }

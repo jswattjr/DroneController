@@ -8,3 +8,5 @@ D:\Source\Repos\DroneController\DataAccessLibrary\obj\Debug\DataAccessLibrary.cs
 D:\Source\Repos\DroneController\DataAccessLibrary\obj\Debug\DataAccessLibrary.dll
 D:\Source\Repos\DroneController\DataAccessLibrary\obj\Debug\DataAccessLibrary.pdb
 D:\Source\Repos\DroneController\DataAccessLibrary\bin\Debug\DataAccessLibrary.dll.config
+D:\Source\Repos\DroneController\DataAccessLibrary\bin\Debug\NLog.dll
+D:\Source\Repos\DroneController\DataAccessLibrary\bin\Debug\NLog.xml
