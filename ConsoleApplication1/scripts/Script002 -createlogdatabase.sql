@@ -1,8 +1,5 @@
-﻿IF DB_ID('NLogDb') is null
-BEGIN
-	CREATE DATABASE [NLogDb]
-	PRINT 'Logging database created...'
-END
+﻿CREATE DATABASE [NLogDb]
+PRINT 'Logging database created...'
 
 USE NLogDb
 

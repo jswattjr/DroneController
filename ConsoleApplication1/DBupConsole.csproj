@@ -55,8 +55,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="scripts\createlogdatabase.sql" />
-    <EmbeddedResource Include="scripts\DefaultAppPool_user.sql" />
+    <EmbeddedResource Include="scripts\Script002 -createlogdatabase.sql" />
+    <EmbeddedResource Include="scripts\Script001 - Create IIS User.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\OctoPack.3.0.46\tools\OctoPack.targets" Condition="Exists('..\packages\OctoPack.3.0.46\tools\OctoPack.targets')" />
