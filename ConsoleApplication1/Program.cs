@@ -13,6 +13,8 @@ namespace DBupConsole
 
         static int Main(string[] args)
         {
+            DbUp.EnsureDatabase.For.SqlDatabase("data source=localhost;Initial Catalog=NLogDb;integrated security = true;");
+
             var connectionString =
        args.FirstOrDefault()
        ?? "Server=localhost;Trusted_connection=true";
