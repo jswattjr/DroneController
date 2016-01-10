@@ -97,7 +97,7 @@ namespace DroneConnection
                     target_system = 1
                 });
 
-            while (port.IsOpen)
+            while ((port.IsOpen)&&(!state.Equals(ConnectionState.FAILED)))
             {
                 logger.Debug("Port {0} is open. Setting state to CONNECTED.", port.PortName);
                 state = ConnectionState.CONNECTED;

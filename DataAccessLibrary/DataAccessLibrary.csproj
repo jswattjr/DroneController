@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IEntityRepository.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DroneEntity.cs" />
     <Compile Include="Repositories\LogDatabaseAccess.cs" />
     <Compile Include="Models\NLogEntity.cs" />
