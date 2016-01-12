@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneConnection", "DroneCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneManager", "DroneManager\DroneManager.csproj", "{FD29626E-9F38-4FD4-9EB1-0131D656D4FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBupConsole", "ConsoleApplication1\DBupConsole.csproj", "{40E1C685-7391-439E-B032-618B2CA53639}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBupConsole", "DBupConsole\DBupConsole.csproj", "{40E1C685-7391-439E-B032-618B2CA53639}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
