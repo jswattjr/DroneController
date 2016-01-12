@@ -109,9 +109,9 @@ namespace DroneConnection
 
                     var att = readsomedata<MAVLink.mavlink_attitude_t>();
                 }
-                catch
+                catch (Exception e)
                 {
-                    logger.Debug("Heartbeat packet FAILED for port {0}", port.PortName);
+                    logger.Debug("Heartbeat packet FAILED for port {0} with message {1}", port.PortName, e.Message);
                     state = ConnectionState.FAILED;
                 }
 
