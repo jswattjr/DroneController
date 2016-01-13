@@ -50,6 +50,7 @@ namespace DroneConnection
 
         public void close()
         {
+            logger.Debug("Closing connection on port {0}.", port.PortName);
             heartbeatThread.Abort();
             heartbeatThread.Join();
             port.Close();
@@ -111,7 +112,7 @@ namespace DroneConnection
                 }
                 catch (Exception e)
                 {
-                    logger.Debug("Heartbeat packet FAILED for port {0} with message {1}", port.PortName, e.Message);
+                    logger.Debug("Heartbeat packet FAILED for port {0} with message: {1}", port.PortName, e.Message);
                     state = ConnectionState.FAILED;
                 }
 
