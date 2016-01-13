@@ -44,17 +44,16 @@ namespace DroneConnection
         public SerialPort port { get; }
         public Guid id { get; }
 
-        public ConnectionState state = ConnectionState.UNINITIALIZED;
+        public volatile ConnectionState state = ConnectionState.UNINITIALIZED;
 
         Thread heartbeatThread;
 
         public void close()
         {
             logger.Debug("Closing connection on port {0}.", port.PortName);
-            heartbeatThread.Abort();
+            state = ConnectionState.DISCONNECTED;
             heartbeatThread.Join();
             port.Close();
-            state = ConnectionState.DISCONNECTED;
         }
 
         void doWork()
@@ -84,44 +83,51 @@ namespace DroneConnection
                 this.state = ConnectionState.FAILED;
             }
 
-            // set timeout to 2 seconds
-            port.ReadTimeout = 2000;
-
-            // request streams - asume target is at 1,1
-            mavlink.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.REQUEST_DATA_STREAM,
-                new MAVLink.mavlink_request_data_stream_t()
-                {
-                    req_message_rate = 2,
-                    req_stream_id = (byte)MAVLink.MAV_DATA_STREAM.ALL,
-                    start_stop = 1,
-                    target_component = 1,
-                    target_system = 1
-                });
-
-            while ((port.IsOpen)&&(!state.Equals(ConnectionState.FAILED)))
+            try
             {
-                logger.Debug("Port {0} is open. Setting state to CONNECTED.", port.PortName);
-                state = ConnectionState.CONNECTED;
-                try
-                {
-                    logger.Debug("Sending heartbeat packet to port {0}", port.PortName);
-                    // try read a hb packet from the comport
-                    var hb = readsomedata<MAVLink.mavlink_heartbeat_t>();
+                // set timeout to 2 seconds
+                port.ReadTimeout = 2000;
 
-                    var att = readsomedata<MAVLink.mavlink_attitude_t>();
-                }
-                catch (Exception e)
+                // request streams - asume target is at 1,1
+                mavlink.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.REQUEST_DATA_STREAM,
+                    new MAVLink.mavlink_request_data_stream_t()
+                    {
+                        req_message_rate = 2,
+                        req_stream_id = (byte)MAVLink.MAV_DATA_STREAM.ALL,
+                        start_stop = 1,
+                        target_component = 1,
+                        target_system = 1
+                    });
+
+                while ((port.IsOpen) && (state.Equals(ConnectionState.DISCOVERING)))
                 {
-                    logger.Debug("Heartbeat packet FAILED for port {0} with message: {1}", port.PortName, e.Message);
-                    state = ConnectionState.FAILED;
+                    logger.Debug("Port {0} is open. Setting state to CONNECTED.", port.PortName);
+                    state = ConnectionState.CONNECTED;
+                    try
+                    {
+                        logger.Debug("Sending heartbeat packet to port {0}", port.PortName);
+                        // try read a hb packet from the comport
+                        var hb = readsomedata<MAVLink.mavlink_heartbeat_t>();
+
+                        var att = readsomedata<MAVLink.mavlink_attitude_t>();
+                    }
+                    catch (Exception e)
+                    {
+                        logger.Debug("Heartbeat packet FAILED for port {0} with message: {1}", port.PortName, e.Message);
+                        state = ConnectionState.FAILED;
+                    }
+
+                    Thread.Sleep(1);
                 }
 
-                Thread.Sleep(1);
+                logger.Debug("Connection to Port {0} ending.", port.PortName);
+                logger.Debug("Connection state: {0}.", state);
             }
-
-            logger.Debug("Port {0} failed to open or closed unexpectedly.", port.PortName);
-            state = ConnectionState.FAILED;
-
+            finally
+            {
+                logger.Debug("Closing port {0}", port.PortName);
+                port.Close();
+            }
         }
 
         T readsomedata<T>(int timeout = 2000)
