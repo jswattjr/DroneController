@@ -99,29 +99,33 @@ namespace DroneConnection
                         target_system = 1
                     });
 
-                while ((port.IsOpen) && (state.Equals(ConnectionState.DISCOVERING)))
+                while (port.IsOpen)
                 {
                     logger.Debug("Port {0} is open. Setting state to CONNECTED.", port.PortName);
                     state = ConnectionState.CONNECTED;
-                    try
-                    {
-                        logger.Debug("Sending heartbeat packet to port {0}", port.PortName);
-                        // try read a hb packet from the comport
-                        var hb = readsomedata<MAVLink.mavlink_heartbeat_t>();
 
-                        var att = readsomedata<MAVLink.mavlink_attitude_t>();
-                    }
-                    catch (Exception e)
-                    {
-                        logger.Debug("Heartbeat packet FAILED for port {0} with message: {1}", port.PortName, e.Message);
-                        state = ConnectionState.FAILED;
-                    }
+                    logger.Debug("Sending heartbeat packet to port {0}", port.PortName);
+                    // try read a hb packet from the comport
+                    var hb = readsomedata<MAVLink.mavlink_heartbeat_t>();
+
+                    var att = readsomedata<MAVLink.mavlink_attitude_t>();
 
                     Thread.Sleep(1);
+
+                    // this state can be changed externally to signal a disconnect
+                    if (state.Equals(ConnectionState.DISCONNECTED))
+                    {
+                        break;
+                    }
                 }
 
                 logger.Debug("Connection to Port {0} ending.", port.PortName);
                 logger.Debug("Connection state: {0}.", state);
+            }
+            catch (Exception e)
+            {
+                logger.Debug("Connection FAILED for port {0} with message: {1}", port.PortName, e.Message);
+                state = ConnectionState.FAILED;
             }
             finally
             {
