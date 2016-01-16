@@ -88,8 +88,9 @@ namespace DroneConnection
                 // set timeout to 2 seconds
                 port.ReadTimeout = 2000;
 
+                // does this code do anything???!?
                 // request streams - asume target is at 1,1
-                mavlink.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.REQUEST_DATA_STREAM,
+                /*mavlink.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.REQUEST_DATA_STREAM,
                     new MAVLink.mavlink_request_data_stream_t()
                     {
                         req_message_rate = 2,
@@ -98,7 +99,7 @@ namespace DroneConnection
                         target_component = 1,
                         target_system = 1
                     });
-
+                */
                 while (port.IsOpen)
                 {
                     logger.Debug("Port {0} is open. Setting state to CONNECTED.", port.PortName);
