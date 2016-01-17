@@ -76,6 +76,7 @@ namespace DroneConnection
 
                 // start thread to listen for incoming messages, refers to private listen() function
                 listenThread = new Thread(new ThreadStart(listen));
+                listenThread.Start();
                 return true;
             }
             else
