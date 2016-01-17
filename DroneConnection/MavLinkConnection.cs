@@ -90,9 +90,10 @@ namespace DroneConnection
         {
             try
             {
+                logger.Debug("Starting listening thread for port {0}.", port.PortName);
+
                 while (port.IsOpen)
                 {
-                    logger.Debug("Port {0} is open. Setting state to CONNECTED.", port.PortName);
 
                     readFromStream();
 
