@@ -136,7 +136,7 @@ namespace DroneConnection
                     continue;
                 }
 
-                logger.Debug("Message read from target system: {0}, with id {1}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString());
+                logger.Debug("{1} Message read from target system: {0}, component id {3}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString(), message.compid);
                 this.systemId = message.sysid;
                 this.readQueue.Enqueue(message);
             }
