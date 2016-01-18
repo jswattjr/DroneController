@@ -41,3 +41,5 @@ D:\Source\Repos\DroneController\DroneController\bin\MAVLink.pdb
 D:\Source\Repos\DroneController\DroneController\bin\NLog.config
 D:\Source\Repos\DroneController\DroneController\bin\NLog.dll
 D:\Source\Repos\DroneController\DroneController\bin\NLog.xml
+D:\Source\Repos\DroneController\DroneController\bin\RabbitMQ.Client.dll
+D:\Source\Repos\DroneController\DroneController\bin\RabbitMQ.Client.xml

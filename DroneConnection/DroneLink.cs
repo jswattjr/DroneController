@@ -13,12 +13,13 @@ namespace DroneConnection
     {
         static Logger logger = LogManager.GetCurrentClassLogger();
 
-        MavLinkConnection mavlink;
+        public MavLinkConnection mavlink { get; }
 
         public SerialPort port { get { return mavlink.port; } }
 
         public volatile ConnectionState state = ConnectionState.UNINITIALIZED;
-        
+
+
 
         public static DroneLink connect(SerialPort port)
         {
@@ -27,6 +28,7 @@ namespace DroneConnection
             Boolean connected = oConnection.connect();
             if (connected)
             {
+                // return new connection
                 return new DroneLink(oConnection);
             }
             else

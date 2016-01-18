@@ -21,7 +21,6 @@ namespace DroneManager
 
         IEntityRepository<DroneEntity> droneRepo = RepositoryFactory.getDroneRepository();
         public List<Drone> connections = new List<Drone>();
-        public List<Task<DroneLink>> discoveryTasks = new List<Task<DroneLink>>();
 
         public Drone getById(Guid guid)
         {
@@ -47,7 +46,6 @@ namespace DroneManager
         public void discover()
         {
             logger.Debug("Starting discovery.");
-            checkTasks();
             string[] ports = SerialPort.GetPortNames();
             foreach (string portName in ports)
             {
@@ -55,54 +53,31 @@ namespace DroneManager
                 SerialPort port = new SerialPort(portName);
                 if (!port.IsOpen)
                 {
-                    logger.Debug("Port {0} is currently closed, attempting connection.", portName);
-                    discoveryTasks.Add(Task<DroneLink>.Factory.StartNew(() => DroneLink.connect(port)));
+                    logger.Debug("Port {0} is currently closed, attempting new connection.", portName);
+                    DroneLink connection = DroneLink.connect(port);
+                    if (null != connection)
+                    {
+                        // TODO: Look up existing record
+                        logger.Debug("Connection established on port {0}", connection.port);
+                        Boolean droneExists = false;
+                        if (droneExists)
+                        {
+
+                        }
+                        else
+                        {
+                            logger.Debug("Mavlink device on port {0} is new, creating database entry.", connection.port);
+                            Drone drone = new Drone();
+                            drone.serialPort = connection.port.PortName;
+                            drone.name = connection.mavlink.systemId.ToString();
+                            drone.connection = connection;
+                            drone.copy(droneRepo.create((DroneEntity)drone));
+                            this.connections.Add(drone);
+                        }
+                    }
                 }
             }
         }
 
-        public void checkTasks()
-        {
-            logger.Debug("Checking existing connections.");
-            List<Task<DroneLink>> processedTasks = new List<Task<DroneLink>>();
-            foreach (Task<DroneLink> task in discoveryTasks)
-            {
-                DroneLink connection = task.Result;
-                if (connection.state.Equals(DroneLink.ConnectionState.CONNECTED))
-                {
-                    // TODO: Look up existing record
-                    logger.Debug("Connection established on port {0}", connection.port);
-                    Boolean droneExists = false;
-                    if (droneExists)
-                    {
-
-                    }
-                    else
-                    {
-                        logger.Debug("Connection on port {0} is new, creating database entry.", connection.port);
-                        Drone drone = new Drone();
-                        drone.serialPort = connection.port.PortName;
-                        drone.connection = connection;
-                        drone.copy(droneRepo.create((DroneEntity)drone));
-                        this.connections.Add(drone);
-                    }
-                    processedTasks.Add(task);
-                }
-                else if (connection.state.Equals(DroneLink.ConnectionState.DISCOVERING))
-                {
-                    continue;
-                }
-                else
-                {
-                    // TODO: log removal of task
-                    logger.Debug("Connection on port {0} is {1}.", connection.port, connection.state.ToString());
-                    processedTasks.Add(task);
-                }
-            }
-            foreach (Task<DroneLink> processedTask in processedTasks)
-            {
-                discoveryTasks.Remove(processedTask);
-            }
-        }
     }
 }

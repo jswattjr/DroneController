@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneManager", "DroneManage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBupConsole", "DBupConsole\DBupConsole.csproj", "{40E1C685-7391-439E-B032-618B2CA53639}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Events", "Events\Events.csproj", "{DC4EDBDD-F4E5-46E5-B5F1-0E8CA2C40BA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{40E1C685-7391-439E-B032-618B2CA53639}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40E1C685-7391-439E-B032-618B2CA53639}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40E1C685-7391-439E-B032-618B2CA53639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC4EDBDD-F4E5-46E5-B5F1-0E8CA2C40BA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4EDBDD-F4E5-46E5-B5F1-0E8CA2C40BA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC4EDBDD-F4E5-46E5-B5F1-0E8CA2C40BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4EDBDD-F4E5-46E5-B5F1-0E8CA2C40BA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
