@@ -7,6 +7,7 @@ using System.Web.Http;
 using DroneManager.Models;
 using DroneManager;
 using NLog;
+using DataAccessLibrary.Models;
 
 namespace DroneController.Controllers
 {
@@ -20,7 +21,14 @@ namespace DroneController.Controllers
         public IHttpActionResult get()
         {
             logger.Debug("Entering /drones GET");
-            return Ok(droneMgr.connections);
+
+            return Ok(this.getActiveRecords());
+        }
+
+        private List<DroneEntity> getActiveRecords()
+        {
+            // return list of active connection data records (trying to serialize the pure connection object will fail due to the data stream)
+            return droneMgr.connections.Select(x => x.data).ToList();
         }
 
         [HttpGet]
