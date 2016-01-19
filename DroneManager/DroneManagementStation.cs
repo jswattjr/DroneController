@@ -59,28 +59,28 @@ namespace DroneManager
                     {
                         // TODO: Look up existing record
                         logger.Debug("Connection established on port {0}", connection.port);
-                        Boolean droneExists = false;
-                        if (droneExists)
+                        DroneEntity connectionRecord = droneRepo.getByName(connection.mavlink.systemId.ToString());
+                        if (null != connectionRecord)
                         {
-
+                            logger.Debug("Mavlink device with systemid {0} found in record with guid {1}", connection.mavlink.systemId, connectionRecord.id);
                         }
                         else
                         {
                             logger.Debug("Mavlink device on port {0} is new, creating database entry.", connection.port);
 
                             // create record of this connection
-                            DroneEntity connectionRecord = new DroneEntity();
+                            connectionRecord = new DroneEntity();
                             connectionRecord.serialPort = connection.port.PortName;
                             connectionRecord.name = connection.mavlink.systemId.ToString();
                             connectionRecord.copy(droneRepo.create(connectionRecord));
-
-                            // create new business object around this record and assign it to connection
-                            Drone drone = new Drone(connectionRecord);
-                            drone.connection = connection;
-
-                            // add this object to the list of active connections
-                            this.connections.Add(drone);
                         }
+                        // create new business object around this record and assign it to connection
+                        Drone drone = new Drone(connectionRecord);
+                        drone.connection = connection;
+
+                        // add this object to the list of active connections
+                        this.connections.Add(drone);
+
                     }
                 }
             }
