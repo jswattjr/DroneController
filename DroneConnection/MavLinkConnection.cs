@@ -215,8 +215,26 @@ namespace DroneConnection
         // initializes queue variables, needs to be paired with 'destroyqueue' to release resources
         void initializeMessageQueue()
         {
-            IConnection connection = eventFactory.CreateConnection();
-            IModel channel = connection.CreateModel();
+            try
+            {
+                IConnection connection = eventFactory.CreateConnection();
+                IModel channel = connection.CreateModel();
+            }
+            catch (Exception e)
+            {
+                logger.Debug("Exception while initializing message queue. Please check that target RabbitMQ server exists.");
+                logger.Debug("Exception message: {0}", e.Message);
+                if (null != connection)
+                {
+                    connection.Dispose();
+                }
+                if (null != channel)
+                {
+                    channel.Dispose();
+                }
+                connection = null;
+                channel = null;
+            }
         }
 
         // declares the message queue, needs to be called after sysid is fetched from target system, so id can be used in queue name
