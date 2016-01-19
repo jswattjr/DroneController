@@ -9,16 +9,13 @@ using DroneConnection;
 
 namespace DroneManager.Models
 {
-    public class Drone : DroneEntity
+    public class Drone
     {
+        public DroneEntity data = new DroneEntity();
+
         public Drone(DroneEntity entity)
         {
-            this.copy(entity);
-        }
-
-        public Drone()
-        {
-
+            data.copy(entity);
         }
 
         public DroneLink connection { get; set; }

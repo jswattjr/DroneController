@@ -25,7 +25,7 @@ namespace DroneManager
         public Drone getById(Guid guid)
         {
             logger.Debug("Fetching Drone Information by Id: {0}", guid.ToString());
-            Drone result = connections.FirstOrDefault(drone => drone.id == guid);
+            Drone result = connections.FirstOrDefault(drone => drone.data.id == guid);
             if (null == result)
             {
                 logger.Debug("Drone info on {0} not found, checking database.", guid.ToString());
@@ -67,11 +67,18 @@ namespace DroneManager
                         else
                         {
                             logger.Debug("Mavlink device on port {0} is new, creating database entry.", connection.port);
-                            Drone drone = new Drone();
-                            drone.serialPort = connection.port.PortName;
-                            drone.name = connection.mavlink.systemId.ToString();
+
+                            // create record of this connection
+                            DroneEntity connectionRecord = new DroneEntity();
+                            connectionRecord.serialPort = connection.port.PortName;
+                            connectionRecord.name = connection.mavlink.systemId.ToString();
+                            connectionRecord.copy(droneRepo.create(connectionRecord));
+
+                            // create new business object around this record and assign it to connection
+                            Drone drone = new Drone(connectionRecord);
                             drone.connection = connection;
-                            drone.copy(droneRepo.create((DroneEntity)drone));
+
+                            // add this object to the list of active connections
                             this.connections.Add(drone);
                         }
                     }
