@@ -64,8 +64,12 @@ namespace DroneController.Controllers
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing 'arm' request");
+                }
                 target.arm();
-                return Ok(target);
+                return Ok(new DroneDTO(target));
             }
             else
             {
@@ -81,6 +85,10 @@ namespace DroneController.Controllers
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing 'disarm' request");
+                }
                 target.disarm();
                 return Ok(new DroneDTO(target));
             }
@@ -98,6 +106,10 @@ namespace DroneController.Controllers
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing 'land' request");
+                }
                 target.land();
                 return Ok(new DroneDTO(target));
             }
@@ -115,6 +127,10 @@ namespace DroneController.Controllers
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing 'rtl' request");
+                }
                 target.returnToLand();
                 return Ok(new DroneDTO(target));
             }

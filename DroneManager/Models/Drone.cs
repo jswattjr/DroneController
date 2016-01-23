@@ -26,6 +26,18 @@ namespace DroneManager.Models
             data.copy(entity);
         }
 
+        public Boolean isConnected()
+        {
+            if (null != connection)
+            {
+                if (connection.port.IsOpen)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void arm()
         {
             connection.sendArmMessage();
