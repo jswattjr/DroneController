@@ -4,6 +4,10 @@ using DroneManager.Models;
 using DataAccessLibrary.Models;
 using DataAccessLibrary.Interfaces;
 using DataAccessLibrary;
+using DataAccessLibrary.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using NLog;
 
 namespace Tests
 {
@@ -38,6 +42,39 @@ namespace Tests
 
             Assert.IsNull(lookupDrone);
         }
+
+        [TestMethod]
+        public void LoggingTest()
+        {
+            LogRepository logRepo = DataAccessLibrary.RepositoryFactory.getLogsRepository();
+            IList<NLogEntity> logs = logRepo.getAll().ToList();
+            int size = logs.Count;
+            Logger logger = LogManager.GetCurrentClassLogger();
+            logger.Debug("LoggingTest run, sample log entry");
+            logs = logRepo.getAll().ToList();
+            Assert.AreEqual(logs.Count, size + 1);
+        }
         
+        [TestMethod]
+        public void SettingsTest()
+        {
+            String settingName = "test";
+            String settingValue = "value";
+            IEntityRepository<SettingEntity> repo = RepositoryFactory.getSettingRepository();
+
+            SettingEntity settingEntity = repo.getByName(settingName);
+            Assert.IsNull(settingEntity);
+
+            SettingEntity testSetting = new SettingEntity();
+            testSetting.name = settingName;
+            testSetting.value = settingValue;
+            repo.create(testSetting);
+
+            settingEntity = repo.getByName(settingName);
+            Assert.IsNotNull(settingEntity);
+
+            Assert.AreEqual(settingEntity.value, testSetting.value);
+
+        }
     }
 }

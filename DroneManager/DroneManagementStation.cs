@@ -54,15 +54,15 @@ namespace DroneManager
                 if (!port.IsOpen)
                 {
                     logger.Debug("Port {0} is currently closed, attempting new connection.", portName);
-                    DroneLink connection = DroneLink.connect(port);
+                    MavLinkConnection connection = MavLinkConnection.createConnection(port);
                     if (null != connection)
                     {
                         // TODO: Look up existing record
                         logger.Debug("Connection established on port {0}", connection.port);
-                        DroneEntity connectionRecord = droneRepo.getByName(connection.mavlink.systemId.ToString());
+                        DroneEntity connectionRecord = droneRepo.getByName(connection.systemId.ToString());
                         if (null != connectionRecord)
                         {
-                            logger.Debug("Mavlink device with systemid {0} found in record with guid {1}", connection.mavlink.systemId, connectionRecord.id);
+                            logger.Debug("Mavlink device with systemid {0} found in record with guid {1}", connection.systemId, connectionRecord.id);
                         }
                         else
                         {
@@ -71,7 +71,7 @@ namespace DroneManager
                             // create record of this connection
                             connectionRecord = new DroneEntity();
                             connectionRecord.serialPort = connection.port.PortName;
-                            connectionRecord.name = connection.mavlink.systemId.ToString();
+                            connectionRecord.name = connection.systemId.ToString();
                             connectionRecord.copy(droneRepo.create(connectionRecord));
                         }
                         // create new business object around this record and assign it to connection

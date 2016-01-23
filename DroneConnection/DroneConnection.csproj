@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DroneLink.cs" />
     <Compile Include="MavLinkConnection.cs" />
     <Compile Include="MavLinkMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -22,6 +22,21 @@ namespace DroneConnection
     {
         static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public static MavLinkConnection createConnection(SerialPort port)
+        {
+            MavLinkConnection oConnection = new MavLinkConnection(port);
+            Boolean connected = oConnection.connect();
+            if (connected)
+            {
+                // return new connection
+                return oConnection;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public SerialPort port { get; }
         MAVLink.MavlinkParse mavlinkParse = new MAVLink.MavlinkParse();
         Thread listenThread;
@@ -43,6 +58,7 @@ namespace DroneConnection
 
         // this is the id of the connected system (fetched from MavLinkMessage sysid field)
         public int systemId = -1;
+        int componentId = -1;
 
         // RabbitMQ capabilities, CreateMessageQueue to initialize, DisposeMessageQueue to delete
         ConnectionFactory eventFactory = new ConnectionFactory();
@@ -164,6 +180,7 @@ namespace DroneConnection
 
                 logger.Debug("{1} Message read from target system: {0}, component id {3}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString(), message.compid);
                 this.systemId = message.sysid;
+                this.componentId = message.compid;
                 this.readQueue.Enqueue(message);
                 this.postToMessageQueue(message);
             }
@@ -288,6 +305,38 @@ namespace DroneConnection
 
             // publish message
             this.channel.BasicPublish("", this.getMessageQueueName(), props, messageBody);
+        }
+
+
+        public void sendArmMessage(Boolean armValue = true)
+        {
+            MAVLink.mavlink_command_long_t req = new MAVLink.mavlink_command_long_t();
+
+            req.target_system = Convert.ToByte(this.systemId);
+            req.target_component = Convert.ToByte(this.componentId);
+
+            req.command = (ushort)MAVLink.MAV_CMD.COMPONENT_ARM_DISARM;
+
+            req.param1 = Convert.ToInt32(armValue);
+
+            byte[] packet = mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.COMMAND_LONG, req);
+
+            port.Write(packet, 0, packet.Length);
+
+            /*
+            // Implement Async Ack code?
+            try
+            {
+                var ack = readsomedata<MAVLink.mavlink_command_ack_t>();
+                if (ack.result == (byte)MAVLink.MAV_RESULT.ACCEPTED)
+                {
+
+                }
+            }
+            catch
+            {
+            }
+            */
         }
     }
 }

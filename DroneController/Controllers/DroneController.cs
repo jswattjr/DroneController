@@ -32,6 +32,15 @@ namespace DroneController.Controllers
         }
 
         [HttpGet]
+        [Route("drones/discover")]
+        public IHttpActionResult discover()
+        {
+            logger.Debug("Entering /discover");
+            droneMgr.discover();
+            return Ok();
+        }
+
+        [HttpGet]
         [Route("drones/{id}")]
         public IHttpActionResult getById(string id)
         {
@@ -48,12 +57,71 @@ namespace DroneController.Controllers
         }
 
         [HttpGet]
-        [Route("drones/discover")]
-        public IHttpActionResult discover()
+        [Route("drones/{id}/arm")]
+        public IHttpActionResult arm (string id)
         {
-            logger.Debug("Entering /discover");
-            droneMgr.discover();
-            return Ok();
+            logger.Debug("Arming /drones/{0}", id);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                target.arm();
+                return Ok(target);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("drones/{id}/disarm")]
+        public IHttpActionResult disarm(string id)
+        {
+            logger.Debug("disarming /drones/{0}", id);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                target.disarm();
+                return Ok(target);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("drones/{id}/land")]
+        public IHttpActionResult land(string id)
+        {
+            logger.Debug("Landing /drones/{0}", id);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                target.land();
+                return Ok(target);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        [Route("drones/{id}/returnToLand")]
+        public IHttpActionResult returnToLand(string id)
+        {
+            logger.Debug("Returning /drones/{0} to launch point", id);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                target.returnToLand();
+                return Ok(target);
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
     }
