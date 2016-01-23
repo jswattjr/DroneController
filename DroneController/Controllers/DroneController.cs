@@ -7,7 +7,7 @@ using System.Web.Http;
 using DroneManager.Models;
 using DroneManager;
 using NLog;
-using DataAccessLibrary.Models;
+using DroneController.DataTransferObjects;
 
 namespace DroneController.Controllers
 {
@@ -25,10 +25,10 @@ namespace DroneController.Controllers
             return Ok(this.getActiveRecords());
         }
 
-        private List<DroneEntity> getActiveRecords()
+        private List<DroneDTO> getActiveRecords()
         {
             // return list of active connection data records (trying to serialize the pure connection object will fail due to the data stream)
-            return droneMgr.connections.Select(x => x.data).ToList();
+            return droneMgr.connections.Select(x => new DroneDTO(x)).ToList();
         }
 
         [HttpGet]
@@ -82,7 +82,7 @@ namespace DroneController.Controllers
             if (null != target)
             {
                 target.disarm();
-                return Ok(target);
+                return Ok(new DroneDTO(target));
             }
             else
             {
@@ -99,7 +99,7 @@ namespace DroneController.Controllers
             if (null != target)
             {
                 target.land();
-                return Ok(target);
+                return Ok(new DroneDTO(target));
             }
             else
             {
@@ -116,7 +116,7 @@ namespace DroneController.Controllers
             if (null != target)
             {
                 target.returnToLand();
-                return Ok(target);
+                return Ok(new DroneDTO(target));
             }
             else
             {
