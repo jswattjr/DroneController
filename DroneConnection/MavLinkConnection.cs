@@ -211,6 +211,7 @@ namespace DroneConnection
             {
                 IConnection connection = eventFactory.CreateConnection();
                 IModel channel = connection.CreateModel();
+                logger.Debug("RabbitMQ message queue created successfully.");
             }
             catch (Exception e)
             {
@@ -243,7 +244,7 @@ namespace DroneConnection
                 autoDelete: false,
                 arguments: null
             );
-
+            logger.Debug("RabbitMQ Message Queue Created for {0}", port.PortName);
         }
 
         // releases queue resources
@@ -280,6 +281,7 @@ namespace DroneConnection
 
             // publish message
             this.channel.BasicPublish("", this.getMessageQueueName(), props, messageBody);
+            logger.Debug("RabbitMQ Message {1} published for {0}", port.PortName, messageBody);
         }
 
 
