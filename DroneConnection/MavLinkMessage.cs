@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DroneConnection
 {
-    class MavLinkMessage
+    public class MavLinkMessage
     {
         // header values
         byte header { get; } // always 0xFE? Indicates start of message?

@@ -54,7 +54,7 @@ namespace DroneConnection
         private const int messageQueueSize = 1000;
 
         // each message will be stored here, and messages older than messageQueueSize will be removed
-        FixedSizedQueue<MavLinkMessage> readQueue = new FixedSizedQueue<MavLinkMessage>(messageQueueSize);
+        public FixedSizedQueue<MavLinkMessage> readQueue = new FixedSizedQueue<MavLinkMessage>(messageQueueSize);
 
         // this is the id of the connected system (fetched from MavLinkMessage sysid field)
         public int systemId = -1;
@@ -192,31 +192,6 @@ namespace DroneConnection
             byte[] buffer = this.mavlinkParse.ReadPacket(BaseStream);
             MavLinkMessage message = new MavLinkMessage(buffer);
             return message;
-        }
-
-        public class FixedSizedQueue<T> : ConcurrentQueue<T>
-        {
-            private readonly object syncObject = new object();
-
-            public int Size { get; private set; }
-
-            public FixedSizedQueue(int size)
-            {
-                Size = size;
-            }
-
-            public new void Enqueue(T obj)
-            {
-                base.Enqueue(obj);
-                lock (syncObject)
-                {
-                    while (base.Count > Size)
-                    {
-                        T outObj;
-                        base.TryDequeue(out outObj);
-                    }
-                }
-            }
         }
 
         public static String getMessageQueueName(int systemId)

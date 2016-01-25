@@ -2,3 +2,5 @@
 2. (optional) Install SQL Mgmt Studio
 3. Enable IIS in Windows Features, make sure to enable ASP.net and .net framework 4.6 features on install
 4. Add IIS Default App Pool user as SA in the database (script for adding IIS DefaultAppPool user is in the DataAccessLibrary project)
+5. Install Erlang
+6. Install RabbitMQ

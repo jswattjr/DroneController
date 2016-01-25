@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FixedSizeQueue.cs" />
     <Compile Include="MavLinkConnection.cs" />
     <Compile Include="MavLinkMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -58,5 +58,29 @@ namespace DroneManager.Models
 
         }
 
+        /*
+        public List<Object> getRawMessageFeed()
+        {
+            int readSize = 100;
+            List<Object> messages = new List<Object>();
+            if (this.isConnected())
+            {
+                FixedSizedQueue<MavLinkMessage> queue = this.connection.readQueue;
+                while((queue.Count > 0)&&(readSize > 0))
+                {
+                    MavLinkMessage message;
+                    queue.TryDequeue(message)
+                    messages.Add()
+                }
+                return 
+            }
+            else
+            {
+                logger.Error("getRawMessageFeed() called on disconnected drone, returning null.");
+                return null;
+            }
+        }
+        */
+
     }
 }
