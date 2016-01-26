@@ -55,7 +55,7 @@ namespace DroneManager
                 {
                     logger.Debug("Port {0} is currently closed, attempting new connection.", portName);
                     MavLinkConnection connection = MavLinkConnection.createConnection(port);
-                    if (null != connection)
+                    if ((null != connection)&&(connection.port.IsOpen))
                     {
                         // TODO: Look up existing record
                         logger.Debug("Connection established on port {0}", connection.port);
@@ -81,6 +81,10 @@ namespace DroneManager
                         // add this object to the list of active connections
                         this.connections.Add(drone);
 
+                    }
+                    else
+                    {
+                        logger.Debug("Discontinuing connection attempt on port {0}", portName);
                     }
                 }
             }
