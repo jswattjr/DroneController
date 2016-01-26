@@ -281,7 +281,7 @@ namespace DroneConnection
 
             // publish message
             this.channel.BasicPublish("", this.getMessageQueueName(), props, messageBody);
-            logger.Debug("RabbitMQ Message {1} published for {0}", port.PortName, messageBody);
+            logger.Debug("RabbitMQ Message {1} published for {0}", port.PortName, jsonObject);
         }
 
 
