@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLibrary.Interfaces;
 using DataAccessLibrary.Models;
 using DroneConnection;
 using NLog;
+using RabbitMQ.Client.Events;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace DroneManager.Models
 {
@@ -32,6 +30,7 @@ namespace DroneManager.Models
             {
                 if (connection.port.IsOpen)
                 {
+                    openMessageFeed();
                     return true;
                 }
             }
@@ -58,29 +57,33 @@ namespace DroneManager.Models
 
         }
 
-        /*
-        public List<Object> getRawMessageFeed()
+        // attempts to open listen feed
+        public Boolean openMessageFeed()
         {
-            int readSize = 100;
-            List<Object> messages = new List<Object>();
-            if (this.isConnected())
+            MavLinkEvents events = connection.events;
+            if ((null == events) || (null == events.channel))
             {
-                FixedSizedQueue<MavLinkMessage> queue = this.connection.readQueue;
-                while((queue.Count > 0)&&(readSize > 0))
-                {
-                    MavLinkMessage message;
-                    queue.TryDequeue(message)
-                    messages.Add()
-                }
-                return 
+                logger.Error("Failed to open event message queue for {0}", connection.port.PortName);
+                return false;
             }
-            else
-            {
-                logger.Error("getRawMessageFeed() called on disconnected drone, returning null.");
-                return null;
-            }
-        }
-        */
 
+            var consumer = new EventingBasicConsumer(events.channel);
+            consumer.Received += (model, ea) =>
+            {
+                eventsCallback(ea);
+            };
+            events.channel.BasicConsume(queue: events.getMessageQueueName(),
+                                    noAck: true,
+                                    consumer: consumer);
+            return true;
+        }
+
+        void eventsCallback(BasicDeliverEventArgs eventArguments)
+        {
+            var body = eventArguments.Body;
+            String jsonBody = Encoding.UTF8.GetString(body);
+            MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody);
+            logger.Debug("Message received by listener: {0}", jsonBody);
+        }
     }
 }

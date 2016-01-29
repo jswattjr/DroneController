@@ -22,24 +22,17 @@ namespace DroneConnection
     {
         static Logger logger = LogManager.GetCurrentClassLogger();
 
-        public static MavLinkConnection createConnection(SerialPort port)
-        {
-            MavLinkConnection oConnection = new MavLinkConnection(port);
-            Boolean connected = oConnection.connect();
-            if (connected)
-            {
-                // return new connection
-                return oConnection;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        // serial port where communication is taking place
+        public SerialPort port { get; private set; }
 
-        public SerialPort port { get; }
+        // MAVLink library parse helper
         MAVLink.MavlinkParse mavlinkParse = new MAVLink.MavlinkParse();
+
+        // thread listening to port
         Thread listenThread;
+
+        // Events object posting messages to RabbitMQ events broker
+        public MavLinkEvents events { get; private set; }
 
         // 9600, 14400, 19200, 28800, 38400, 57600, 115200
         public int baudValue = 57600;
@@ -50,22 +43,26 @@ namespace DroneConnection
         private const int readtime_ms = 1000;
         // timeout for port communication
         private const int timeout_ms = 2000;
-        // size of message queue to store
-        private const int messageQueueSize = 1000;
-
-        // each message will be stored here, and messages older than messageQueueSize will be removed
-        public FixedSizedQueue<MavLinkMessage> readQueue = new FixedSizedQueue<MavLinkMessage>(messageQueueSize);
 
         // this is the id of the connected system (fetched from MavLinkMessage sysid field)
         public int systemId = -1;
         int componentId = -1;
 
-        // RabbitMQ capabilities, CreateMessageQueue to initialize, DisposeMessageQueue to delete
-        ConnectionFactory eventFactory = new ConnectionFactory();
-        IConnection connection = null;
-        IModel channel = null;
-        QueueDeclareOk messageQueueExists = null;
-        const String messageQueuePrefix = "MavLinkConnection";
+        // static constructor/initializer, attempts a connection and returns null if connection fails
+        public static MavLinkConnection createConnection(SerialPort port)
+        {
+            MavLinkConnection oConnection = new MavLinkConnection(port);
+            Boolean connected = oConnection.connect();
+            if (connected)
+            {              
+                // return new connection
+                return oConnection;
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         public MavLinkConnection(SerialPort port)
         {
@@ -130,9 +127,6 @@ namespace DroneConnection
             try
             {
                 logger.Debug("Starting listening thread for port {0}.", port.PortName);
-
-                this.initializeMessageQueue();
-
                 while (port.IsOpen)
                 {
 
@@ -150,7 +144,7 @@ namespace DroneConnection
             finally
             {
                 logger.Debug("Closing port {0}", port.PortName);
-                this.destroyQueue();
+                events.destroyQueue();
                 port.Close();
             }
 
@@ -181,9 +175,25 @@ namespace DroneConnection
                 logger.Debug("{1} Message read from target system: {0}, component id {3}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString(), message.compid);
                 this.systemId = message.sysid;
                 this.componentId = message.compid;
-                this.readQueue.Enqueue(message);
-                this.postToMessageQueue(message);
+                this.postMessage(message);
             }
+        }
+
+        private void postMessage(MavLinkMessage message)
+        {
+            // don't post any messages if we don't know who we're communicating with
+            if (-1 == this.systemId )
+            {
+                return;
+            }
+
+            // create events object
+            if (null == events)
+            {
+                this.events = new MavLinkEvents(this.systemId, this.componentId);
+            }
+
+            events.postToMessageQueue(message);
         }
 
         // parses data from stream into MavLinkMessage objects
@@ -193,97 +203,6 @@ namespace DroneConnection
             MavLinkMessage message = new MavLinkMessage(buffer);
             return message;
         }
-
-        public static String getMessageQueueName(int systemId)
-        {
-            return messageQueuePrefix + "_" + systemId.ToString();
-        }
-
-        public String getMessageQueueName()
-        {
-            return MavLinkConnection.getMessageQueueName(this.systemId);
-        }
-
-        // initializes queue variables, needs to be paired with 'destroyqueue' to release resources
-        void initializeMessageQueue()
-        {
-            try
-            {
-                this.connection = eventFactory.CreateConnection();
-                this.channel = connection.CreateModel();
-                logger.Debug("RabbitMQ message queue created successfully.");
-            }
-            catch (Exception e)
-            {
-                logger.Debug("Exception while initializing message queue. Please check that target RabbitMQ server exists.");
-                logger.Debug("Exception message: {0}", e.Message);
-                if (null != connection)
-                {
-                    connection.Dispose();
-                }
-                if (null != channel)
-                {
-                    channel.Dispose();
-                }
-                connection = null;
-                channel = null;
-            }
-        }
-
-        // declares the message queue, needs to be called after sysid is fetched from target system, so id can be used in queue name
-        void declareQueue()
-        {
-            if ((null == channel)||(null == connection))
-            {
-                return;
-            }
-            this.messageQueueExists = channel.QueueDeclare(
-                queue: getMessageQueueName(),
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null
-            );
-            logger.Debug("RabbitMQ Message Queue Created for {0}", port.PortName);
-        }
-
-        // releases queue resources
-        void destroyQueue()
-        {
-            if ((null == channel) || (null == connection))
-            {
-                return;
-            }
-            connection.Dispose();
-            channel.Dispose();
-        } 
-
-        // function for posting message to queue
-        void postToMessageQueue(MavLinkMessage message)
-        {
-            if ((null == channel) || (null == connection))
-            {
-                return;
-            }
-            if (null == this.messageQueueExists)
-            {
-                this.declareQueue();
-            }
-
-            // rabbitmq only supports string, so convert to JSON then drop it in
-            String jsonObject = JsonConvert.SerializeObject(message);
-
-            // message properties
-            IBasicProperties props = channel.CreateBasicProperties();
-
-            // encode message
-            var messageBody = Encoding.UTF8.GetBytes(jsonObject);
-
-            // publish message
-            this.channel.BasicPublish("", this.getMessageQueueName(), props, messageBody);
-            logger.Debug("RabbitMQ Message {1} published for {0}", port.PortName, jsonObject);
-        }
-
 
         public void sendArmMessage(Boolean armValue = true)
         {
