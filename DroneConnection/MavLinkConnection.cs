@@ -32,7 +32,7 @@ namespace DroneConnection
         Thread listenThread;
 
         // Events object posting messages to RabbitMQ events broker
-        public MavLinkEvents events { get; private set; }
+        MavLinkEvents events { get; set; }
 
         // 9600, 14400, 19200, 28800, 38400, 57600, 115200
         public int baudValue = 57600;

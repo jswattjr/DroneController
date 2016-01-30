@@ -72,6 +72,8 @@ namespace DroneManager.Models
         // attempts to open listen feed
         public Boolean openMessageFeed()
         {
+            logger.Debug("Opening Listening/Processing Feed for {0}", connection.port.PortName);
+            // declare new event object, if we reuse the one from 'connection', deadlocks can occur.
             events = new MavLinkEvents(connection.systemId, connection.componentId);
             if ((null == events) || (null == events.channel))
             {
@@ -85,7 +87,7 @@ namespace DroneManager.Models
             logger.Debug("Adding callback function");
             consumer.Received += (model, ea) =>
             {
-                eventsCallback(ea);
+                Drone.eventsCallback(ea);
             };
 
             logger.Debug("Inserting consumer into the channel");
@@ -97,7 +99,7 @@ namespace DroneManager.Models
             return true;
         }
 
-        void eventsCallback(BasicDeliverEventArgs eventArguments)
+        static void eventsCallback(BasicDeliverEventArgs eventArguments)
         {
             var body = eventArguments.Body;
             String jsonBody = Encoding.UTF8.GetString(body);

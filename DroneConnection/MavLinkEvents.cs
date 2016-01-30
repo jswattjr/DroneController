@@ -57,7 +57,7 @@ namespace DroneConnection
             {
                 this.connection = eventFactory.CreateConnection();
                 this.channel = connection.CreateModel();
-                logger.Debug("RabbitMQ message queue created successfully.");
+                logger.Debug("RabbitMQ channel and factory created successfully.");
             }
             catch (Exception e)
             {
