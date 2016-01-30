@@ -19,6 +19,12 @@ namespace DroneConnection
         // message body
         public object message; // this struct will be defined by messid
 
+        // this constructor is used by the JsonConvert Deserialize code, DO NOT DELETE!
+        public MavLinkMessage()
+        {
+
+        }
+
         public MavLinkMessage(byte[] buffer)
         {
             // fill out standard fields
