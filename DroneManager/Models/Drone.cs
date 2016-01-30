@@ -96,9 +96,29 @@ namespace DroneManager.Models
         {
             try
             {
+                if (null == eventArguments)
+                {
+                    logger.Debug("events callback with no eventArguments");
+                    return;
+                }
                 var body = eventArguments.Body;
+                if (null == body)
+                {
+                    logger.Debug("events callback with null body");
+                    return;
+                }
                 String jsonBody = Encoding.UTF8.GetString(body);
+                if (null == jsonBody)
+                {
+                    logger.Debug("failed to parse JSON in events callback");
+                    return;
+                }
                 MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody);
+                if (null == message)
+                {
+                    logger.Debug("Failed to parse MavLinkMessage from JSON in events callback");
+                    return;
+                }
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
                     logger.Debug("Heartbeat received on port {0}", connection.port.PortName);
