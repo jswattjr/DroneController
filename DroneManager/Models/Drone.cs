@@ -17,7 +17,17 @@ namespace DroneManager.Models
         public DroneEntity data = new DroneEntity();
 
         // live connection
-        public MavLinkConnection connection { get; set; }
+        public MavLinkConnection connection
+        {
+            get
+            {
+                return connection;
+            }
+            set
+            {
+                openMessageFeed();
+            }
+        }
 
         public Drone(DroneEntity entity)
         {
@@ -30,7 +40,6 @@ namespace DroneManager.Models
             {
                 if (connection.port.IsOpen)
                 {
-                    openMessageFeed();
                     return true;
                 }
             }
