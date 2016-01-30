@@ -112,6 +112,12 @@ namespace DroneConnection
                     Thread.Sleep(1);
                     count++;
                 }
+                if (count >= timeout_ms)
+                {
+                    logger.Error("Timed out waiting for response after {0} ms on port {1}", timeout_ms, port.PortName);
+                    listenThread.Abort();
+                    return false;
+                }
 
                 return true;
             }
@@ -144,7 +150,10 @@ namespace DroneConnection
             finally
             {
                 logger.Debug("Closing port {0}", port.PortName);
-                events.destroyQueue();
+                if (null != events)
+                {
+                    events.destroyQueue();
+                }
                 port.Close();
             }
 
