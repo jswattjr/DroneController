@@ -22,6 +22,8 @@ namespace DroneManager.Models
 
         // events connection with MavLinkConnection
         MavLinkEvents events;
+        // RabbitMQ consumer identifier ID
+        string consumerTag;
 
         public Drone(DroneEntity entity)
         {
@@ -78,11 +80,12 @@ namespace DroneManager.Models
             logger.Debug("Adding callback function");
             consumer.Received += (model, ea) =>
             {
+                logger.Debug("Entering Callback");
                 eventsCallback(ea);
             };
 
             logger.Debug("Inserting consumer into the channel");
-            events.channel.BasicConsume(queue: events.getMessageQueueName(),
+            this.consumerTag = events.channel.BasicConsume(queue: events.getMessageQueueName(),
                                     noAck: true,
                                     consumer: consumer);
 
