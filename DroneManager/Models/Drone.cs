@@ -25,7 +25,8 @@ namespace DroneManager.Models
             }
             set
             {
-                //openMessageFeed();
+                connection = value;
+                openMessageFeed();
             }
         }
 
