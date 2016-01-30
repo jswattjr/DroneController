@@ -62,6 +62,10 @@
       <Project>{279f99cc-960c-4145-9e7c-28e52e71de5b}</Project>
       <Name>DroneConnection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mavlink\MAVLink.csproj">
+      <Project>{20296734-5F3C-4593-A0D5-DD20B440B13A}</Project>
+      <Name>MAVLink</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
