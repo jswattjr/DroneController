@@ -11,12 +11,14 @@ namespace DroneController.Controllers
 {
     public class LogsController : ApiController
     {
+        const int MAX_LOGS = 1000;
+
         [HttpGet]
         [Route("logs")]
         public IHttpActionResult get()
         {
             LogRepository logRepo = DataAccessLibrary.RepositoryFactory.getLogsRepository();
-            return Ok(logRepo.getAll());
+            return Ok(logRepo.getAll().Take<NLogEntity>(MAX_LOGS));
         }
     }
 }
