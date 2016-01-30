@@ -25,7 +25,7 @@ namespace DroneManager.Models
             }
             set
             {
-                openMessageFeed();
+                //openMessageFeed();
             }
         }
 
@@ -73,7 +73,7 @@ namespace DroneManager.Models
         public Boolean openMessageFeed()
         {
             logger.Debug("Opening Listening/Processing Feed for {0}", connection.port.PortName);
-            // declare new event object, if we reuse the one from 'connection', deadlocks can occur.
+           
             events = new MavLinkEvents(connection.systemId, connection.componentId);
             if ((null == events) || (null == events.channel))
             {

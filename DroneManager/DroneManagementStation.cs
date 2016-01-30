@@ -58,7 +58,7 @@ namespace DroneManager
                     if ((null != connection)&&(connection.port.IsOpen))
                     {
                         // TODO: Look up existing record
-                        logger.Debug("Connection established on port {0}", connection.port);
+                        logger.Debug("Connection established on port {0}", connection.port.PortName);
                         DroneEntity connectionRecord = droneRepo.getByName(connection.systemId.ToString());
                         if (null != connectionRecord)
                         {
