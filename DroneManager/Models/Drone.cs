@@ -29,6 +29,9 @@ namespace DroneManager.Models
             }
         }
 
+        // events connection with MavLinkConnection
+        MavLinkEvents events;
+
         public Drone(DroneEntity entity)
         {
             data.copy(entity);
@@ -69,7 +72,7 @@ namespace DroneManager.Models
         // attempts to open listen feed
         public Boolean openMessageFeed()
         {
-            MavLinkEvents events = connection.events;
+            events = new MavLinkEvents(connection.systemId, connection.componentId);
             if ((null == events) || (null == events.channel))
             {
                 logger.Error("Failed to open event message queue for {0}", connection.port.PortName);

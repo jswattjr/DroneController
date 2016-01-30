@@ -46,7 +46,7 @@ namespace DroneConnection
 
         // this is the id of the connected system (fetched from MavLinkMessage sysid field)
         public int systemId = -1;
-        int componentId = -1;
+        public int componentId = -1;
 
         // static constructor/initializer, attempts a connection and returns null if connection fails
         public static MavLinkConnection createConnection(SerialPort port)
