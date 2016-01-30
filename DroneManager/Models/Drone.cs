@@ -80,7 +80,6 @@ namespace DroneManager.Models
             logger.Debug("Adding callback function");
             consumer.Received += (model, ea) =>
             {
-                logger.Debug("Entering Callback");
                 eventsCallback(ea);
             };
 
@@ -95,10 +94,20 @@ namespace DroneManager.Models
 
         void eventsCallback(BasicDeliverEventArgs eventArguments)
         {
-            var body = eventArguments.Body;
-            String jsonBody = Encoding.UTF8.GetString(body);
-            MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody);
-            logger.Debug("Message received by listener: {0}", jsonBody);
+            try
+            {
+                var body = eventArguments.Body;
+                String jsonBody = Encoding.UTF8.GetString(body);
+                MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody);
+                if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
+                {
+                    logger.Debug("Heartbeat received on port {0}", connection.port.PortName);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.Error("Failure in parsing message, exception with message {0}", e.Message);
+            }
         }
     }
 }
