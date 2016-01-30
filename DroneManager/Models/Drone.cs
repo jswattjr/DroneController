@@ -76,14 +76,21 @@ namespace DroneManager.Models
                 return false;
             }
 
+            logger.Debug("Creating Basic Consumer");
             var consumer = new EventingBasicConsumer(events.channel);
+
+            logger.Debug("Adding callback function");
             consumer.Received += (model, ea) =>
             {
                 eventsCallback(ea);
             };
+
+            logger.Debug("Inserting consumer into the channel");
             events.channel.BasicConsume(queue: events.getMessageQueueName(),
                                     noAck: true,
                                     consumer: consumer);
+
+            logger.Debug("Consumer created successfully");
             return true;
         }
 
