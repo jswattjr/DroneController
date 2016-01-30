@@ -17,18 +17,7 @@ namespace DroneManager.Models
         public DroneEntity data = new DroneEntity();
 
         // live connection
-        public MavLinkConnection connection
-        {
-            get
-            {
-                return connection;
-            }
-            set
-            {
-                connection = value;
-                openMessageFeed();
-            }
-        }
+        public MavLinkConnection connection { get; set; }
 
         // events connection with MavLinkConnection
         MavLinkEvents events;

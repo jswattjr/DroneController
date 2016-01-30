@@ -77,6 +77,7 @@ namespace DroneManager
                         // create new business object around this record and assign it to connection
                         Drone drone = new Drone(connectionRecord);
                         drone.connection = connection;
+                        drone.openMessageFeed();
 
                         // add this object to the list of active connections
                         this.connections.Add(drone);
