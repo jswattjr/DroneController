@@ -172,7 +172,7 @@ namespace DroneConnection
                     continue;
                 }
 
-                logger.Debug("{1} Message read from target system: {0}, component id {3}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString(), message.compid);
+                logger.Trace("{1} Message read from target system: {0}, component id {3}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString(), message.compid);
                 this.systemId = message.sysid;
                 this.componentId = message.compid;
                 this.postMessage(message);
