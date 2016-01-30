@@ -130,7 +130,7 @@ namespace DroneConnection
 
             // publish message
             this.channel.BasicPublish("", this.getMessageQueueName(), props, messageBody);
-            logger.Debug("RabbitMQ Message {1} published for {0}", this.getMessageQueueName(), jsonObject);
+            logger.Trace("RabbitMQ Message {1} published for {0}", this.getMessageQueueName(), jsonObject);
         }
 
 
