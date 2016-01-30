@@ -5,6 +5,7 @@ using NLog;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 using System.Text;
+using RabbitMQ.Client;
 
 namespace DroneManager.Models
 {
@@ -72,12 +73,12 @@ namespace DroneManager.Models
             }
 
             logger.Debug("Creating Basic Consumer");
-            var consumer = new EventingBasicConsumer(events.channel);
+            EventingBasicConsumer consumer = new EventingBasicConsumer(events.channel);
 
             logger.Debug("Adding callback function");
             consumer.Received += (model, ea) =>
             {
-                Drone.eventsCallback(ea);
+                eventsCallback(ea);
             };
 
             logger.Debug("Inserting consumer into the channel");
@@ -89,7 +90,7 @@ namespace DroneManager.Models
             return true;
         }
 
-        static void eventsCallback(BasicDeliverEventArgs eventArguments)
+        void eventsCallback(BasicDeliverEventArgs eventArguments)
         {
             var body = eventArguments.Body;
             String jsonBody = Encoding.UTF8.GetString(body);
