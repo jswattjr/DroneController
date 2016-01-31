@@ -131,6 +131,11 @@ namespace DroneConnection
             // publish message
             this.channel.BasicPublish("", this.getMessageQueueName(), props, messageBody);
             logger.Trace("RabbitMQ Message {1} published for {0}", this.getMessageQueueName(), jsonObject);
+
+            if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
+            {
+                logger.Debug("RabbitMQ Message {1} published for {0}", this.getMessageQueueName(), jsonObject);
+            }
         }
 
 

@@ -143,7 +143,7 @@ namespace DroneManager.Models
 
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
-                    logger.Debug("Heartbeat received on port {0}", connection.port.PortName);
+                    logger.Debug("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
                 }
             }
             catch (Exception e)

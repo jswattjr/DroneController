@@ -37,7 +37,7 @@ namespace DroneManager.Models.MessageContainers
             {
                 try
                 {
-                    MAVLink.mavlink_heartbeat_t raw_data = (MAVLink.mavlink_heartbeat_t)message.message;
+                    MAVLink.mavlink_heartbeat_t raw_data = (MAVLink.mavlink_heartbeat_t)message.data_struct;
                     type = (MAVLink.MAV_TYPE)raw_data.type;
                     autopilot = (MAVLink.MAV_AUTOPILOT)raw_data.autopilot;
                     custom_mode = raw_data.custom_mode;

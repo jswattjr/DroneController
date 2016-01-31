@@ -9,15 +9,15 @@ namespace DroneConnection
     public class MavLinkMessage
     {
         // header values
-        byte header { get; } // always 0xFE? Indicates start of message?
-        int length { get; } // length of payload
-        public int seq { get; } // packet sequence, can be examined against previous seq numbers to determine packet loss (number rolls from 0 through 255)
-        public int sysid { get; } // ID of transmitter
-        public int compid { get; } // ID of transmitter sub-component (currently identical to sysid)
-        public MAVLink.MAVLINK_MSG_ID messid { get; } // message type ID
+        public byte header { get; set;  } // always 0xFE? Indicates start of message?
+        public int length { get; set; } // length of payload
+        public int seq { get; set; } // packet sequence, can be examined against previous seq numbers to determine packet loss (number rolls from 0 through 255)
+        public int sysid { get; set; } // ID of transmitter
+        public int compid { get; set; } // ID of transmitter sub-component (currently identical to sysid)
+        public MAVLink.MAVLINK_MSG_ID messid { get; set; } // message type ID
 
         // message body
-        public object message; // this struct will be defined by messid
+        public object data_struct; // this struct will be defined by messid
 
         // this constructor is used by the JsonConvert Deserialize code, DO NOT DELETE!
         public MavLinkMessage()
@@ -39,7 +39,7 @@ namespace DroneConnection
             object data = Activator.CreateInstance(getMessageType());
             // fill in the data of the object
             MavlinkUtil.ByteArrayToStructure(buffer, ref data, 6);
-            message = data;
+            data_struct = data;
         }
 
         public Type getMessageType()
