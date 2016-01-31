@@ -1,5 +1,7 @@
 ﻿using DroneManager.Models;
 using DroneManager.Models.MessageContainers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,10 +47,14 @@ namespace DroneController.DataTransferObjects
         public class HeartbeatDTO
         {
             // heartbeat parameters
+            [JsonConverter(typeof(StringEnumConverter))]
             public MAVLink.MAV_TYPE type { get; }
+            [JsonConverter(typeof(StringEnumConverter))]
             public MAVLink.MAV_AUTOPILOT autopilot { get; }
             public UInt32 custom_mode { get; }
+            [JsonConverter(typeof(StringEnumConverter))]
             public MAVLink.MAV_MODE_FLAG base_mode { get; }
+            [JsonConverter(typeof(StringEnumConverter))]
             public MAVLink.MAV_STATE system_status { get; }
             public int mavlink_version { get; }
 
