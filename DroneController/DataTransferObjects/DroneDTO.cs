@@ -1,4 +1,5 @@
 ﻿using DroneManager.Models;
+using DroneManager.Models.MessageContainers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace DroneController.DataTransferObjects
         public String port { get; }
 
         public ConnectionState state { get; }
+
+        public HeartbeatDTO heartbeat_data { get; }
 
         public enum ConnectionState
         {
@@ -34,6 +37,31 @@ namespace DroneController.DataTransferObjects
                 else
                 {
                     this.state = ConnectionState.DISCONNECTED;
+                }
+            }
+            this.heartbeat_data = new HeartbeatDTO(droneObj.getHearbeat());
+        }
+
+        public class HeartbeatDTO
+        {
+            // heartbeat parameters
+            public MAVLink.MAV_TYPE type { get; }
+            public MAVLink.MAV_AUTOPILOT autopilot { get; }
+            public UInt32 custom_mode { get; }
+            public MAVLink.MAV_MODE_FLAG base_mode { get; }
+            public MAVLink.MAV_STATE system_status { get; }
+            public int mavlink_version { get; }
+
+            public HeartbeatDTO(Heartbeat data)
+            {
+                if (null != data)
+                {
+                    this.type = data.type;
+                    this.autopilot = data.autopilot;
+                    this.custom_mode = data.custom_mode;
+                    this.base_mode = data.base_mode;
+                    this.system_status = data.system_status;
+                    this.mavlink_version = data.mavlink_version;
                 }
             }
         }

@@ -6,6 +6,8 @@ using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 using System.Text;
 using RabbitMQ.Client;
+using System.Collections.Generic;
+using DroneManager.Models.MessageContainers;
 
 namespace DroneManager.Models
 {
@@ -25,6 +27,8 @@ namespace DroneManager.Models
         // RabbitMQ consumer identifier ID
         string consumerTag;
 
+        Dictionary<MAVLink.MAVLINK_MSG_ID, MavLinkMessage> currentState = new Dictionary<MAVLink.MAVLINK_MSG_ID, MavLinkMessage>();
+
         public Drone(DroneEntity entity)
         {
             data.copy(entity);
@@ -42,6 +46,8 @@ namespace DroneManager.Models
             return false;
         }
 
+
+        // commands
         public void arm()
         {
             connection.sendArmMessage();
@@ -62,6 +68,18 @@ namespace DroneManager.Models
 
         }
 
+        //state
+        public Heartbeat getHearbeat()
+        {
+            if (!this.currentState.ContainsKey(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
+            {
+                return null;
+            }
+            MavLinkMessage message = this.currentState[MAVLink.MAVLINK_MSG_ID.HEARTBEAT];
+            return new Heartbeat(message);
+        }
+
+        // events
         // attempts to open listen feed
         public Boolean openMessageFeed()
         {
@@ -119,6 +137,10 @@ namespace DroneManager.Models
                     logger.Debug("Failed to parse MavLinkMessage from JSON in events callback");
                     return;
                 }
+
+                // store message in currentState Dictionary
+                this.currentState[(MAVLink.MAVLINK_MSG_ID)message.messid] = message;
+
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
                     logger.Debug("Heartbeat received on port {0}", connection.port.PortName);
