@@ -120,7 +120,8 @@ namespace DroneConnection
             }
 
             // rabbitmq only supports string, so convert to JSON then drop it in
-            String jsonObject = JsonConvert.SerializeObject(message);
+            JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+            String jsonObject = JsonConvert.SerializeObject(message, settings);
 
             // message properties
             IBasicProperties props = channel.CreateBasicProperties();

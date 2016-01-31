@@ -131,7 +131,9 @@ namespace DroneManager.Models
                     logger.Debug("failed to parse JSON in events callback");
                     return;
                 }
-                MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody);
+
+                JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody, settings);
                 if (null == message)
                 {
                     logger.Debug("Failed to parse MavLinkMessage from JSON in events callback");
