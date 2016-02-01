@@ -58,3 +58,5 @@ D:\Source\Repos\DroneController\DroneController\bin\roslyn\System.IO.FileSystem.
 D:\Source\Repos\DroneController\DroneController\bin\roslyn\System.IO.FileSystem.Primitives.dll
 D:\Source\Repos\DroneController\DroneController\bin\roslyn\vbc.exe.config
 D:\Source\Repos\DroneController\DroneController\bin\roslyn\vbc.rsp
+D:\Source\Repos\DroneController\DroneController\bin\Utilities.dll
+D:\Source\Repos\DroneController\DroneController\bin\Utilities.pdb

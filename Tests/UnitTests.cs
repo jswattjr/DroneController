@@ -2,14 +2,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DroneConnection;
 using Newtonsoft.Json;
+using DroneManager.Models.MessageContainers;
 
 namespace Tests
 {
     [TestClass]
     public class UnitTests
     {
-        [TestMethod]
-        public void CheckMavLinkMessageSerialization()
+        MavLinkMessage createSampleMessage()
         {
             MAVLink.mavlink_heartbeat_t sampleStruct = new MAVLink.mavlink_heartbeat_t();
             sampleStruct.autopilot = 1;
@@ -25,6 +25,15 @@ namespace Tests
             sampleMessage.sysid = 12;
             sampleMessage.compid = 12;
             sampleMessage.data_struct = sampleStruct;
+
+            return sampleMessage;
+        }
+
+        [TestMethod]
+        public void CheckMavLinkMessageSerialization()
+        {
+            MavLinkMessage sampleMessage = createSampleMessage();
+            MAVLink.mavlink_heartbeat_t sampleStruct = (MAVLink.mavlink_heartbeat_t)sampleMessage.data_struct;
 
             JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
 
@@ -45,6 +54,23 @@ namespace Tests
             Assert.AreEqual(sampleStruct.system_status, dstruct.system_status);
             Assert.AreEqual(sampleStruct.type, dstruct.type);
 
+
+        }
+
+        [TestMethod]
+        public void CheckCopySimilarStructToProperties()
+        {
+            MavLinkMessage message = createSampleMessage();
+            MAVLink.mavlink_heartbeat_t sampleStruct = (MAVLink.mavlink_heartbeat_t)message.data_struct;
+
+            Heartbeat heartbeatContainer = new Heartbeat(message);
+
+            Assert.AreEqual((MAVLink.MAV_AUTOPILOT)sampleStruct.autopilot, heartbeatContainer.autopilot);
+            Assert.AreEqual((MAVLink.MAV_MODE_FLAG)sampleStruct.base_mode, heartbeatContainer.base_mode);
+            Assert.AreEqual(sampleStruct.custom_mode, heartbeatContainer.custom_mode);
+            Assert.AreEqual(sampleStruct.mavlink_version, heartbeatContainer.mavlink_version);
+            Assert.AreEqual((MAVLink.MAV_STATE)sampleStruct.system_status, heartbeatContainer.system_status);
+            Assert.AreEqual((MAVLink.MAV_TYPE)sampleStruct.type, heartbeatContainer.type);
 
         }
     }

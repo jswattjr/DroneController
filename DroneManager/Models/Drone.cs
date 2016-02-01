@@ -116,19 +116,19 @@ namespace DroneManager.Models
             {
                 if (null == eventArguments)
                 {
-                    logger.Debug("events callback with no eventArguments");
+                    logger.Error("events callback with no eventArguments");
                     return;
                 }
                 var body = eventArguments.Body;
                 if (null == body)
                 {
-                    logger.Debug("events callback with null body");
+                    logger.Error("events callback with null body");
                     return;
                 }
                 String jsonBody = Encoding.UTF8.GetString(body);
                 if (null == jsonBody)
                 {
-                    logger.Debug("failed to parse JSON in events callback");
+                    logger.Error("failed to parse JSON in events callback");
                     return;
                 }
 
@@ -136,7 +136,7 @@ namespace DroneManager.Models
                 MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody, settings);
                 if (null == message)
                 {
-                    logger.Debug("Failed to parse MavLinkMessage from JSON in events callback");
+                    logger.Error("Failed to parse MavLinkMessage from JSON in events callback");
                     return;
                 }
 
@@ -145,7 +145,7 @@ namespace DroneManager.Models
 
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
-                    logger.Debug("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
+                    logger.Error("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
                 }
             }
             catch (Exception e)
