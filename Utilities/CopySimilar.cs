@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public class CopySimilar
+    public static class CopySimilar
     {
         public static void SetProperties(object source, object target)
         {
+            if ((null == source)||(null == target))
+            {
+                return;
+            }
             Type targetType = target.GetType();
             foreach (PropertyInfo prop in source.GetType().GetProperties())
             {
@@ -29,6 +33,10 @@ namespace Utilities
             foreach (FieldInfo prop in source.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
                 PropertyInfo targetProp = targetType.GetProperty(prop.Name);
+                if (null == targetProp)
+                {
+                    continue;
+                }
                 MethodInfo propSetter = targetProp.GetSetMethod();
                 Type targetPropType = targetProp.GetType();
                 var valueToSet = prop.GetValue(source);

@@ -19,6 +19,8 @@ namespace DroneController.DataTransferObjects
 
         public HeartbeatDTO heartbeat_data { get; }
 
+        public SystemStatusDTO sys_status_data { get; }
+
         public enum ConnectionState
         {
             CONNECTED,
@@ -42,34 +44,8 @@ namespace DroneController.DataTransferObjects
                 }
             }
             this.heartbeat_data = new HeartbeatDTO(droneObj.getHearbeat());
+            this.sys_status_data = new SystemStatusDTO(droneObj.getSystemStatus());
         }
 
-        public class HeartbeatDTO
-        {
-            // heartbeat parameters
-            [JsonConverter(typeof(StringEnumConverter))]
-            public MAVLink.MAV_TYPE type { get; }
-            [JsonConverter(typeof(StringEnumConverter))]
-            public MAVLink.MAV_AUTOPILOT autopilot { get; }
-            public UInt32 custom_mode { get; }
-            [JsonConverter(typeof(StringEnumConverter))]
-            public MAVLink.MAV_MODE_FLAG base_mode { get; }
-            [JsonConverter(typeof(StringEnumConverter))]
-            public MAVLink.MAV_STATE system_status { get; }
-            public int mavlink_version { get; }
-
-            public HeartbeatDTO(Heartbeat data)
-            {
-                if (null != data)
-                {
-                    this.type = data.type;
-                    this.autopilot = data.autopilot;
-                    this.custom_mode = data.custom_mode;
-                    this.base_mode = data.base_mode;
-                    this.system_status = data.system_status;
-                    this.mavlink_version = data.mavlink_version;
-                }
-            }
-        }
     }
 }

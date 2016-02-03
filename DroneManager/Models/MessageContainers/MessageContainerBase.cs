@@ -16,28 +16,42 @@ namespace DroneManager.Models.MessageContainers
 
         public abstract MAVLink.MAVLINK_MSG_ID MessageID { get; }
         public abstract Type getStructType();
+
+        public abstract String DesctiptionUrl { get; }
  
         public MavLinkMessage message;       
 
         public MessageContainerBase(MavLinkMessage message)
         {
-            this.message = message;
-            if (message.messid.Equals(MessageID))
+            // pass in null to this constructor and map fields in inherited constructor for ~20x speed increase
+            // see Heartbeat.cs for example
+            if (null != message)
             {
-                try
+                this.message = message;
+                if (message.messid.Equals(MessageID))
                 {
-                    MethodInfo method = typeof(MessageContainerBase).GetMethod("copyMessageValues", (BindingFlags.NonPublic | BindingFlags.Instance));
-                    MethodInfo generic = method.MakeGenericMethod(getStructType());
-                    generic.Invoke(this, null);
+                    try
+                    {
+                        MethodInfo method = typeof(MessageContainerBase).GetMethod("copyMessageValues", (BindingFlags.NonPublic | BindingFlags.Instance));
+                        MethodInfo generic = method.MakeGenericMethod(getStructType());
+                        generic.Invoke(this, null);
+                    }
+                    catch (Exception e)
+                    {
+                        // database logging is crazy slow in events
+                        logger.Trace("Unable to parse data for {1} object, with exception message {0}", e.Message, MessageID);
+                    }
                 }
-                catch (Exception e)
+                else
                 {
-                    logger.Error("Unable to parse data for {1} object, with exception message {0}", e.Message, MessageID);
+                    // database logging is crazy slow in events
+                    logger.Trace("Tried to initialize {1} object with message of type {0}", (MAVLink.MAVLINK_MSG_ID)message.messid, MessageID);
                 }
             }
             else
             {
-                logger.Error("Tried to initialize {1} object with message of type {0}", (MAVLink.MAVLINK_MSG_ID)message.messid, MessageID);
+                // database logging is crazy slow in events
+                logger.Trace("Tried to initialize {1} object with null message",MessageID);
             }
 
         }

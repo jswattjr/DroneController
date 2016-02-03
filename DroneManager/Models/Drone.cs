@@ -71,12 +71,22 @@ namespace DroneManager.Models
         //state
         public Heartbeat getHearbeat()
         {
-            if (!this.currentState.ContainsKey(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
+            return getCurrentMessage<Heartbeat>(MAVLink.MAVLINK_MSG_ID.HEARTBEAT);
+        }
+
+        public SystemStatus getSystemStatus()
+        {
+            return getCurrentMessage<SystemStatus>(MAVLink.MAVLINK_MSG_ID.SYS_STATUS);
+        }
+
+        T getCurrentMessage<T>(MAVLink.MAVLINK_MSG_ID id) where T : MessageContainerBase
+        {
+            if (!this.currentState.ContainsKey(id))
             {
                 return null;
             }
-            MavLinkMessage message = this.currentState[MAVLink.MAVLINK_MSG_ID.HEARTBEAT];
-            return new Heartbeat(message);
+            MavLinkMessage message = this.currentState[id];
+            return (T)Activator.CreateInstance(typeof(T), new object[] { id });
         }
 
         // events

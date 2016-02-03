@@ -73,5 +73,17 @@ namespace Tests
             Assert.AreEqual((MAVLink.MAV_TYPE)sampleStruct.type, heartbeatContainer.type);
 
         }
+
+        [TestMethod]
+        public void CopySimilarStressTest()
+        {
+            // 0.644s with direct copy
+            // 8s with reflection
+            int testsize = 1000000;
+            for (int count = 0; count < testsize; count++)
+            {
+                CheckCopySimilarStructToProperties();
+            }
+        }
     }
 }

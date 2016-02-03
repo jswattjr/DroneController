@@ -10,6 +10,11 @@ using Utilities;
 namespace DroneManager.Models.MessageContainers
 {
     /*
+
+        The heartbeat message shows that a system is present and responding. 
+        The type of the MAV and Autopilot hardware allow the receiving system to treat further messages 
+        from this system appropriate (e.g. by laying out the user interface based on the autopilot).
+        
         type	uint8_t	Type of the MAV (quadrotor, helicopter, etc., up to 15 types, defined in MAV_TYPE ENUM)
         autopilot	uint8_t	Autopilot type / class. defined in MAV_AUTOPILOT ENUM
         base_mode	uint8_t	System mode bitfield, see MAV_MODE_FLAG ENUM in mavlink/include/mavlink_types.h
@@ -31,9 +36,18 @@ namespace DroneManager.Models.MessageContainers
 
         public override MAVLink.MAVLINK_MSG_ID MessageID { get; } = MAVLink.MAVLINK_MSG_ID.HEARTBEAT;
 
-        public Heartbeat(MavLinkMessage message) : base(message)
+        public override string DesctiptionUrl
         {
-            /*
+            get
+            {
+                return "https://pixhawk.ethz.ch/mavlink/#HEARTBEAT";
+            }
+        }
+
+        public Heartbeat(MavLinkMessage message) : base(null)
+        {
+            // this code is faster... run it and pass null to base message for speed increase
+            // base message uses reflection
             MAVLink.mavlink_heartbeat_t raw_data = (MAVLink.mavlink_heartbeat_t)message.data_struct;
             type = (MAVLink.MAV_TYPE)raw_data.type;
             autopilot = (MAVLink.MAV_AUTOPILOT)raw_data.autopilot;
@@ -41,7 +55,7 @@ namespace DroneManager.Models.MessageContainers
             base_mode = (MAVLink.MAV_MODE_FLAG)raw_data.base_mode;
             system_status = (MAVLink.MAV_STATE)raw_data.system_status;
             mavlink_version = (int)raw_data.mavlink_version;
-            */
+           
         }
 
         public override Type getStructType()
