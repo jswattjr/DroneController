@@ -10,11 +10,11 @@ namespace DroneController.DataTransferObjects
 {
     public class SystemStatusDTO
     {
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<MAVLink.MAV_SYS_STATUS_SENSOR> sensorsPresent = new List<MAVLink.MAV_SYS_STATUS_SENSOR>();
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<MAVLink.MAV_SYS_STATUS_SENSOR> sensorsEnabled = new List<MAVLink.MAV_SYS_STATUS_SENSOR>();
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<MAVLink.MAV_SYS_STATUS_SENSOR> sensorsHealth = new List<MAVLink.MAV_SYS_STATUS_SENSOR>();
         public UInt16 voltage_battery {get; set;}
         public Int16 current_battery { get; set; }
@@ -29,9 +29,9 @@ namespace DroneController.DataTransferObjects
         public SystemStatusDTO(SystemStatus source)
         {
             Utilities.CopySimilar.CopyAll(source, this);
-            this.sensorsEnabled = source.sensorsEnabled;
-            this.sensorsHealth = source.sensorsHealth;
-            this.sensorsPresent = source.sensorsPresent;
+            this.sensorsEnabled = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsEnabled);
+            this.sensorsHealth = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsHealth);
+            this.sensorsPresent = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsPresent);
         }
     }
 }

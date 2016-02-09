@@ -81,6 +81,8 @@ namespace Tests
             Assert.AreEqual(dto.mavlink_version, heartbeatContainer.mavlink_version);
             Assert.AreEqual(dto.system_status, heartbeatContainer.system_status);
             Assert.AreEqual(dto.type, heartbeatContainer.type);
+
+            String json = JsonConvert.SerializeObject(dto);
         }
 
         [TestMethod]
@@ -140,7 +142,7 @@ namespace Tests
             Assert.AreEqual(dto.errors_count3, systemStatus.errors_count3);
             Assert.AreEqual(dto.errors_count4, systemStatus.errors_count4);
 
-
+            String json = JsonConvert.SerializeObject(dto);
         }
     }
 }
