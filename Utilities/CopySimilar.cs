@@ -9,6 +9,12 @@ namespace Utilities
 {
     public static class CopySimilar
     {
+        public static void CopyAll(object source, object target)
+        {
+            SetProperties(source, target);
+            SetFields(source, target);
+        }
+
         public static void SetProperties(object source, object target)
         {
             if ((null == source)||(null == target))
@@ -19,6 +25,10 @@ namespace Utilities
             foreach (PropertyInfo prop in source.GetType().GetProperties())
             {
                 PropertyInfo targetProp = targetType.GetProperty(prop.Name);
+                if (null == targetProp)
+                {
+                    continue;
+                }
                 MethodInfo propGetter = prop.GetGetMethod();
                 MethodInfo propSetter = targetProp.GetSetMethod();
                 Type targetPropType = targetProp.GetType();
@@ -27,7 +37,7 @@ namespace Utilities
             }
         }
 
-        public static void StructToProperties<T>(T source, object target) where T : struct
+        public static void SetFields(object source, object target)
         {
             Type targetType = target.GetType();
             foreach (FieldInfo prop in source.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))

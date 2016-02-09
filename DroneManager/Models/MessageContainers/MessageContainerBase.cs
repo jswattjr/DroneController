@@ -62,7 +62,7 @@ namespace DroneManager.Models.MessageContainers
             T raw_data = (T)message.data_struct;
 
             // copies all like-named properties from struct to this object
-            CopySimilar.StructToProperties<T>(raw_data, this);
+            CopySimilar.SetFields(raw_data, this);
         }
 
     }

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DroneConnection;
 using Newtonsoft.Json;
 using DroneManager.Models.MessageContainers;
+using DroneController.DataTransferObjects;
 
 namespace Tests
 {
@@ -58,7 +59,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void CheckCopySimilarStructToProperties()
+        public void CheckHeartbeatObject()
         {
             MavLinkMessage message = createSampleMessage();
             MAVLink.mavlink_heartbeat_t sampleStruct = (MAVLink.mavlink_heartbeat_t)message.data_struct;
@@ -72,6 +73,14 @@ namespace Tests
             Assert.AreEqual((MAVLink.MAV_STATE)sampleStruct.system_status, heartbeatContainer.system_status);
             Assert.AreEqual((MAVLink.MAV_TYPE)sampleStruct.type, heartbeatContainer.type);
 
+            HeartbeatDTO dto = new HeartbeatDTO(heartbeatContainer);
+
+            Assert.AreEqual(dto.autopilot, heartbeatContainer.autopilot);
+            Assert.AreEqual(dto.base_mode, heartbeatContainer.base_mode);
+            Assert.AreEqual(dto.custom_mode, heartbeatContainer.custom_mode);
+            Assert.AreEqual(dto.mavlink_version, heartbeatContainer.mavlink_version);
+            Assert.AreEqual(dto.system_status, heartbeatContainer.system_status);
+            Assert.AreEqual(dto.type, heartbeatContainer.type);
         }
 
         [TestMethod]
@@ -82,8 +91,56 @@ namespace Tests
             int testsize = 1000000;
             for (int count = 0; count < testsize; count++)
             {
-                CheckCopySimilarStructToProperties();
+                CheckHeartbeatObject();
             }
+        }
+
+        [TestMethod]
+        public void CheckSystemStatusObject()
+        {
+            MAVLink.mavlink_sys_status_t statusStruct = new MAVLink.mavlink_sys_status_t();
+            statusStruct.voltage_battery = 1;
+            statusStruct.current_battery = 2;
+            statusStruct.battery_remaining = 3;
+            statusStruct.drop_rate_comm = 4;
+            statusStruct.errors_comm = 5;
+            statusStruct.errors_count1 = 6;
+            statusStruct.errors_count2 = 7;
+            statusStruct.errors_count3 = 8;
+            statusStruct.errors_count4 = 9;
+
+            MavLinkMessage message = new MavLinkMessage();
+            message.compid = 1;
+            message.messid = MAVLink.MAVLINK_MSG_ID.SYS_STATUS;
+            message.seq = 1;
+            message.sysid = 1;
+            message.data_struct = statusStruct;
+
+            SystemStatus systemStatus = new SystemStatus(message);
+
+            Assert.AreEqual(statusStruct.voltage_battery, systemStatus.voltage_battery);
+            Assert.AreEqual(statusStruct.current_battery, systemStatus.current_battery);
+            Assert.AreEqual(statusStruct.battery_remaining, systemStatus.battery_remaining);
+            Assert.AreEqual(statusStruct.drop_rate_comm, systemStatus.drop_rate_comm);
+            Assert.AreEqual(statusStruct.errors_comm, systemStatus.errors_comm);
+            Assert.AreEqual(statusStruct.errors_count1, systemStatus.errors_count1);
+            Assert.AreEqual(statusStruct.errors_count2, systemStatus.errors_count2);
+            Assert.AreEqual(statusStruct.errors_count3, systemStatus.errors_count3);
+            Assert.AreEqual(statusStruct.errors_count4, systemStatus.errors_count4);
+
+            SystemStatusDTO dto = new SystemStatusDTO(systemStatus);
+
+            Assert.AreEqual(dto.voltage_battery, systemStatus.voltage_battery);
+            Assert.AreEqual(dto.current_battery, systemStatus.current_battery);
+            Assert.AreEqual(dto.battery_remaining, systemStatus.battery_remaining);
+            Assert.AreEqual(dto.drop_rate_comm, systemStatus.drop_rate_comm);
+            Assert.AreEqual(dto.errors_comm, systemStatus.errors_comm);
+            Assert.AreEqual(dto.errors_count1, systemStatus.errors_count1);
+            Assert.AreEqual(dto.errors_count2, systemStatus.errors_count2);
+            Assert.AreEqual(dto.errors_count3, systemStatus.errors_count3);
+            Assert.AreEqual(dto.errors_count4, systemStatus.errors_count4);
+
+
         }
     }
 }
