@@ -115,6 +115,7 @@
     <Compile Include="DataTransferObjects\DroneDTO.cs" />
     <Compile Include="DataTransferObjects\HeartbeatDTO.cs" />
     <Compile Include="DataTransferObjects\SystemStatusDTO.cs" />
+    <Compile Include="DataTransferObjects\SystemTimeDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

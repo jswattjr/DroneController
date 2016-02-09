@@ -54,6 +54,7 @@
     <Compile Include="Models\MessageContainers\Heartbeat.cs" />
     <Compile Include="Models\MessageContainers\MessageContainerBase.cs" />
     <Compile Include="Models\MessageContainers\SystemStatus.cs" />
+    <Compile Include="Models\MessageContainers\SystemTime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

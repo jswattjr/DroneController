@@ -21,6 +21,8 @@ namespace DroneController.DataTransferObjects
 
         public SystemStatusDTO sys_status_data { get; }
 
+        public SystemTimeDTO sys_time_data { get; }
+
         public enum ConnectionState
         {
             CONNECTED,
@@ -45,6 +47,7 @@ namespace DroneController.DataTransferObjects
             }
             this.heartbeat_data = new HeartbeatDTO(droneObj.getHearbeat());
             this.sys_status_data = new SystemStatusDTO(droneObj.getSystemStatus());
+            this.sys_time_data = new SystemTimeDTO(droneObj.getSystemTime());
         }
 
     }

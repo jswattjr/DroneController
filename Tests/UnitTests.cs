@@ -20,13 +20,19 @@ namespace Tests
             sampleStruct.system_status = 5;
             sampleStruct.type = 6;
 
+            MavLinkMessage sampleMessage = createSampleMessage(MAVLink.MAVLINK_MSG_ID.HEARTBEAT, sampleStruct);
+
+            return sampleMessage;
+        }
+
+        MavLinkMessage createSampleMessage(MAVLink.MAVLINK_MSG_ID id, object data_struct)
+        {
             MavLinkMessage sampleMessage = new MavLinkMessage();
-            sampleMessage.messid = MAVLink.MAVLINK_MSG_ID.HEARTBEAT;
+            sampleMessage.messid = id;
             sampleMessage.seq = 128;
             sampleMessage.sysid = 12;
             sampleMessage.compid = 12;
-            sampleMessage.data_struct = sampleStruct;
-
+            sampleMessage.data_struct = data_struct;
             return sampleMessage;
         }
 
@@ -141,6 +147,28 @@ namespace Tests
             Assert.AreEqual(dto.errors_count2, systemStatus.errors_count2);
             Assert.AreEqual(dto.errors_count3, systemStatus.errors_count3);
             Assert.AreEqual(dto.errors_count4, systemStatus.errors_count4);
+
+            String json = JsonConvert.SerializeObject(dto);
+        }
+
+        [TestMethod]
+        public void CheckSystemTimeObject()
+        {
+            MAVLink.mavlink_system_time_t timeStruct = new MAVLink.mavlink_system_time_t();
+            timeStruct.time_boot_ms = 1;
+            timeStruct.time_unix_usec = 2;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.SYSTEM_TIME, timeStruct);
+
+            SystemTime systemTime = new SystemTime(message);
+
+            Assert.AreEqual(timeStruct.time_boot_ms, systemTime.time_boot_ms);
+            Assert.AreEqual(timeStruct.time_unix_usec, systemTime.time_unix_sec);
+
+            SystemTimeDTO dto = new SystemTimeDTO(systemTime);
+
+            Assert.AreEqual(dto.time_boot_ms, systemTime.time_boot_ms);
+            Assert.AreEqual(dto.time_unix_sec, systemTime.time_unix_sec);
 
             String json = JsonConvert.SerializeObject(dto);
         }

@@ -79,6 +79,12 @@ namespace DroneManager.Models
             return getCurrentMessage<SystemStatus>(MAVLink.MAVLINK_MSG_ID.SYS_STATUS);
         }
 
+        public SystemTime getSystemTime()
+        {
+            return getCurrentMessage<SystemTime>(MAVLink.MAVLINK_MSG_ID.SYSTEM_TIME);
+        }
+
+
         T getCurrentMessage<T>(MAVLink.MAVLINK_MSG_ID id) where T : MessageContainerBase
         {
             if (!this.currentState.ContainsKey(id))
