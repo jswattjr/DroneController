@@ -86,7 +86,7 @@ namespace DroneManager.Models
                 return null;
             }
             MavLinkMessage message = this.currentState[id];
-            return (T)Activator.CreateInstance(typeof(T), new object[] { id });
+            return (T)Activator.CreateInstance(typeof(T), new object[] { message });
         }
 
         // events
