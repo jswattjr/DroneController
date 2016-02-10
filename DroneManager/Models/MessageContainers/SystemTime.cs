@@ -43,9 +43,12 @@ namespace DroneManager.Models.MessageContainers
 
         public SystemTime(MavLinkMessage message) : base (null)
         {
-            MAVLink.mavlink_system_time_t data = (MAVLink.mavlink_system_time_t)message.data_struct;
-            this.time_boot_ms = data.time_boot_ms;
-            this.time_unix_sec = data.time_unix_usec;
+            if (message.messid == this.MessageID)
+            {
+                MAVLink.mavlink_system_time_t data = (MAVLink.mavlink_system_time_t)message.data_struct;
+                this.time_boot_ms = data.time_boot_ms;
+                this.time_unix_sec = data.time_unix_usec;
+            }
         }
     }
 }

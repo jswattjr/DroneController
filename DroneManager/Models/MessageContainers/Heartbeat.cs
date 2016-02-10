@@ -46,16 +46,19 @@ namespace DroneManager.Models.MessageContainers
 
         public Heartbeat(MavLinkMessage message) : base(null)
         {
-            // this code is faster... run it and pass null to base message for speed increase
-            // base message uses reflection
-            MAVLink.mavlink_heartbeat_t raw_data = (MAVLink.mavlink_heartbeat_t)message.data_struct;
-            type = (MAVLink.MAV_TYPE)raw_data.type;
-            autopilot = (MAVLink.MAV_AUTOPILOT)raw_data.autopilot;
-            custom_mode = raw_data.custom_mode;
-            base_mode = (MAVLink.MAV_MODE_FLAG)raw_data.base_mode;
-            system_status = (MAVLink.MAV_STATE)raw_data.system_status;
-            mavlink_version = (int)raw_data.mavlink_version;
-           
+            if (message.messid == this.MessageID)
+            {
+                // this code is faster... run it and pass null to base message for speed increase
+                // base message uses reflection
+                MAVLink.mavlink_heartbeat_t raw_data = (MAVLink.mavlink_heartbeat_t)message.data_struct;
+                type = (MAVLink.MAV_TYPE)raw_data.type;
+                autopilot = (MAVLink.MAV_AUTOPILOT)raw_data.autopilot;
+                custom_mode = raw_data.custom_mode;
+                base_mode = (MAVLink.MAV_MODE_FLAG)raw_data.base_mode;
+                system_status = (MAVLink.MAV_STATE)raw_data.system_status;
+                mavlink_version = (int)raw_data.mavlink_version;
+            }
+
         }
 
         public override Type getStructType()

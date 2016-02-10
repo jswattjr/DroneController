@@ -23,6 +23,12 @@ namespace DroneController.DataTransferObjects
 
         public SystemTimeDTO sys_time_data { get; }
 
+        public GpsRawIntDTO gps_raw_int { get; }
+
+        public RawImuDTO raw_imu { get; }
+
+        public ScaledPressureDTO scaled_pressure { get; }
+
         public enum ConnectionState
         {
             CONNECTED,
@@ -48,6 +54,9 @@ namespace DroneController.DataTransferObjects
             this.heartbeat_data = new HeartbeatDTO(droneObj.getHearbeat());
             this.sys_status_data = new SystemStatusDTO(droneObj.getSystemStatus());
             this.sys_time_data = new SystemTimeDTO(droneObj.getSystemTime());
+            this.gps_raw_int = new GpsRawIntDTO(droneObj.getGpsRawInt());
+            this.raw_imu = new RawImuDTO(droneObj.getRawImu());
+            this.scaled_pressure = new ScaledPressureDTO(droneObj.getScaledPressure());
         }
 
     }

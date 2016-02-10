@@ -75,34 +75,38 @@ namespace DroneManager.Models.MessageContainers
 
         public SystemStatus(MavLinkMessage message) : base(null)
         {
-            MAVLink.mavlink_sys_status_t raw_data = (MAVLink.mavlink_sys_status_t)message.data_struct;
-            this.voltage_battery = raw_data.voltage_battery;
-            this.current_battery = raw_data.current_battery;
-            this.battery_remaining = raw_data.battery_remaining;
-            this.drop_rate_comm = raw_data.drop_rate_comm;
-            this.errors_comm = raw_data.errors_comm;
-            this.errors_count1 = raw_data.errors_count1;
-            this.errors_count2 = raw_data.errors_count2;
-            this.errors_count3 = raw_data.errors_count3;
-            this.errors_count4 = raw_data.errors_count4;
-
-            // parse bit masks into lists
-            IEnumerable<MAVLink.MAV_SYS_STATUS_SENSOR> values = EnumValues.GetValues<MAVLink.MAV_SYS_STATUS_SENSOR>();
-            foreach(MAVLink.MAV_SYS_STATUS_SENSOR sensor in values)
+            if (message.messid == this.MessageID)
             {
-                uint sensorMask = (uint)sensor;
-                if ((sensorMask & raw_data.onboard_control_sensors_enabled) == sensorMask)
+                MAVLink.mavlink_sys_status_t raw_data = (MAVLink.mavlink_sys_status_t)message.data_struct;
+                this.voltage_battery = raw_data.voltage_battery;
+                this.current_battery = raw_data.current_battery;
+                this.battery_remaining = raw_data.battery_remaining;
+                this.drop_rate_comm = raw_data.drop_rate_comm;
+                this.errors_comm = raw_data.errors_comm;
+                this.errors_count1 = raw_data.errors_count1;
+                this.errors_count2 = raw_data.errors_count2;
+                this.errors_count3 = raw_data.errors_count3;
+                this.errors_count4 = raw_data.errors_count4;
+
+                // parse bit masks into lists
+                IEnumerable<MAVLink.MAV_SYS_STATUS_SENSOR> values = EnumValues.GetValues<MAVLink.MAV_SYS_STATUS_SENSOR>();
+                foreach (MAVLink.MAV_SYS_STATUS_SENSOR sensor in values)
                 {
-                    sensorsEnabled.Add(sensor);
+                    uint sensorMask = (uint)sensor;
+                    if ((sensorMask & raw_data.onboard_control_sensors_enabled) == sensorMask)
+                    {
+                        sensorsEnabled.Add(sensor);
+                    }
+                    if ((sensorMask & raw_data.onboard_control_sensors_health) == sensorMask)
+                    {
+                        sensorsHealth.Add(sensor);
+                    }
+                    if ((sensorMask & raw_data.onboard_control_sensors_present) == sensorMask)
+                    {
+                        sensorsPresent.Add(sensor);
+                    }
                 }
-                if ((sensorMask & raw_data.onboard_control_sensors_health) == sensorMask)
-                {
-                    sensorsHealth.Add(sensor);
-                }
-                if ((sensorMask & raw_data.onboard_control_sensors_present) == sensorMask)
-                {
-                    sensorsPresent.Add(sensor);
-                }
+
             }
         }
     }

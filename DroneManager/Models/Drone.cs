@@ -84,6 +84,20 @@ namespace DroneManager.Models
             return getCurrentMessage<SystemTime>(MAVLink.MAVLINK_MSG_ID.SYSTEM_TIME);
         }
 
+        public GpsRawInt getGpsRawInt()
+        {
+            return getCurrentMessage<GpsRawInt>(MAVLink.MAVLINK_MSG_ID.GPS_RAW_INT);
+        }
+
+        public RawImu getRawImu()
+        {
+            return getCurrentMessage<RawImu>(MAVLink.MAVLINK_MSG_ID.RAW_IMU);
+        }
+
+        public ScaledPressure getScaledPressure()
+        {
+            return getCurrentMessage<ScaledPressure>(MAVLink.MAVLINK_MSG_ID.SCALED_PRESSURE);
+        }
 
         T getCurrentMessage<T>(MAVLink.MAVLINK_MSG_ID id) where T : MessageContainerBase
         {

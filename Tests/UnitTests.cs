@@ -172,5 +172,121 @@ namespace Tests
 
             String json = JsonConvert.SerializeObject(dto);
         }
+
+        [TestMethod]
+        public void CheckGpsRawIntObject()
+        {
+            MAVLink.mavlink_gps_raw_int_t gpsStruct = new MAVLink.mavlink_gps_raw_int_t();
+            gpsStruct.alt = 1;
+            gpsStruct.cog = 2;
+            gpsStruct.eph = 3;
+            gpsStruct.epv = 4;
+            gpsStruct.fix_type = 3;
+            gpsStruct.lat = 6;
+            gpsStruct.lon = 7;
+            gpsStruct.satellites_visible = 8;
+            gpsStruct.time_usec = 9;
+            gpsStruct.vel = 10;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.GPS_RAW_INT, gpsStruct);
+
+            GpsRawInt obj = new GpsRawInt(message);
+
+            Assert.AreEqual(gpsStruct.alt, obj.alt);
+            Assert.AreEqual(gpsStruct.cog, obj.cog);
+            Assert.AreEqual(gpsStruct.eph, obj.eph);
+            Assert.AreEqual(gpsStruct.epv, obj.epv);
+            Assert.AreEqual(gpsStruct.fix_type, obj.fix_type);
+            Assert.AreEqual(gpsStruct.lat, obj.lat);
+            Assert.AreEqual(gpsStruct.lon, obj.lon);
+            Assert.AreEqual(gpsStruct.satellites_visible, obj.satellites_visible);
+            Assert.AreEqual(gpsStruct.time_usec, obj.time_usec);
+            Assert.AreEqual(gpsStruct.vel, obj.vel);
+            Assert.AreEqual(GpsRawInt.FixType.FIX_3D, obj.fixTypeEnum);
+
+            GpsRawIntDTO dto = new GpsRawIntDTO(obj);
+
+            Assert.AreEqual(dto.alt, obj.alt);
+            Assert.AreEqual(dto.cog, obj.cog);
+            Assert.AreEqual(dto.eph, obj.eph);
+            Assert.AreEqual(dto.epv, obj.epv);
+            Assert.AreEqual(dto.fix_type, obj.fix_type);
+            Assert.AreEqual(dto.lat, obj.lat);
+            Assert.AreEqual(dto.lon, obj.lon);
+            Assert.AreEqual(dto.satellites_visible, obj.satellites_visible);
+            Assert.AreEqual(dto.time_usec, obj.time_usec);
+            Assert.AreEqual(dto.vel, obj.vel);
+            Assert.AreEqual(GpsRawInt.FixType.FIX_3D, obj.fixTypeEnum);
+
+        }
+
+        [TestMethod]
+        public void CheckRawImuObject()
+        {
+            MAVLink.mavlink_raw_imu_t data = new MAVLink.mavlink_raw_imu_t();
+            data.xacc = 1;
+            data.xgyro = 2;
+            data.xmag = 3;
+            data.yacc = 4;
+            data.ygyro = 5;
+            data.ymag = 6;
+            data.zacc = 7;
+            data.zgyro = 8;
+            data.zmag = 9;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.RAW_IMU, data);
+
+            RawImu obj = new RawImu(message);
+
+            Assert.AreEqual(data.xacc, obj.xacc);
+            Assert.AreEqual(data.yacc, obj.yacc);
+            Assert.AreEqual(data.zacc, obj.zacc);
+            Assert.AreEqual(data.xgyro, obj.xgyro);
+            Assert.AreEqual(data.ygyro, obj.ygyro);
+            Assert.AreEqual(data.zgyro, obj.zgyro);
+            Assert.AreEqual(data.xmag, obj.xmag);
+            Assert.AreEqual(data.ymag, obj.ymag);
+            Assert.AreEqual(data.zmag, obj.zmag);
+
+            RawImuDTO dto = new RawImuDTO(obj);
+            Assert.AreEqual(dto.xacc, obj.xacc);
+            Assert.AreEqual(dto.yacc, obj.yacc);
+            Assert.AreEqual(dto.zacc, obj.zacc);
+            Assert.AreEqual(dto.xgyro, obj.xgyro);
+            Assert.AreEqual(dto.ygyro, obj.ygyro);
+            Assert.AreEqual(dto.zgyro, obj.zgyro);
+            Assert.AreEqual(dto.xmag, obj.xmag);
+            Assert.AreEqual(dto.ymag, obj.ymag);
+            Assert.AreEqual(dto.zmag, obj.zmag);
+
+        }
+
+        [TestMethod]
+        public void CheckScaledPressureObject()
+        {
+            MAVLink.mavlink_scaled_pressure_t data = new MAVLink.mavlink_scaled_pressure_t();
+            data.press_abs = 1.0f;
+            data.press_diff = 2.0f;
+            data.temperature = 3;
+            data.time_boot_ms = 4;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.SCALED_PRESSURE, data);
+
+            ScaledPressure obj = new ScaledPressure(message);
+
+            Assert.AreEqual(data.press_abs, obj.press_abs);
+            Assert.AreEqual(data.press_diff, obj.press_diff);
+            Assert.AreEqual(data.temperature, obj.temperature);
+            Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
+
+            ScaledPressureDTO dto = new ScaledPressureDTO(obj);
+
+            Assert.AreEqual(dto.press_abs, obj.press_abs);
+            Assert.AreEqual(dto.press_diff, obj.press_diff);
+            Assert.AreEqual(dto.temperature, obj.temperature);
+            Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
+
+
+        }
     }
 }
