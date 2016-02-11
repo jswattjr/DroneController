@@ -112,10 +112,13 @@
     <Compile Include="Controllers\DroneController.cs" />
     <Compile Include="Controllers\LogsController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="DataTransferObjects\AttitudeDTO.cs" />
     <Compile Include="DataTransferObjects\DroneDTO.cs" />
+    <Compile Include="DataTransferObjects\GlobalPositionIntDTO.cs" />
     <Compile Include="DataTransferObjects\GpsRawIntDTO.cs" />
     <Compile Include="DataTransferObjects\HeartbeatDTO.cs" />
     <Compile Include="DataTransferObjects\RawImuDTO.cs" />
+    <Compile Include="DataTransferObjects\RcChannelsRawDTO.cs" />
     <Compile Include="DataTransferObjects\ScaledPressureDTO.cs" />
     <Compile Include="DataTransferObjects\SystemStatusDTO.cs" />
     <Compile Include="DataTransferObjects\SystemTimeDTO.cs" />

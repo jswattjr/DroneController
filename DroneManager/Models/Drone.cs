@@ -99,6 +99,21 @@ namespace DroneManager.Models
             return getCurrentMessage<ScaledPressure>(MAVLink.MAVLINK_MSG_ID.SCALED_PRESSURE);
         }
 
+        public Attitude getAttitude()
+        {
+            return getCurrentMessage<Attitude>(MAVLink.MAVLINK_MSG_ID.ATTITUDE);
+        }
+
+        public GlobalPositionInt getGlobalPositionInt()
+        {
+            return getCurrentMessage<GlobalPositionInt>(MAVLink.MAVLINK_MSG_ID.GLOBAL_POSITION_INT);
+        }
+
+        public RcChannelsRaw getRcChannelsRaw()
+        {
+            return getCurrentMessage<RcChannelsRaw>(MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_RAW);
+        }
+
         T getCurrentMessage<T>(MAVLink.MAVLINK_MSG_ID id) where T : MessageContainerBase
         {
             if (!this.currentState.ContainsKey(id))

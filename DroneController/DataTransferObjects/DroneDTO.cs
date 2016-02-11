@@ -29,6 +29,12 @@ namespace DroneController.DataTransferObjects
 
         public ScaledPressureDTO scaled_pressure { get; }
 
+        public AttitudeDTO attitude { get; }
+
+        public GlobalPositionIntDTO global_position_int { get; }
+
+        public RcChannelsRawDTO rc_channels_raw { get; }
+
         public enum ConnectionState
         {
             CONNECTED,
@@ -57,6 +63,9 @@ namespace DroneController.DataTransferObjects
             this.gps_raw_int = new GpsRawIntDTO(droneObj.getGpsRawInt());
             this.raw_imu = new RawImuDTO(droneObj.getRawImu());
             this.scaled_pressure = new ScaledPressureDTO(droneObj.getScaledPressure());
+            this.attitude = new AttitudeDTO(droneObj.getAttitude());
+            this.global_position_int = new GlobalPositionIntDTO(droneObj.getGlobalPositionInt());
+            this.rc_channels_raw = new RcChannelsRawDTO(droneObj.getRcChannelsRaw());
         }
 
     }

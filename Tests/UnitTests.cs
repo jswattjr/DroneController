@@ -288,5 +288,131 @@ namespace Tests
 
 
         }
+
+        [TestMethod]
+        public void CheckAttitudeObject()
+        {
+            MAVLink.mavlink_attitude_t data = new MAVLink.mavlink_attitude_t();
+            data.pitch = 1;
+            data.pitchspeed = 2;
+            data.roll = 3;
+            data.rollspeed = 4;
+            data.time_boot_ms = 5;
+            data.yaw = 6;
+            data.yawspeed = 7;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.ATTITUDE, data);
+
+            Attitude obj = new Attitude(message);
+
+            Assert.AreEqual(data.pitch, obj.pitch);
+            Assert.AreEqual(data.pitchspeed, obj.pitchspeed);
+            Assert.AreEqual(data.roll, obj.roll);
+            Assert.AreEqual(data.rollspeed, obj.rollspeed);
+            Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
+            Assert.AreEqual(data.yaw, obj.yaw);
+            Assert.AreEqual(data.yawspeed, obj.yawspeed);
+
+            AttitudeDTO dto = new AttitudeDTO(obj);
+
+            Assert.AreEqual(dto.pitch, obj.pitch);
+            Assert.AreEqual(dto.pitchspeed, obj.pitchspeed);
+            Assert.AreEqual(dto.roll, obj.roll);
+            Assert.AreEqual(dto.rollspeed, obj.rollspeed);
+            Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
+            Assert.AreEqual(dto.yaw, obj.yaw);
+            Assert.AreEqual(dto.yawspeed, obj.yawspeed);
+
+        }
+
+        [TestMethod]
+        public void CheckGlobalPostionIntObj()
+        {
+            MAVLink.mavlink_global_position_int_t data = new MAVLink.mavlink_global_position_int_t();
+            data.alt = 1;
+            data.hdg = 2;
+            data.lat = 3;
+            data.lon = 4;
+            data.relative_alt = 5;
+            data.time_boot_ms = 6;
+            data.vx = 7;
+            data.vy = 8;
+            data.vz = 9;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.GLOBAL_POSITION_INT, data);
+
+            GlobalPositionInt obj = new GlobalPositionInt(message);
+
+            Assert.AreEqual(data.alt, obj.alt);
+            Assert.AreEqual(data.hdg, obj.hdg);
+            Assert.AreEqual(data.lat, obj.lat);
+            Assert.AreEqual(data.lon, obj.lon);
+            Assert.AreEqual(data.relative_alt, obj.relative_alt);
+            Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
+            Assert.AreEqual(data.vx, obj.vx);
+            Assert.AreEqual(data.vy, obj.vy);
+            Assert.AreEqual(data.vz, obj.vz);
+
+            GlobalPositionIntDTO dto = new GlobalPositionIntDTO(obj);
+
+            Assert.AreEqual(dto.alt, obj.alt);
+            Assert.AreEqual(dto.hdg, obj.hdg);
+            Assert.AreEqual(dto.lat, obj.lat);
+            Assert.AreEqual(dto.lon, obj.lon);
+            Assert.AreEqual(dto.relative_alt, obj.relative_alt);
+            Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
+            Assert.AreEqual(dto.vx, obj.vx);
+            Assert.AreEqual(dto.vy, obj.vy);
+            Assert.AreEqual(dto.vz, obj.vz);
+
+        }
+
+        [TestMethod]
+        public void CheckRcChannelsRawObject()
+        {
+            MAVLink.mavlink_rc_channels_raw_t data = new MAVLink.mavlink_rc_channels_raw_t();
+            data.chan1_raw = 1;
+            data.chan2_raw = 2;
+            data.chan3_raw = 3;
+            data.chan4_raw = 4;
+            data.chan5_raw = 5;
+            data.chan6_raw = 6;
+            data.chan7_raw = 7;
+            data.chan8_raw = 8;
+            data.port = 9;
+            data.rssi = 10;
+            data.time_boot_ms = 11;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_RAW, data);
+
+            RcChannelsRaw obj = new RcChannelsRaw(message);
+
+            Assert.AreEqual(data.chan1_raw, obj.chan1_raw);
+            Assert.AreEqual(data.chan2_raw, obj.chan2_raw);
+            Assert.AreEqual(data.chan3_raw, obj.chan3_raw);
+            Assert.AreEqual(data.chan4_raw, obj.chan4_raw);
+            Assert.AreEqual(data.chan5_raw, obj.chan5_raw);
+            Assert.AreEqual(data.chan6_raw, obj.chan6_raw);
+            Assert.AreEqual(data.chan7_raw, obj.chan7_raw);
+            Assert.AreEqual(data.chan8_raw, obj.chan8_raw);
+            Assert.AreEqual(data.port, obj.port);
+            Assert.AreEqual(data.rssi, obj.rssi);
+            Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
+
+            RcChannelsRawDTO dto = new RcChannelsRawDTO(obj);
+
+            Assert.AreEqual(dto.chan1_raw, obj.chan1_raw);
+            Assert.AreEqual(dto.chan2_raw, obj.chan2_raw);
+            Assert.AreEqual(dto.chan3_raw, obj.chan3_raw);
+            Assert.AreEqual(dto.chan4_raw, obj.chan4_raw);
+            Assert.AreEqual(dto.chan5_raw, obj.chan5_raw);
+            Assert.AreEqual(dto.chan6_raw, obj.chan6_raw);
+            Assert.AreEqual(dto.chan7_raw, obj.chan7_raw);
+            Assert.AreEqual(dto.chan8_raw, obj.chan8_raw);
+            Assert.AreEqual(dto.port, obj.port);
+            Assert.AreEqual(dto.rssi, obj.rssi);
+            Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
+
+        }
     }
 }
