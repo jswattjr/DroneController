@@ -35,6 +35,12 @@ namespace DroneController.DataTransferObjects
 
         public RcChannelsRawDTO rc_channels_raw { get; }
 
+        public ServoOutputRawDTO server_output_raw { get; }
+
+        public MissionCurrentDTO mission_current { get; }
+
+        public NavControllerOutputDTO nav_controller_output { get; }
+
         public enum ConnectionState
         {
             CONNECTED,
@@ -66,6 +72,9 @@ namespace DroneController.DataTransferObjects
             this.attitude = new AttitudeDTO(droneObj.getAttitude());
             this.global_position_int = new GlobalPositionIntDTO(droneObj.getGlobalPositionInt());
             this.rc_channels_raw = new RcChannelsRawDTO(droneObj.getRcChannelsRaw());
+            this.server_output_raw = new ServoOutputRawDTO(droneObj.getServerOutputRaw());
+            this.mission_current = new MissionCurrentDTO(droneObj.getMissionCurrent());
+            this.nav_controller_output = new NavControllerOutputDTO(droneObj.getNavControllerOutput());
         }
 
     }

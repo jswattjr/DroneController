@@ -114,6 +114,21 @@ namespace DroneManager.Models
             return getCurrentMessage<RcChannelsRaw>(MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_RAW);
         }
 
+        public ServoOutputRaw getServerOutputRaw()
+        {
+            return getCurrentMessage<ServoOutputRaw>(MAVLink.MAVLINK_MSG_ID.SERVO_OUTPUT_RAW);
+        }
+
+        public MissionCurrent getMissionCurrent()
+        {
+            return getCurrentMessage<MissionCurrent>(MAVLink.MAVLINK_MSG_ID.MISSION_CURRENT);
+        }
+
+        public NavControllerOutput getNavControllerOutput()
+        {
+            return getCurrentMessage<NavControllerOutput>(MAVLink.MAVLINK_MSG_ID.NAV_CONTROLLER_OUTPUT);
+        }
+
         T getCurrentMessage<T>(MAVLink.MAVLINK_MSG_ID id) where T : MessageContainerBase
         {
             if (!this.currentState.ContainsKey(id))

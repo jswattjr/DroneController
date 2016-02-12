@@ -414,5 +414,106 @@ namespace Tests
             Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
 
         }
+
+        [TestMethod]
+        public void CheckServoOutputRawObject()
+        {
+            MAVLink.mavlink_servo_output_raw_t data = new MAVLink.mavlink_servo_output_raw_t();
+            data.port = 1;
+            data.servo1_raw = 2;
+            data.servo2_raw = 3;
+            data.servo3_raw = 4;
+            data.servo4_raw = 5;
+            data.servo5_raw = 6;
+            data.servo6_raw = 7;
+            data.servo7_raw = 8;
+            data.servo8_raw = 9;
+            data.time_usec = 10;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.SERVO_OUTPUT_RAW, data);
+
+            ServoOutputRaw obj = new ServoOutputRaw(message);
+
+            Assert.AreEqual(data.port, obj.port);
+            Assert.AreEqual(data.servo1_raw, obj.servo1_raw);
+            Assert.AreEqual(data.servo2_raw, obj.servo2_raw);
+            Assert.AreEqual(data.servo3_raw, obj.servo3_raw);
+            Assert.AreEqual(data.servo4_raw, obj.servo4_raw);
+            Assert.AreEqual(data.servo5_raw, obj.servo5_raw);
+            Assert.AreEqual(data.servo6_raw, obj.servo6_raw);
+            Assert.AreEqual(data.servo7_raw, obj.servo7_raw);
+            Assert.AreEqual(data.servo8_raw, obj.servo8_raw);
+            Assert.AreEqual(data.time_usec, obj.time_usec);
+
+            ServoOutputRawDTO dto = new ServoOutputRawDTO(obj);
+
+            Assert.AreEqual(dto.port, obj.port);
+            Assert.AreEqual(dto.servo1_raw, obj.servo1_raw);
+            Assert.AreEqual(dto.servo2_raw, obj.servo2_raw);
+            Assert.AreEqual(dto.servo3_raw, obj.servo3_raw);
+            Assert.AreEqual(dto.servo4_raw, obj.servo4_raw);
+            Assert.AreEqual(dto.servo5_raw, obj.servo5_raw);
+            Assert.AreEqual(dto.servo6_raw, obj.servo6_raw);
+            Assert.AreEqual(dto.servo7_raw, obj.servo7_raw);
+            Assert.AreEqual(dto.servo8_raw, obj.servo8_raw);
+            Assert.AreEqual(dto.time_usec, obj.time_usec);
+
+        }
+
+        [TestMethod]
+        public void CheckMissionCurrentObject()
+        {
+            MAVLink.mavlink_mission_current_t data = new MAVLink.mavlink_mission_current_t();
+            data.seq = 7;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.MISSION_CURRENT, data);
+
+            MissionCurrent obj = new MissionCurrent(message);
+
+            Assert.AreEqual(data.seq, obj.seq);
+
+            MissionCurrentDTO dto = new MissionCurrentDTO(obj);
+
+            Assert.AreEqual(dto.seq, obj.seq);
+        }
+
+        [TestMethod]
+        public void CheckNavControllerOutput()
+        {
+            MAVLink.mavlink_nav_controller_output_t data = new MAVLink.mavlink_nav_controller_output_t();
+            data.alt_error = 1;
+            data.aspd_error = 2;
+            data.nav_bearing = 2;
+            data.nav_pitch = 3;
+            data.nav_roll = 4;
+            data.target_bearing = 5;
+            data.wp_dist = 6;
+            data.xtrack_error = 7;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.NAV_CONTROLLER_OUTPUT, data);
+
+            NavControllerOutput obj = new NavControllerOutput(message);
+
+            Assert.AreEqual(data.alt_error, obj.alt_error);
+            Assert.AreEqual(data.aspd_error, obj.aspd_error);
+            Assert.AreEqual(data.nav_bearing, obj.nav_bearing);
+            Assert.AreEqual(data.nav_pitch, obj.nav_pitch);
+            Assert.AreEqual(data.nav_roll, obj.nav_roll);
+            Assert.AreEqual(data.target_bearing, obj.target_bearing);
+            Assert.AreEqual(data.wp_dist, obj.wp_dist);
+            Assert.AreEqual(data.xtrack_error, obj.xtrack_error);
+
+            NavControllerOutputDTO dto = new NavControllerOutputDTO(obj);
+
+            Assert.AreEqual(dto.alt_error, obj.alt_error);
+            Assert.AreEqual(dto.aspd_error, obj.aspd_error);
+            Assert.AreEqual(dto.nav_bearing, obj.nav_bearing);
+            Assert.AreEqual(dto.nav_pitch, obj.nav_pitch);
+            Assert.AreEqual(dto.nav_roll, obj.nav_roll);
+            Assert.AreEqual(dto.target_bearing, obj.target_bearing);
+            Assert.AreEqual(dto.wp_dist, obj.wp_dist);
+            Assert.AreEqual(dto.xtrack_error, obj.xtrack_error);
+
+        }
     }
 }
