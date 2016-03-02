@@ -515,5 +515,143 @@ namespace Tests
             Assert.AreEqual(dto.xtrack_error, obj.xtrack_error);
 
         }
+
+        [TestMethod]
+        public void CheckVfrHudObject()
+        {
+            MAVLink.mavlink_vfr_hud_t data = new MAVLink.mavlink_vfr_hud_t();
+            data.airspeed = 1;
+            data.alt = 2;
+            data.climb = 3;
+            data.groundspeed = 4;
+            data.heading = 5;
+            data.throttle = 6;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.VFR_HUD, data);
+
+            VfrHud obj = new VfrHud(message);
+
+            Assert.AreEqual(data.airspeed, obj.airspeed);
+            Assert.AreEqual(data.alt, obj.alt);
+            Assert.AreEqual(data.climb, obj.climb);
+            Assert.AreEqual(data.groundspeed, obj.groundspeed);
+            Assert.AreEqual(data.heading, obj.heading);
+            Assert.AreEqual(data.throttle, obj.throttle);
+
+            VfrHudDTO dto = new VfrHudDTO(obj);
+
+            Assert.AreEqual(dto.airspeed, obj.airspeed);
+            Assert.AreEqual(dto.alt, obj.alt);
+            Assert.AreEqual(dto.climb, obj.climb);
+            Assert.AreEqual(dto.groundspeed, obj.groundspeed);
+            Assert.AreEqual(dto.heading, obj.heading);
+            Assert.AreEqual(dto.throttle, obj.throttle);
+
+        }
+
+        [TestMethod]
+        public void CheckTerrainReportObject()
+        {
+            MAVLink.mavlink_terrain_report_t data = new MAVLink.mavlink_terrain_report_t();
+            data.current_height = 1;
+            data.lat = 2;
+            data.loaded = 3;
+            data.lon = 4;
+            data.pending = 5;
+            data.spacing = 6;
+            data.terrain_height = 7;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.TERRAIN_REPORT, data);
+
+            TerrainReport obj = new TerrainReport(message);
+
+            Assert.AreEqual(data.current_height, obj.current_height);
+            Assert.AreEqual(data.lat, obj.lat);
+            Assert.AreEqual(data.loaded, obj.loaded);
+            Assert.AreEqual(data.lon, obj.lon);
+            Assert.AreEqual(data.pending, obj.pending);
+            Assert.AreEqual(data.spacing, obj.spacing);
+            Assert.AreEqual(data.terrain_height, obj.terrain_height);
+
+            TerrainReportDTO dto = new TerrainReportDTO(obj);
+
+            Assert.AreEqual(dto.current_height, obj.current_height);
+            Assert.AreEqual(dto.lat, obj.lat);
+            Assert.AreEqual(dto.loaded, obj.loaded);
+            Assert.AreEqual(dto.lon, obj.lon);
+            Assert.AreEqual(dto.pending, obj.pending);
+            Assert.AreEqual(dto.spacing, obj.spacing);
+            Assert.AreEqual(dto.terrain_height, obj.terrain_height);
+
+        }
+
+        [TestMethod]
+        public void CheckScaledImu2DTO()
+        {
+            MAVLink.mavlink_scaled_imu2_t data = new MAVLink.mavlink_scaled_imu2_t();
+            data.time_boot_ms = 1;
+            data.xacc = 2;
+            data.xgyro = 3;
+            data.xmag = 4;
+            data.yacc = 5;
+            data.ygyro = 6;
+            data.ymag = 7;
+            data.zacc = 8;
+            data.zgyro = 9;
+            data.zmag = 10;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.SCALED_IMU2, data);
+
+            ScaledImu2 obj = new ScaledImu2(message);
+
+            Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
+            Assert.AreEqual(data.xacc, obj.xacc);
+            Assert.AreEqual(data.xgyro, obj.xgyro);
+            Assert.AreEqual(data.xmag, obj.xmag);
+            Assert.AreEqual(data.yacc, obj.yacc);
+            Assert.AreEqual(data.ygyro, obj.ygyro);
+            Assert.AreEqual(data.ymag, obj.ymag);
+            Assert.AreEqual(data.zacc, obj.zacc);
+            Assert.AreEqual(data.zgyro, obj.zgyro);
+            Assert.AreEqual(data.zmag, obj.zmag);
+
+            ScaledImu2DTO dto = new ScaledImu2DTO(obj);
+
+            Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
+            Assert.AreEqual(dto.xacc, obj.xacc);
+            Assert.AreEqual(dto.xgyro, obj.xgyro);
+            Assert.AreEqual(dto.xmag, obj.xmag);
+            Assert.AreEqual(dto.yacc, obj.yacc);
+            Assert.AreEqual(dto.ygyro, obj.ygyro);
+            Assert.AreEqual(dto.ymag, obj.ymag);
+            Assert.AreEqual(dto.zacc, obj.zacc);
+            Assert.AreEqual(dto.zgyro, obj.zgyro);
+            Assert.AreEqual(dto.zmag, obj.zmag);
+
+        }
+
+        [TestMethod]
+        public void CheckPowerStatusObject()
+        {
+            MAVLink.mavlink_power_status_t data = new MAVLink.mavlink_power_status_t();
+            data.flags = 1;
+            data.Vcc = 2;
+            data.Vservo = 3;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.POWER_STATUS, data);
+
+            PowerStatus obj = new PowerStatus(message);
+
+            Assert.AreEqual(data.Vservo, obj.Vservo);
+            Assert.AreEqual(data.Vcc, obj.Vcc);
+            Assert.AreEqual(1, obj.flags.Count);
+
+            PowerStatusDTO dto = new PowerStatusDTO(obj);
+
+            Assert.AreEqual(dto.Vservo, obj.Vservo);
+            Assert.AreEqual(dto.Vcc, obj.Vcc);
+            Assert.AreEqual(1, dto.flags.Count);
+
+        }
     }
 }

@@ -119,12 +119,16 @@
     <Compile Include="DataTransferObjects\HeartbeatDTO.cs" />
     <Compile Include="DataTransferObjects\MissionCurrentDTO.cs" />
     <Compile Include="DataTransferObjects\NavControllerOutputDTO.cs" />
+    <Compile Include="DataTransferObjects\PowerStatusDTO.cs" />
     <Compile Include="DataTransferObjects\RawImuDTO.cs" />
     <Compile Include="DataTransferObjects\RcChannelsRawDTO.cs" />
+    <Compile Include="DataTransferObjects\ScaledImu2DTO.cs" />
     <Compile Include="DataTransferObjects\ScaledPressureDTO.cs" />
     <Compile Include="DataTransferObjects\ServoOutputRawDTO.cs" />
     <Compile Include="DataTransferObjects\SystemStatusDTO.cs" />
     <Compile Include="DataTransferObjects\SystemTimeDTO.cs" />
+    <Compile Include="DataTransferObjects\TerrainReportDTO.cs" />
+    <Compile Include="DataTransferObjects\VfrHudDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

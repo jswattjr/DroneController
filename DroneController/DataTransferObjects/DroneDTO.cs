@@ -41,6 +41,14 @@ namespace DroneController.DataTransferObjects
 
         public NavControllerOutputDTO nav_controller_output { get; }
 
+        public TerrainReportDTO terrain_report { get; }
+
+        public VfrHudDTO vfr_hud { get; }
+
+        public ScaledImu2DTO scaled_imu_2 { get; }
+
+        public PowerStatusDTO power_status { get; }
+
         public enum ConnectionState
         {
             CONNECTED,
@@ -75,6 +83,10 @@ namespace DroneController.DataTransferObjects
             this.server_output_raw = new ServoOutputRawDTO(droneObj.getServerOutputRaw());
             this.mission_current = new MissionCurrentDTO(droneObj.getMissionCurrent());
             this.nav_controller_output = new NavControllerOutputDTO(droneObj.getNavControllerOutput());
+            this.vfr_hud = new VfrHudDTO(droneObj.getVfrHud());
+            this.terrain_report = new TerrainReportDTO(droneObj.getTerrainReport());
+            this.scaled_imu_2 = new ScaledImu2DTO(droneObj.getScaledImu2());
+            this.power_status = new PowerStatusDTO(droneObj.getPowerStatus());
         }
 
     }

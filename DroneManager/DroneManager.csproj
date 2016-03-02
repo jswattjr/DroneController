@@ -58,12 +58,16 @@
     <Compile Include="Models\MessageContainers\MessageContainerBase.cs" />
     <Compile Include="Models\MessageContainers\MissionCurrent.cs" />
     <Compile Include="Models\MessageContainers\NavControllerOutput.cs" />
+    <Compile Include="Models\MessageContainers\PowerStatus.cs" />
     <Compile Include="Models\MessageContainers\RawImu.cs" />
     <Compile Include="Models\MessageContainers\RcChannelsRaw.cs" />
+    <Compile Include="Models\MessageContainers\ScaledImu2.cs" />
     <Compile Include="Models\MessageContainers\ScaledPressure.cs" />
     <Compile Include="Models\MessageContainers\ServoOutputRaw.cs" />
     <Compile Include="Models\MessageContainers\SystemStatus.cs" />
     <Compile Include="Models\MessageContainers\SystemTime.cs" />
+    <Compile Include="Models\MessageContainers\TerrainReport.cs" />
+    <Compile Include="Models\MessageContainers\VfrHud.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

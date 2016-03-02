@@ -129,6 +129,26 @@ namespace DroneManager.Models
             return getCurrentMessage<NavControllerOutput>(MAVLink.MAVLINK_MSG_ID.NAV_CONTROLLER_OUTPUT);
         }
 
+        public VfrHud getVfrHud()
+        {
+            return getCurrentMessage<VfrHud>(MAVLink.MAVLINK_MSG_ID.VFR_HUD);
+        }
+
+        public TerrainReport getTerrainReport()
+        {
+            return getCurrentMessage<TerrainReport>(MAVLink.MAVLINK_MSG_ID.TERRAIN_REPORT);
+        }
+
+        public ScaledImu2 getScaledImu2()
+        {
+            return getCurrentMessage<ScaledImu2>(MAVLink.MAVLINK_MSG_ID.SCALED_IMU2);
+        }
+
+        public PowerStatus getPowerStatus()
+        {
+            return getCurrentMessage<PowerStatus>(MAVLink.MAVLINK_MSG_ID.POWER_STATUS);
+        }
+
         T getCurrentMessage<T>(MAVLink.MAVLINK_MSG_ID id) where T : MessageContainerBase
         {
             if (!this.currentState.ContainsKey(id))
