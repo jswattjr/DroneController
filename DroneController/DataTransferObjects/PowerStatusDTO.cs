@@ -1,4 +1,6 @@
 ﻿using DroneManager.Models.MessageContainers;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace DroneController.DataTransferObjects
         public UInt16 Vservo { get; set; }
         /// <summary> power supply status flags (see MAV_POWER_STATUS enum) </summary>
         //public UInt16 flags;
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<MAVLink.MAV_POWER_STATUS> flags { get; set; }
 
         public PowerStatusDTO (PowerStatus source)
