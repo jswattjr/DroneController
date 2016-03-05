@@ -50,12 +50,12 @@ namespace DroneManager.Models
         // commands
         public void arm()
         {
-            connection.sendArmMessage();
+            connection.Command.arm(true);
         }
 
         public void disarm()
         {
-            connection.sendArmMessage(false);
+            connection.Command.arm(false);
         }
 
         public void returnToLand()

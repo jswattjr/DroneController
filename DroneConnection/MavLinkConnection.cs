@@ -18,7 +18,7 @@ namespace DroneConnection
         On a successful connection, it will spawn a thread that will capture (read) messages from the mavlink connection
         and persist them into a fixed queue of 1000 messages.
     */
-    public class MavLinkConnection
+    public partial class MavLinkConnection
     {
         static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -214,37 +214,6 @@ namespace DroneConnection
             byte[] buffer = this.mavlinkParse.ReadPacket(BaseStream);
             MavLinkMessage message = new MavLinkMessage(buffer);
             return message;
-        }
-
-        public void sendArmMessage(Boolean armValue = true)
-        {
-            MAVLink.mavlink_command_long_t req = new MAVLink.mavlink_command_long_t();
-
-            req.target_system = Convert.ToByte(this.systemId);
-            req.target_component = Convert.ToByte(this.componentId);
-
-            req.command = (ushort)MAVLink.MAV_CMD.COMPONENT_ARM_DISARM;
-
-            req.param1 = Convert.ToInt32(armValue);
-
-            byte[] packet = mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.COMMAND_LONG, req);
-
-            port.Write(packet, 0, packet.Length);
-
-            /*
-            // Implement Async Ack code?
-            try
-            {
-                var ack = readsomedata<MAVLink.mavlink_command_ack_t>();
-                if (ack.result == (byte)MAVLink.MAV_RESULT.ACCEPTED)
-                {
-
-                }
-            }
-            catch
-            {
-            }
-            */
         }
     }
 }
