@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FixedSizeQueue.cs" />
-    <Compile Include="MavLinkCommands.cs" />
     <Compile Include="MavLinkConnection.cs" />
     <Compile Include="MavLinkEvents.cs" />
     <Compile Include="MavLinkMessage.cs" />

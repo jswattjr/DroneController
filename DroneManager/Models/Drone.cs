@@ -11,7 +11,7 @@ using DroneManager.Models.MessageContainers;
 
 namespace DroneManager.Models
 {
-    public class Drone
+    public partial class Drone
     {
 
         static Logger logger = LogManager.GetCurrentClassLogger();
@@ -44,28 +44,6 @@ namespace DroneManager.Models
                 }
             }
             return false;
-        }
-
-
-        // commands
-        public void arm()
-        {
-            connection.Command.arm(true);
-        }
-
-        public void disarm()
-        {
-            connection.Command.arm(false);
-        }
-
-        public void returnToLand()
-        {
-
-        }
-
-        public void land()
-        {
-
         }
 
         //state

@@ -68,7 +68,7 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing 'arm' request");
                 }
-                target.arm();
+                target.Command.arm();
                 return Ok(new DroneDTO(target));
             }
             else
@@ -89,7 +89,7 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing 'disarm' request");
                 }
-                target.disarm();
+                target.Command.disarm();
                 return Ok(new DroneDTO(target));
             }
             else
@@ -97,7 +97,7 @@ namespace DroneController.Controllers
                 return NotFound();
             }
         }
-
+        /*
         [HttpGet]
         [Route("drones/{id}/land")]
         public IHttpActionResult land(string id)
@@ -118,9 +118,9 @@ namespace DroneController.Controllers
                 return NotFound();
             }
         }
-
+        */
         [HttpGet]
-        [Route("drones/{id}/returnToLand")]
+        [Route("drones/{id}/returnToLaunch")]
         public IHttpActionResult returnToLand(string id)
         {
             logger.Debug("Returning /drones/{0} to launch point", id);
@@ -131,7 +131,7 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing 'rtl' request");
                 }
-                target.returnToLand();
+                target.Command.returnToLaunch();
                 return Ok(new DroneDTO(target));
             }
             else

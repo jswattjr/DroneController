@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DroneManagementStation.cs" />
     <Compile Include="Models\Drone.cs" />
+    <Compile Include="Models\DroneCommands.cs" />
     <Compile Include="Models\MessageContainers\Attitude.cs" />
     <Compile Include="Models\MessageContainers\GlobalPositionInt.cs" />
     <Compile Include="Models\MessageContainers\GpsRawInt.cs" />

@@ -18,7 +18,7 @@ namespace DroneConnection
         On a successful connection, it will spawn a thread that will capture (read) messages from the mavlink connection
         and persist them into a fixed queue of 1000 messages.
     */
-    public partial class MavLinkConnection
+    public class MavLinkConnection
     {
         static Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -187,11 +187,17 @@ namespace DroneConnection
                 logger.Trace("{1} Message read from target system: {0}, component id {3}, of type {2}", message.sysid, message.messid, message.getMessageType().ToString(), message.compid);
                 this.systemId = message.sysid;
                 this.componentId = message.compid;
-                this.postMessage(message);
+                this.postMessageToLocalEventQueue(message);
+
+                // respond to heartbeat messages with heartbeat of our own
+                if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
+                {
+                    sendHeartbeat();
+                }
             }
         }
 
-        private void postMessage(MavLinkMessage message)
+        private void postMessageToLocalEventQueue(MavLinkMessage message)
         {
             // don't post any messages if we don't know who we're communicating with
             if (-1 == this.systemId )
@@ -215,5 +221,84 @@ namespace DroneConnection
             MavLinkMessage message = new MavLinkMessage(buffer);
             return message;
         }
+
+        private void sendHeartbeat()
+        {
+            MAVLink.mavlink_heartbeat_t heartbeat = new MAVLink.mavlink_heartbeat_t();
+            heartbeat.autopilot = (byte)MAVLink.MAV_AUTOPILOT.INVALID;
+            heartbeat.type = (byte)MAVLink.MAV_TYPE.GCS;
+
+            byte[] packet = this.mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.HEARTBEAT, heartbeat);
+
+            this.port.Write(packet, 0, packet.Length);
+        }
+
+        public void sendCommand(ushort commandType, params Int32[] parameters)
+        {
+            MAVLink.mavlink_command_long_t req = new MAVLink.mavlink_command_long_t();
+
+            req.target_system = Convert.ToByte(this.systemId);
+            req.target_component = Convert.ToByte(this.componentId);
+
+            req.command = commandType;
+
+            // this loop takes input parameters and assigns them to the correct part of the struct
+            // not sure how to do this better without reflection, since none of these are nullable
+            // and I don't want to set values unnecessarily
+            for (int paramIndex = 0; paramIndex < parameters.Length; paramIndex++)
+            {
+                Int32 parameter = parameters[paramIndex];
+                if (paramIndex == 1)
+                {
+                    req.param1 = parameter;
+                }
+                if (paramIndex == 2)
+                {
+                    req.param2 = parameter;
+                }
+                if (paramIndex == 3)
+                {
+                    req.param3 = parameter;
+                }
+                if (paramIndex == 4)
+                {
+                    req.param4 = parameter;
+                }
+                if (paramIndex == 5)
+                {
+                    req.param5 = parameter;
+                }
+                if (paramIndex == 6)
+                {
+                    req.param6 = parameter;
+                }
+                if (paramIndex == 7)
+                {
+                    req.param7 = parameter;
+                }
+            }
+
+
+            byte[] packet = this.mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.COMMAND_LONG, req);
+
+            this.port.Write(packet, 0, packet.Length);
+
+            /*
+            // Implement Async Ack code?
+            try
+            {
+                var ack = readsomedata<MAVLink.mavlink_command_ack_t>();
+                if (ack.result == (byte)MAVLink.MAV_RESULT.ACCEPTED)
+                {
+
+                }
+            }
+            catch
+            {
+            }
+            */
+        }
+
+
     }
 }
