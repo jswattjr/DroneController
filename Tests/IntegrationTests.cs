@@ -63,6 +63,11 @@ namespace Tests
             IEntityRepository<SettingEntity> repo = RepositoryFactory.getSettingRepository();
 
             SettingEntity settingEntity = repo.getByName(settingName);
+            if (null != settingEntity)
+            {
+                repo.delete(settingEntity);
+                settingEntity = repo.getByName(settingName);
+            }
             Assert.IsNull(settingEntity);
 
             SettingEntity testSetting = new SettingEntity();
