@@ -30,7 +30,7 @@ namespace DroneManager.Models.MessageContainers
         public MAVLink.MAV_TYPE type { get; set; }
         public MAVLink.MAV_AUTOPILOT autopilot { get; set; }
         public UInt32 custom_mode { get; set; }
-        public MAVLink.MAV_MODE_FLAG base_mode { get; set; }
+        public List<MAVLink.MAV_MODE_FLAG> base_mode { get; set; }
         public MAVLink.MAV_STATE system_status { get; set; }
         public int mavlink_version { get; set; }
 
@@ -54,7 +54,7 @@ namespace DroneManager.Models.MessageContainers
                 type = (MAVLink.MAV_TYPE)raw_data.type;
                 autopilot = (MAVLink.MAV_AUTOPILOT)raw_data.autopilot;
                 custom_mode = raw_data.custom_mode;
-                base_mode = (MAVLink.MAV_MODE_FLAG)raw_data.base_mode;
+                base_mode = Utilities.BitwiseOperations.parseBitValues<MAVLink.MAV_MODE_FLAG>(raw_data.base_mode);
                 system_status = (MAVLink.MAV_STATE)raw_data.system_status;
                 mavlink_version = (int)raw_data.mavlink_version;
             }

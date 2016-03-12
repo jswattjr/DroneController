@@ -63,7 +63,7 @@ namespace DroneManager.Models.MessageContainers
                 IEnumerable<MAVLink.MAV_POWER_STATUS> values = EnumValues.GetValues<MAVLink.MAV_POWER_STATUS>();
                 foreach (MAVLink.MAV_POWER_STATUS status in values)
                 {
-                    Boolean statusExists = Utilities.BitwiseOperations.bitExistsInValues((uint)status, data.flags);
+                    Boolean statusExists = Utilities.BitwiseOperations.bitExistsInValues((int)status, data.flags);
                     if (statusExists)
                     {
                         this.flags.Add(status);

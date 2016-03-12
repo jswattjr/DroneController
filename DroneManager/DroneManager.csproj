@@ -56,6 +56,7 @@
     <Compile Include="Models\MessageContainers\GlobalPositionInt.cs" />
     <Compile Include="Models\MessageContainers\GpsRawInt.cs" />
     <Compile Include="Models\MessageContainers\Heartbeat.cs" />
+    <Compile Include="Models\MessageContainers\CommandAck.cs" />
     <Compile Include="Models\MessageContainers\MessageContainerBase.cs" />
     <Compile Include="Models\MessageContainers\MissionCurrent.cs" />
     <Compile Include="Models\MessageContainers\NavControllerOutput.cs" />

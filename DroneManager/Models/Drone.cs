@@ -24,6 +24,9 @@ namespace DroneManager.Models
 
         // events connection with MavLinkConnection
         MavLinkEvents events;
+
+        Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
+
         // RabbitMQ consumer identifier ID
         string consumerTag;
 
@@ -201,9 +204,20 @@ namespace DroneManager.Models
                 // store message in currentState Dictionary
                 this.currentState[(MAVLink.MAVLINK_MSG_ID)message.messid] = message;
 
+                // commands wait for their ack events and fetch them from these queues
+                if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.COMMAND_ACK))
+                {
+                    CommandAck cmdack = new CommandAck(message);
+                    if (!this.commandAckStacks.ContainsKey(cmdack.command))
+                    {
+                        this.commandAckStacks[cmdack.command] = new Stack<CommandAck>();
+                    }
+                    this.commandAckStacks[cmdack.command].Push(cmdack);
+                }
+
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
-                    logger.Error("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
+                    logger.Debug("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
                 }
             }
             catch (Exception e)

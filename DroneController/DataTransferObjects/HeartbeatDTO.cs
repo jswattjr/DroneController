@@ -16,8 +16,8 @@ namespace DroneController.DataTransferObjects
         [JsonConverter(typeof(StringEnumConverter))]
         public MAVLink.MAV_AUTOPILOT autopilot { get; }
         public UInt32 custom_mode { get; }
-        [JsonConverter(typeof(StringEnumConverter))]
-        public MAVLink.MAV_MODE_FLAG base_mode { get; }
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        public List<MAVLink.MAV_MODE_FLAG> base_mode { get; }
         [JsonConverter(typeof(StringEnumConverter))]
         public MAVLink.MAV_STATE system_status { get; }
         public int mavlink_version { get; }

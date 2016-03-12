@@ -8,6 +8,7 @@ using DroneManager.Models;
 using DroneManager;
 using NLog;
 using DroneController.DataTransferObjects;
+using DroneManager.Models.MessageContainers;
 
 namespace DroneController.Controllers
 {
@@ -68,8 +69,12 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing 'arm' request");
                 }
-                target.Command.arm();
-                return Ok(new DroneDTO(target));
+                CommandAck result = target.Command.arm();
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
             }
             else
             {
@@ -89,36 +94,18 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing 'disarm' request");
                 }
-                target.Command.disarm();
-                return Ok(new DroneDTO(target));
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-        /*
-        [HttpGet]
-        [Route("drones/{id}/land")]
-        public IHttpActionResult land(string id)
-        {
-            logger.Debug("Landing /drones/{0}", id);
-            Drone target = droneMgr.getById(new Guid(id));
-            if (null != target)
-            {
-                if (!target.isConnected())
+                CommandAck result = target.Command.disarm();
+                if (null == result)
                 {
-                    return BadRequest("Target system is not connected, refusing 'land' request");
+                    return NotFound();
                 }
-                target.land();
-                return Ok(new DroneDTO(target));
+                return Ok(new CommandAckDTO(result));
             }
             else
             {
                 return NotFound();
             }
         }
-        */
         [HttpGet]
         [Route("drones/{id}/returnToLaunch")]
         public IHttpActionResult returnToLand(string id)
@@ -131,8 +118,12 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing 'rtl' request");
                 }
-                target.Command.returnToLaunch();
-                return Ok(new DroneDTO(target));
+                CommandAck result = target.Command.returnToLaunch();
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
             }
             else
             {

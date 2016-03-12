@@ -653,5 +653,26 @@ namespace Tests
             Assert.AreEqual(1, dto.flags.Count);
 
         }
+
+        [TestMethod]
+        public void CheckCommandAck()
+        {
+            MAVLink.mavlink_command_ack_t data = new MAVLink.mavlink_command_ack_t();
+            data.command = 16;
+            data.result = 0;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.COMMAND_ACK, data);
+
+            CommandAck obj = new CommandAck(message);
+
+            Assert.AreEqual(obj.command, MAVLink.MAV_CMD.WAYPOINT);
+            Assert.AreEqual(obj.result, MAVLink.MAV_RESULT.ACCEPTED);
+
+            CommandAckDTO dto = new CommandAckDTO(obj);
+
+            Assert.AreEqual(dto.command, MAVLink.MAV_CMD.WAYPOINT);
+            Assert.AreEqual(dto.result, MAVLink.MAV_RESULT.ACCEPTED);
+
+        }
     }
 }

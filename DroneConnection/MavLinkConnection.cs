@@ -282,21 +282,7 @@ namespace DroneConnection
             byte[] packet = this.mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.COMMAND_LONG, req);
 
             this.port.Write(packet, 0, packet.Length);
-
-            /*
-            // Implement Async Ack code?
-            try
-            {
-                var ack = readsomedata<MAVLink.mavlink_command_ack_t>();
-                if (ack.result == (byte)MAVLink.MAV_RESULT.ACCEPTED)
-                {
-
-                }
-            }
-            catch
-            {
-            }
-            */
+  
         }
 
 
