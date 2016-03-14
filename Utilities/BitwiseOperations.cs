@@ -27,7 +27,7 @@ namespace Utilities
                 IEnumerable<T> values = EnumValues.GetValues<T>();
                 foreach (T value in values)
                 {
-                    if (bitExistsInValues(enumToInt(value), enumToInt(flagValues)))
+                    if (bitExistsInValues(enumToInt<T>(value), flagValues))
                     {
                         retVals.Add(value);
                     }
