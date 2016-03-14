@@ -9,6 +9,7 @@ using DroneManager;
 using NLog;
 using DroneController.DataTransferObjects;
 using DroneManager.Models.MessageContainers;
+using DroneController.DataTransferObjects.Commands;
 
 namespace DroneController.Controllers
 {
@@ -57,68 +58,82 @@ namespace DroneController.Controllers
             }
         }
 
-        [HttpGet]
+        IHttpActionResult commandNoParams(string id, string action)
+        {
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                CommandAck result = runCommand(target, action);
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        CommandAck runCommand(Drone target, string action)
+        {
+            if (action.Equals("arm"))
+            {
+                return target.Command.arm();
+            }
+            if (action.Equals("disarm"))
+            {
+                return target.Command.disarm();
+            }
+            if (action.Equals("returnToLaunch"))
+            {
+                return target.Command.returnToLaunch();
+            }
+            return null;
+        }
+
+        [HttpPost]
         [Route("drones/{id}/arm")]
-        public IHttpActionResult arm (string id)
+        public IHttpActionResult armCommand(string id)
         {
-            logger.Debug("Arming /drones/{0}", id);
-            Drone target = droneMgr.getById(new Guid(id));
-            if (null != target)
-            {
-                if (!target.isConnected())
-                {
-                    return BadRequest("Target system is not connected, refusing 'arm' request");
-                }
-                CommandAck result = target.Command.arm();
-                if (null == result)
-                {
-                    return NotFound();
-                }
-                return Ok(new CommandAckDTO(result));
-            }
-            else
-            {
-                return NotFound();
-            }
+            return commandNoParams(id, "arm");
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("drones/{id}/disarm")]
-        public IHttpActionResult disarm(string id)
+        public IHttpActionResult disarmCommand(string id)
         {
-            logger.Debug("disarming /drones/{0}", id);
-            Drone target = droneMgr.getById(new Guid(id));
-            if (null != target)
-            {
-                if (!target.isConnected())
-                {
-                    return BadRequest("Target system is not connected, refusing 'disarm' request");
-                }
-                CommandAck result = target.Command.disarm();
-                if (null == result)
-                {
-                    return NotFound();
-                }
-                return Ok(new CommandAckDTO(result));
-            }
-            else
-            {
-                return NotFound();
-            }
+            return commandNoParams(id, "disarm");
         }
-        [HttpGet]
+
+        [HttpPost]
         [Route("drones/{id}/returnToLaunch")]
-        public IHttpActionResult returnToLand(string id)
+        public IHttpActionResult rtlCommand(string id)
         {
-            logger.Debug("Returning /drones/{0} to launch point", id);
+            return commandNoParams(id, "returnToLaunch");
+        }
+
+
+        [HttpPost]
+        [Route("drones/{id}/landAtLocation")]
+        public IHttpActionResult landAtLocation(string id, [FromBody] LandAtLocationAction parameters)
+        {
+            String action = "landAtLocation";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
                 if (!target.isConnected())
                 {
-                    return BadRequest("Target system is not connected, refusing 'rtl' request");
+                    return BadRequest("Target system is not connected, refusing request");
                 }
-                CommandAck result = target.Command.returnToLaunch();
+                CommandAck result = target.Command.landAtLocation(parameters.latitude, parameters.longitude, parameters.altitude);
                 if (null == result)
                 {
                     return NotFound();
@@ -131,5 +146,134 @@ namespace DroneController.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("drones/{id}/loiterTime")]
+        public IHttpActionResult loiterTime(string id, [FromBody] LoiterTimeAction parameters)
+        {
+            String action = "loiterTime";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                CommandAck result = target.Command.loiterTime(parameters.loiterTimeSeconds, parameters.radiusMeters, parameters.latitude, parameters.longitude, parameters.altitude);
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Route("drones/{id}/loiterTurns")]
+        public IHttpActionResult loiterTurns(string id, [FromBody] LoiterTurnsAction parameters)
+        {
+            String action = "loiterTurns";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                CommandAck result = target.Command.loiterTurns(parameters.numTurns, parameters.radiusMeters, parameters.latitude, parameters.longitude, parameters.altitude);
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Route("drones/{id}/loiterUnlimited")]
+        public IHttpActionResult loiterUnlimited(string id, [FromBody] LoiterUnlimitedAction parameters)
+        {
+            String action = "loiterUnlimited";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                CommandAck result = target.Command.loiterUnlimited(parameters.radiusMeters, parameters.latitude, parameters.longitude, parameters.altitude);
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Route("drones/{id}/navigateWaypoint")]
+        public IHttpActionResult navigateWaypoint(string id, [FromBody] NavigateWaypointAction parameters)
+        {
+            String action = "navigateWaypoint";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                CommandAck result = target.Command.navigateWaypoint(parameters.latitude, parameters.longitude, parameters.altitude);
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Route("drones/{id}/takeoff")]
+        public IHttpActionResult takeoff(string id, [FromBody] TakeoffAction parameters)
+        {
+            String action = "takeoff";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                CommandAck result = target.Command.takeoff(parameters.heightMeters);
+                if (null == result)
+                {
+                    return NotFound();
+                }
+                return Ok(new CommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }

@@ -114,6 +114,13 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataTransferObjects\AttitudeDTO.cs" />
     <Compile Include="DataTransferObjects\CommandAckDTO.cs" />
+    <Compile Include="DataTransferObjects\Commands\LandAtLocationAction.cs" />
+    <Compile Include="DataTransferObjects\Commands\LocationBasedAction.cs" />
+    <Compile Include="DataTransferObjects\Commands\LoiterTimeAction.cs" />
+    <Compile Include="DataTransferObjects\Commands\LoiterTurnsAction.cs" />
+    <Compile Include="DataTransferObjects\Commands\LoiterUnlimitedAction.cs" />
+    <Compile Include="DataTransferObjects\Commands\NavigateWaypointAction.cs" />
+    <Compile Include="DataTransferObjects\Commands\TakeoffAction.cs" />
     <Compile Include="DataTransferObjects\DroneDTO.cs" />
     <Compile Include="DataTransferObjects\GlobalPositionIntDTO.cs" />
     <Compile Include="DataTransferObjects\GpsRawIntDTO.cs" />
