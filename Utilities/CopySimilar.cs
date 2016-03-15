@@ -14,6 +14,10 @@ namespace Utilities
 
         public static void CopyAll(object source, object target)
         {
+            if ((null == source) || (null == target))
+            {
+                return;
+            }
             SetProperties(source, target);
             SetFields(source, target);
         }
@@ -42,6 +46,10 @@ namespace Utilities
 
         public static void SetFields(object source, object target)
         {
+            if ((null == source) || (null == target))
+            {
+                return;
+            }
             Type targetType = target.GetType();
             foreach (FieldInfo prop in source.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
             {
