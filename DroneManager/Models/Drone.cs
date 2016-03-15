@@ -46,6 +46,7 @@ namespace DroneManager.Models
                     return true;
                 }
             }
+            logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.data.id, connection.port.PortName);
             return false;
         }
 
@@ -217,7 +218,7 @@ namespace DroneManager.Models
 
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
-                    logger.Debug("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
+                    logger.Trace("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
                 }
             }
             catch (Exception e)

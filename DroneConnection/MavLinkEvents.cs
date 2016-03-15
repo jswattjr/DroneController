@@ -135,7 +135,7 @@ namespace DroneConnection
 
             if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
             {
-                logger.Debug("RabbitMQ Message {1} published for {0}", this.getMessageQueueName(), jsonObject);
+                logger.Trace("RabbitMQ Message {1} published for {0}", this.getMessageQueueName(), jsonObject);
             }
         }
 
