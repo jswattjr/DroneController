@@ -12,14 +12,17 @@ namespace DroneManager.Models
 {
     public partial class Drone
     {
-        private Commands command;
+        private Commands command = null;
         public Commands Command
         {
             get
             {
-                if (null == command)
+                lock (command)
                 {
-                    command = new Commands(this);
+                    if (null == command)
+                    {
+                        command = new Commands(this);
+                    }
                 }
                 return command;
             }

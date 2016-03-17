@@ -50,7 +50,8 @@ namespace DroneController.Controllers
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
-                return Ok(target);
+                DroneDTO targetDTO = new DroneDTO(target);
+                return Ok(targetDTO);
             }
             else
             {
