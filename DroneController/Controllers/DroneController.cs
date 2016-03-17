@@ -127,6 +127,10 @@ namespace DroneController.Controllers
         {
             String action = "landAtLocation";
             logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
@@ -153,6 +157,10 @@ namespace DroneController.Controllers
         {
             String action = "loiterTime";
             logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
@@ -179,6 +187,10 @@ namespace DroneController.Controllers
         {
             String action = "loiterTurns";
             logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
@@ -205,6 +217,10 @@ namespace DroneController.Controllers
         {
             String action = "loiterUnlimited";
             logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
@@ -231,6 +247,10 @@ namespace DroneController.Controllers
         {
             String action = "navigateWaypoint";
             logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
@@ -257,6 +277,10 @@ namespace DroneController.Controllers
         {
             String action = "takeoff";
             logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {

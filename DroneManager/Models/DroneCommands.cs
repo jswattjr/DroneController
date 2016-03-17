@@ -12,16 +12,21 @@ namespace DroneManager.Models
 {
     public partial class Drone
     {
-        private Commands command = null;
+        private volatile Commands command = null;
+        private Object lockObj = new object();
         public Commands Command
         {
             get
             {
-                lock (command)
+                // double check lock, likely overkill for this but implemented for fun.
+                if (null == command)
                 {
-                    if (null == command)
+                    lock (lockObj)
                     {
-                        command = new Commands(this);
+                        if (null == command)
+                        {
+                            command = new Commands(this);
+                        }
                     }
                 }
                 return command;
