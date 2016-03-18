@@ -60,6 +60,7 @@
     <Compile Include="Models\MessageContainers\MessageContainerBase.cs" />
     <Compile Include="Models\MessageContainers\MissionCurrent.cs" />
     <Compile Include="Models\MessageContainers\NavControllerOutput.cs" />
+    <Compile Include="Models\MessageContainers\ParamValue.cs" />
     <Compile Include="Models\MessageContainers\PowerStatus.cs" />
     <Compile Include="Models\MessageContainers\RawImu.cs" />
     <Compile Include="Models\MessageContainers\RcChannelsRaw.cs" />

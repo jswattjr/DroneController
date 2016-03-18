@@ -285,6 +285,17 @@ namespace DroneConnection
   
         }
 
+        public void sendParamsListRequest()
+        {
+            MAVLink.mavlink_param_request_list_t paramsRequest = new MAVLink.mavlink_param_request_list_t();
+            paramsRequest.target_system = (byte)this.systemId;
+            paramsRequest.target_component = (byte)this.componentId;
+
+            byte[] packet = this.mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.PARAM_REQUEST_LIST, paramsRequest);
+
+            this.port.Write(packet, 0, packet.Length);
+        }
+
 
     }
 }

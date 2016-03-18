@@ -50,6 +50,9 @@ namespace DroneManager.Models
             return false;
         }
 
+        public Dictionary<String, ParamValue> Parameters { get; set; }
+        private Dictionary<String, ParamValue> parameters = null;
+
         //state
         public Heartbeat getHearbeat()
         {
@@ -219,6 +222,18 @@ namespace DroneManager.Models
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
                     logger.Trace("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
+                }
+
+                if (null == parameters)
+                {
+                    parameters = new Dictionary<String, ParamValue>();
+                    this.connection.sendParamsListRequest();
+                }
+
+                if ((message.messid.Equals(MAVLink.MAVLINK_MSG_ID.PARAM_VALUE))&&(null != parameters))
+                {
+                    ParamValue param = new ParamValue(message);
+                    this.parameters.Add(param.param_id, param);
                 }
             }
             catch (Exception e)

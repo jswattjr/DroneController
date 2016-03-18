@@ -99,6 +99,34 @@ namespace DroneController.Controllers
             return null;
         }
 
+        [HttpGet]
+        [Route("drones/{id}/parameters")]
+        public IHttpActionResult getParameters(string id)
+        {
+            logger.Debug("getting parameters for /drones/{0}", id);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                Dictionary<String, ParamValue> parameters = target.Parameters;
+                if (null != parameters)
+                {
+                    return Ok(new ParametersDTO(parameters));
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         [Route("drones/{id}/arm")]
         public IHttpActionResult armCommand(string id)

@@ -127,6 +127,8 @@
     <Compile Include="DataTransferObjects\HeartbeatDTO.cs" />
     <Compile Include="DataTransferObjects\MissionCurrentDTO.cs" />
     <Compile Include="DataTransferObjects\NavControllerOutputDTO.cs" />
+    <Compile Include="DataTransferObjects\ParametersDTO.cs" />
+    <Compile Include="DataTransferObjects\ParamValueDTO.cs" />
     <Compile Include="DataTransferObjects\PowerStatusDTO.cs" />
     <Compile Include="DataTransferObjects\RawImuDTO.cs" />
     <Compile Include="DataTransferObjects\RcChannelsRawDTO.cs" />
