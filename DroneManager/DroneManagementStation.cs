@@ -43,6 +43,19 @@ namespace DroneManager
             }
         }
 
+        public Boolean disconnect(Guid guid)
+        {
+            logger.Debug("Disconnecting Drone: {0}", guid.ToString());
+            Drone result = connections.FirstOrDefault(drone => drone.data.id == guid);
+            if (null != result)
+            {
+                connections.Remove(result);
+                result.connection.disconnect();
+                return true;
+            }
+            return false;
+        }
+
         public void discover()
         {
             logger.Debug("Starting discovery.");

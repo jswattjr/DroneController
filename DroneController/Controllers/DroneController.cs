@@ -42,6 +42,22 @@ namespace DroneController.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("drones/{id}/disconnect")]
+        public IHttpActionResult disconnect(string id)
+        {
+            logger.Debug("Disconnecting /drones/{0}", id);
+            Boolean success = droneMgr.disconnect(new Guid(id));
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet]
         [Route("drones/{id}")]
         public IHttpActionResult getById(string id)

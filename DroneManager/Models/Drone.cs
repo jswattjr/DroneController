@@ -47,8 +47,8 @@ namespace DroneManager.Models
                 {
                     return true;
                 }
+                logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.data.id, connection.port.PortName);
             }
-            logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.data.id, connection.port.PortName);
             return false;
         }
 
