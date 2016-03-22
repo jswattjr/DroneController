@@ -24,7 +24,7 @@ namespace DroneManager.Models.MessageContainers
     */
     public class Heartbeat : MessageContainerBase
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetLogger("database");
 
         // message parameters
         public MAVLink.MAV_TYPE type { get; set; }

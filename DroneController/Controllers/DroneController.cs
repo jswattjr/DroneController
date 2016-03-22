@@ -16,7 +16,7 @@ namespace DroneController.Controllers
     public class DroneController : ApiController
     {
         static DroneManagementStation droneMgr = new DroneManagementStation();
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetLogger("database");
 
         [HttpGet]
         [Route("drones")]

@@ -17,7 +17,7 @@ namespace DroneManager
 {
     public class DroneManagementStation
     {
-        Logger logger = LogManager.GetCurrentClassLogger();
+        Logger logger = LogManager.GetLogger("database");
 
         IEntityRepository<DroneEntity> droneRepo = RepositoryFactory.getDroneRepository();
         public List<Drone> connections = new List<Drone>();

@@ -20,7 +20,7 @@ namespace DroneConnection
     */
     public class MavLinkConnection
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetLogger("database");
 
         // serial port where communication is taking place
         public SerialPort port { get; private set; }

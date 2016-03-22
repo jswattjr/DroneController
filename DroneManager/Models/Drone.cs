@@ -14,7 +14,7 @@ namespace DroneManager.Models
     public partial class Drone
     {
 
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetLogger("database");
         // special logger defined in nlog config for drone messages
         static Logger messageDump = LogManager.GetLogger("rawmessages");
 
@@ -201,7 +201,7 @@ namespace DroneManager.Models
                 }
 
                 // log message text to file
-                messageDump.Debug(jsonBody);
+                messageDump.Trace(jsonBody);
 
                 JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
                 MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody, settings);

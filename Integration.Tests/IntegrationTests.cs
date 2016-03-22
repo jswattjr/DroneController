@@ -49,7 +49,7 @@ namespace Tests
             LogRepository logRepo = DataAccessLibrary.RepositoryFactory.getLogsRepository();
             IList<NLogEntity> logs = logRepo.getAll().ToList();
             int size = logs.Count;
-            Logger logger = LogManager.GetCurrentClassLogger();
+            Logger logger = LogManager.GetLogger("database");
             logger.Debug("LoggingTest run, sample log entry");
             logs = logRepo.getAll().ToList();
             Assert.AreEqual(logs.Count, size + 1);

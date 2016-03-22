@@ -14,7 +14,7 @@ namespace DroneConnection
 
     public class MavLinkEvents
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetLogger("database");
         
         // string prefixed to message queue names in front of system id number
         const String messageQueuePrefix = "MavLinkConnection";

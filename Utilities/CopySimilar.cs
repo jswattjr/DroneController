@@ -10,7 +10,7 @@ namespace Utilities
 {
     public static class CopySimilar
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        static Logger logger = LogManager.GetLogger("database");
 
         public static void CopyAll(object source, object target)
         {
