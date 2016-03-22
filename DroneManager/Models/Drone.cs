@@ -15,6 +15,8 @@ namespace DroneManager.Models
     {
 
         static Logger logger = LogManager.GetCurrentClassLogger();
+        // special logger defined in nlog config for drone messages
+        static Logger messageDump = LogManager.GetLogger("rawmessages");
 
         // database record
         public DroneEntity data = new DroneEntity();
@@ -191,11 +193,15 @@ namespace DroneManager.Models
                     return;
                 }
                 String jsonBody = Encoding.UTF8.GetString(body);
+
                 if (null == jsonBody)
                 {
                     logger.Error("failed to parse JSON in events callback");
                     return;
                 }
+
+                // log message text to file
+                messageDump.Debug(jsonBody);
 
                 JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
                 MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody, settings);
@@ -234,7 +240,9 @@ namespace DroneManager.Models
                 {
                     ParamValue param = new ParamValue(message);
                     this.parameters.Add(param.param_id, param);
+                    logger.Debug("Parameter {0} found with value {1}", param.param_id, param.param_value);
                 }
+
             }
             catch (Exception e)
             {
