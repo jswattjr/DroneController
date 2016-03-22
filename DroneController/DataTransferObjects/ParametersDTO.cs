@@ -12,6 +12,7 @@ namespace DroneController.DataTransferObjects
         
         public ParametersDTO (Dictionary<String, ParamValue> source)
         {
+            parameters = new Dictionary<string, ParamValueDTO>();
             foreach(String key in source.Keys)
             {
                 parameters.Add(key, new ParamValueDTO(source[key]));
