@@ -60,7 +60,8 @@ namespace DroneManager.Models.MessageContainers
             {
                 MAVLink.mavlink_param_value_t data = (MAVLink.mavlink_param_value_t)message.data_struct;
                 this.param_count = data.param_count;
-                this.param_id = System.Text.Encoding.UTF8.GetString(data.param_id, 0, data.param_id.Length);
+                this.param_id = System.Text.ASCIIEncoding.ASCII.GetString(data.param_id);
+                this.param_id = this.param_id.Replace("\0", string.Empty);
                 this.param_index = data.param_index;
                 this.param_type = (MAVLink.MAV_PARAM_TYPE)data.param_type;
             }

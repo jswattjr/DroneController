@@ -1,4 +1,5 @@
 ﻿using DroneManager.Models.MessageContainers;
+using DroneParameterReference;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -22,9 +23,28 @@ namespace DroneController.DataTransferObjects
         [JsonConverter(typeof(StringEnumConverter))]
         public MAVLink.MAV_PARAM_TYPE param_type { get; set; }
 
+        // parameter metadata
+        public String DisplayName { get; set; }
+        public String Description { get; set; }
+        public String Units { get; set; }
+        public String Upper { get; set; }
+        public String Lower { get; set; }
+
         public ParamValueDTO(ParamValue source)
         {
             Utilities.CopySimilar.CopyAll(source, this);
+
+            // lookup static metadata about this parameter
+            ParameterMetadata metadataLookup = new ParameterMetadata();
+            ParameterMetadataEntry data = metadataLookup.fetchMetadata(param_id);
+            if (null != data)
+            {
+                DisplayName = data.DisplayName;
+                Description = data.Description;
+                Units = data.Units;
+                Upper = data.Upper;
+                Lower = data.Lower;
+            }
         }
     }
 }
