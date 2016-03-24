@@ -53,7 +53,7 @@ namespace DroneManager.Models
         }
 
         public Dictionary<String, ParamValue> Parameters { get { return parameters; } private set { parameters = value; } }
-        private Dictionary<String, ParamValue> parameters = null;
+        volatile private Dictionary<String, ParamValue> parameters = null;
 
         //state
         public Heartbeat getHearbeat()
@@ -238,9 +238,12 @@ namespace DroneManager.Models
 
                 if ((message.messid.Equals(MAVLink.MAVLINK_MSG_ID.PARAM_VALUE))&&(null != parameters))
                 {
-                    ParamValue param = new ParamValue(message);
-                    this.parameters.Add(param.param_id, param);
-                    logger.Debug("Parameter {0} found with value {1}", param.param_id, param.param_value);
+                    lock (parameters)
+                    {
+                        ParamValue param = new ParamValue(message);
+                        this.parameters.Add(param.param_id, param);
+                        logger.Debug("Parameter {0} found with value {1}", param.param_id, param.param_value);
+                    }
                 }
 
             }
