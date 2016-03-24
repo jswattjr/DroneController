@@ -15,6 +15,7 @@ namespace DroneParameterReference
         static Logger logger = LogManager.GetLogger("database");
         static Dictionary<String, ParameterMetadataEntry> parameterMetadata = null;
         static Object lockObj = new object();
+        static String paramsFilename = "ParameterMetaDataBackup.xml";
 
         public ParameterMetadata()
         {
@@ -43,10 +44,15 @@ namespace DroneParameterReference
             return null;
         }
 
+        public int numEntries()
+        {
+            return parameterMetadata.Keys.Count;
+        }
+
         static private void loadData()
         {
             // source file
-            string metadata = GetResourceTextFile("ParameterMetaDataBackup.xml");
+            string metadata = GetResourceTextFile(paramsFilename);
 
             // destination static object
             parameterMetadata = new Dictionary<string, ParameterMetadataEntry>();
@@ -83,6 +89,8 @@ namespace DroneParameterReference
                         parameterMetadata.Add(entry.key, entry);
                     }
                 }
+
+                logger.Debug("Loaded {0} parameters from file {1}", parameterMetadata.Keys.Count, paramsFilename);
             }
         }
 
