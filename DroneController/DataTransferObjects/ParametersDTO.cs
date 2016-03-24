@@ -14,13 +14,10 @@ namespace DroneController.DataTransferObjects
         
         public ParametersDTO (Dictionary<String, ParamValue> source)
         {
-            lock (source)
+            parameters = new Dictionary<string, ParamValueDTO>();
+            foreach (String key in source.Keys)
             {
-                parameters = new Dictionary<string, ParamValueDTO>();
-                foreach (String key in source.Keys)
-                {
-                    parameters.Add(key, new ParamValueDTO(source[key]));
-                }
+                parameters.Add(key, new ParamValueDTO(source[key]));
             }
 
             count = parameters.Keys.Count;

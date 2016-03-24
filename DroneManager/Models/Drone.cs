@@ -52,7 +52,17 @@ namespace DroneManager.Models
             return false;
         }
 
-        public Dictionary<String, ParamValue> Parameters { get { return parameters; } private set { parameters = value; } }
+        public Dictionary<String, ParamValue> Parameters { get {
+                if (null != parameters)
+                {
+                    lock (parameters)
+                    {
+                        return new Dictionary<String, ParamValue>(parameters);
+                    }
+                }
+                return null;
+            } private set { parameters = value; } }
+
         volatile private Dictionary<String, ParamValue> parameters = null;
 
         //state
