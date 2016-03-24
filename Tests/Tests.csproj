@@ -89,6 +89,10 @@
       <Project>{fd29626e-9f38-4fd4-9eb1-0131d656d4fa}</Project>
       <Name>DroneManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DroneParameterReference\DroneParameterReference.csproj">
+      <Project>{49516657-7cd4-4327-bbb5-2b7fcd23387e}</Project>
+      <Name>DroneParameterReference</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mavlink\MAVLink.csproj">
       <Project>{20296734-5f3c-4593-a0d5-dd20b440b13a}</Project>
       <Name>MAVLink</Name>

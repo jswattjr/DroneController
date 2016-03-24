@@ -1,7 +1,9 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -10,6 +12,7 @@ namespace DroneParameterReference
 {
     public class ParameterMetadata
     {
+        static Logger logger = LogManager.GetLogger("database");
         static Dictionary<String, ParameterMetadataEntry> parameterMetadata = null;
         static Object lockObj = new object();
 
@@ -68,7 +71,7 @@ namespace DroneParameterReference
                         entry.Units = safeGet(parameter, "Units");
                         entry.User = safeGet(parameter, "User");
                         String range = safeGet(parameter, "Range");
-                        if (range.Length > 0)
+                        if ((null != range)&&(range.Length > 0))
                         {
                             String[] ranges = range.Split(' ');
                             if (ranges.Length > 2)
@@ -85,11 +88,11 @@ namespace DroneParameterReference
 
         static private String safeGet(XmlNode node, String field)
         {
-            XmlNode property = node[field];
+            XmlNode property = node.SelectSingleNode(field);
             String result = "";
             if (null != property)
             {
-                result = property.Value;
+                result = property.InnerText;
             }
             return result;
         }
@@ -98,9 +101,12 @@ namespace DroneParameterReference
         {
             string result = string.Empty;
 
-            using (Stream stream = typeof(ParameterMetadata).Assembly.
-                       GetManifestResourceStream("assembly.folder." + filename))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("DroneParameterReference." + filename))
             {
+                if (null == stream)
+                {
+                    logger.Error("Unable to load Parameter Resource File {0}, parameter information may not be available.", filename);
+                }
                 using (StreamReader sr = new StreamReader(stream))
                 {
                     result = sr.ReadToEnd();

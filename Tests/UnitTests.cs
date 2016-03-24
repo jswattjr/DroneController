@@ -4,6 +4,7 @@ using DroneConnection;
 using Newtonsoft.Json;
 using DroneManager.Models.MessageContainers;
 using DroneController.DataTransferObjects;
+using DroneParameterReference;
 
 namespace Tests
 {
@@ -673,6 +674,16 @@ namespace Tests
             Assert.AreEqual(dto.command, MAVLink.MAV_CMD.WAYPOINT);
             Assert.AreEqual(dto.result, MAVLink.MAV_RESULT.ACCEPTED);
 
+        }
+
+        [TestMethod]
+        public void CheckParameterMetadata()
+        {
+            ParameterMetadata data = new ParameterMetadata();
+            ParameterMetadataEntry entity = data.fetchMetadata("ARMING_CHECK");
+            Assert.AreEqual(entity.DisplayName, "Arming check");
+            entity = data.fetchMetadata("SYSID_SW_TYPE");
+            Assert.AreEqual(entity.DisplayName, "Software Type");
         }
     }
 }

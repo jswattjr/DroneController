@@ -64,6 +64,7 @@ namespace DroneManager.Models.MessageContainers
                 this.param_id = this.param_id.Replace("\0", string.Empty);
                 this.param_index = data.param_index;
                 this.param_type = (MAVLink.MAV_PARAM_TYPE)data.param_type;
+                this.param_value = data.param_value;
             }
         }
     }
