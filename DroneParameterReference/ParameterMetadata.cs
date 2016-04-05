@@ -12,7 +12,7 @@ namespace DroneParameterReference
 {
     public class ParameterMetadata
     {
-        static Logger logger = LogManager.GetLogger("database");
+        static Logger logger = LogManager.GetLogger("applog");
         static Dictionary<String, ParameterMetadataEntry> parameterMetadata = null;
         static Object lockObj = new object();
         static String paramsFilename = "ParameterMetaDataBackup.xml";

@@ -110,8 +110,6 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DroneController.cs" />
-    <Compile Include="Controllers\LogsController.cs" />
-    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DataTransferObjects\AttitudeDTO.cs" />
     <Compile Include="DataTransferObjects\CommandAckDTO.cs" />
     <Compile Include="DataTransferObjects\Commands\LandAtLocationAction.cs" />
@@ -148,10 +146,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessLibrary\DataAccessLibrary.csproj">
-      <Project>{26443762-30e5-4720-b26d-2b831a7a8219}</Project>
-      <Name>DataAccessLibrary</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DroneConnection\DroneConnection.csproj">
       <Project>{279f99cc-960c-4145-9e7c-28e52e71de5b}</Project>
       <Name>DroneConnection</Name>

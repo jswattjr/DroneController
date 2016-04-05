@@ -1,5 +1,4 @@
 ﻿using System;
-using DataAccessLibrary.Models;
 using DroneConnection;
 using NLog;
 using RabbitMQ.Client.Events;
@@ -14,15 +13,14 @@ namespace DroneManager.Models
     public partial class Drone
     {
 
-        static Logger logger = LogManager.GetLogger("database");
+        static Logger logger = LogManager.GetLogger("applog");
         // special logger defined in nlog config for drone messages
         static Logger messageDump = LogManager.GetLogger("rawmessages");
 
-        // database record
-        public DroneEntity data = new DroneEntity();
-
         // live connection
         public MavLinkConnection connection { get; set; }
+
+        public Guid id { get; set; }
 
         // events connection with MavLinkConnection
         MavLinkEvents events;
@@ -34,9 +32,9 @@ namespace DroneManager.Models
 
         Dictionary<MAVLink.MAVLINK_MSG_ID, MavLinkMessage> currentState = new Dictionary<MAVLink.MAVLINK_MSG_ID, MavLinkMessage>();
 
-        public Drone(DroneEntity entity)
+        public Drone()
         {
-            data.copy(entity);
+            this.id = Guid.NewGuid();
         }
 
         public Boolean isConnected()
@@ -47,7 +45,7 @@ namespace DroneManager.Models
                 {
                     return true;
                 }
-                logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.data.id, connection.port.PortName);
+                logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.id, connection.port.PortName);
             }
             return false;
         }

@@ -53,7 +53,7 @@ namespace DroneManager.Models
 
         public class Commands
         {
-            static Logger logger = LogManager.GetLogger("database");
+            static Logger logger = LogManager.GetLogger("applog");
 
             Drone drone;
             MavLinkConnection connection;

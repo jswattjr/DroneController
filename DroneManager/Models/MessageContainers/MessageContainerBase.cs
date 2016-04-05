@@ -12,7 +12,7 @@ namespace DroneManager.Models.MessageContainers
 {
     public abstract class MessageContainerBase
     {
-        static Logger logger = LogManager.GetLogger("database");
+        static Logger logger = LogManager.GetLogger("applog");
 
         public abstract MAVLink.MAVLINK_MSG_ID MessageID { get; }
         public abstract Type getStructType();

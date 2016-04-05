@@ -57,11 +57,11 @@ namespace DroneController.DataTransferObjects
 
         public DroneDTO(Drone droneObj)
         {
-            this.id = droneObj.data.id;
-            this.name = droneObj.data.name;
-            this.port = droneObj.data.serialPort;
+            this.id = droneObj.id;
+            this.name = droneObj.id.ToString();
             if (null != droneObj.connection)
             {
+                this.port = droneObj.connection.port.PortName;
                 if (droneObj.connection.port.IsOpen)
                 {
                     this.state = ConnectionState.CONNECTED;
