@@ -11,6 +11,7 @@ using DataTransferObjects;
 using DroneManager.Models.MessageContainers;
 using DataTransferObjects.Commands;
 using DataTransferObjects.Messages;
+using DroneController.DTOFactory;
 
 namespace DroneController.Controllers
 {
@@ -31,7 +32,7 @@ namespace DroneController.Controllers
         private List<DroneDTO> getActiveRecords()
         {
             // return list of active connection data records (trying to serialize the pure connection object will fail due to the data stream)
-            return droneMgr.connections.Select(x => new DroneDTO(x)).ToList();
+            return droneMgr.connections.Select(x => DTOFactory.DTOFactory.createDroneDTO(x)).ToList();
         }
 
         [HttpGet]
@@ -67,7 +68,7 @@ namespace DroneController.Controllers
             Drone target = droneMgr.getById(new Guid(id));
             if (null != target)
             {
-                DroneDTO targetDTO = new DroneDTO(target);
+                DroneDTO targetDTO = DTOFactory.DTOFactory.createDroneDTO(target);
                 return Ok(targetDTO);
             }
             else
@@ -91,7 +92,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {
@@ -131,7 +132,7 @@ namespace DroneController.Controllers
                 Dictionary<String, ParamValue> parameters = target.Parameters;
                 if (null != parameters)
                 {
-                    return Ok(new ParametersDTO(parameters));
+                    return Ok(DTOFactory.DTOFactory.createParametersDTO(parameters));
                 }
                 else
                 {
@@ -188,7 +189,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {
@@ -218,7 +219,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {
@@ -248,7 +249,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {
@@ -278,7 +279,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {
@@ -308,7 +309,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {
@@ -338,7 +339,7 @@ namespace DroneController.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(new CommandAckDTO(result));
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }
             else
             {

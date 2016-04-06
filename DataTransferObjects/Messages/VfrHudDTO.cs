@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,10 +19,5 @@ namespace DataTransferObjects.Messages
         public Int16 heading { get; set; }
         /// <summary> Current throttle setting in integer percent, 0 to 100 </summary>
         public UInt16 throttle { get; set; }
-
-        public VfrHudDTO (VfrHud source )
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

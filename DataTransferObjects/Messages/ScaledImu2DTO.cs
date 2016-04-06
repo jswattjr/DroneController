@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -28,10 +27,5 @@ namespace DataTransferObjects.Messages
         public Int16 ymag { get; set; }
         /// <summary> Z Magnetic field (milli tesla) </summary>
         public Int16 zmag { get; set; }
-
-        public ScaledImu2DTO (ScaledImu2 source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

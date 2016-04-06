@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -25,13 +24,5 @@ namespace DataTransferObjects.Messages
         public UInt16 errors_count2 { get; set; }
         public UInt16 errors_count3 { get; set; }
         public UInt16 errors_count4 { get; set; }
-
-        public SystemStatusDTO(SystemStatus source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-            this.sensorsEnabled = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsEnabled);
-            this.sensorsHealth = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsHealth);
-            this.sensorsPresent = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsPresent);
-        }
     }
 }

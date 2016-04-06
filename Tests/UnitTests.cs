@@ -7,6 +7,7 @@ using DataTransferObjects;
 using DataTransferObjects.Messages;
 using DataTransferObjects.Commands;
 using DroneParameterReference;
+using DroneController.DTOFactory;
 
 namespace Tests
 {
@@ -82,7 +83,7 @@ namespace Tests
             Assert.AreEqual((MAVLink.MAV_STATE)sampleStruct.system_status, heartbeatContainer.system_status);
             Assert.AreEqual((MAVLink.MAV_TYPE)sampleStruct.type, heartbeatContainer.type);
 
-            HeartbeatDTO dto = new HeartbeatDTO(heartbeatContainer);
+            HeartbeatDTO dto = DTOFactory.createHeartbeatDTO(heartbeatContainer);
 
             Assert.AreEqual(dto.autopilot, heartbeatContainer.autopilot);
             Assert.AreEqual(dto.base_mode.Count, heartbeatContainer.base_mode.Count);
@@ -139,7 +140,7 @@ namespace Tests
             Assert.AreEqual(statusStruct.errors_count3, systemStatus.errors_count3);
             Assert.AreEqual(statusStruct.errors_count4, systemStatus.errors_count4);
 
-            SystemStatusDTO dto = new SystemStatusDTO(systemStatus);
+            SystemStatusDTO dto = DTOFactory.createSystemStatusDTO(systemStatus);
 
             Assert.AreEqual(dto.voltage_battery, systemStatus.voltage_battery);
             Assert.AreEqual(dto.current_battery, systemStatus.current_battery);
@@ -168,7 +169,7 @@ namespace Tests
             Assert.AreEqual(timeStruct.time_boot_ms, systemTime.time_boot_ms);
             Assert.AreEqual(timeStruct.time_unix_usec, systemTime.time_unix_sec);
 
-            SystemTimeDTO dto = new SystemTimeDTO(systemTime);
+            SystemTimeDTO dto = DTOFactory.createSystemTimeDTO(systemTime);
 
             Assert.AreEqual(dto.time_boot_ms, systemTime.time_boot_ms);
             Assert.AreEqual(dto.time_unix_sec, systemTime.time_unix_sec);
@@ -207,7 +208,7 @@ namespace Tests
             Assert.AreEqual(gpsStruct.vel, obj.vel);
             Assert.AreEqual(GpsRawInt.FixType.FIX_3D, obj.fixTypeEnum);
 
-            GpsRawIntDTO dto = new GpsRawIntDTO(obj);
+            GpsRawIntDTO dto = DTOFactory.createGpsRawIntDTO(obj);
 
             Assert.AreEqual(dto.alt, obj.alt);
             Assert.AreEqual(dto.cog, obj.cog);
@@ -251,7 +252,7 @@ namespace Tests
             Assert.AreEqual(data.ymag, obj.ymag);
             Assert.AreEqual(data.zmag, obj.zmag);
 
-            RawImuDTO dto = new RawImuDTO(obj);
+            RawImuDTO dto = DTOFactory.createRawImuDTO(obj);
             Assert.AreEqual(dto.xacc, obj.xacc);
             Assert.AreEqual(dto.yacc, obj.yacc);
             Assert.AreEqual(dto.zacc, obj.zacc);
@@ -282,7 +283,7 @@ namespace Tests
             Assert.AreEqual(data.temperature, obj.temperature);
             Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
 
-            ScaledPressureDTO dto = new ScaledPressureDTO(obj);
+            ScaledPressureDTO dto = DTOFactory.createScaledPressureDTO(obj);
 
             Assert.AreEqual(dto.press_abs, obj.press_abs);
             Assert.AreEqual(dto.press_diff, obj.press_diff);
@@ -316,7 +317,7 @@ namespace Tests
             Assert.AreEqual(data.yaw, obj.yaw);
             Assert.AreEqual(data.yawspeed, obj.yawspeed);
 
-            AttitudeDTO dto = new AttitudeDTO(obj);
+            AttitudeDTO dto = DTOFactory.createAttitudeDTO(obj);
 
             Assert.AreEqual(dto.pitch, obj.pitch);
             Assert.AreEqual(dto.pitchspeed, obj.pitchspeed);
@@ -356,7 +357,7 @@ namespace Tests
             Assert.AreEqual(data.vy, obj.vy);
             Assert.AreEqual(data.vz, obj.vz);
 
-            GlobalPositionIntDTO dto = new GlobalPositionIntDTO(obj);
+            GlobalPositionIntDTO dto = DTOFactory.createGlobalPositionIntDTO(obj);
 
             Assert.AreEqual(dto.alt, obj.alt);
             Assert.AreEqual(dto.hdg, obj.hdg);
@@ -402,7 +403,7 @@ namespace Tests
             Assert.AreEqual(data.rssi, obj.rssi);
             Assert.AreEqual(data.time_boot_ms, obj.time_boot_ms);
 
-            RcChannelsRawDTO dto = new RcChannelsRawDTO(obj);
+            RcChannelsRawDTO dto = DTOFactory.createRcChannelsRawDTO(obj);
 
             Assert.AreEqual(dto.chan1_raw, obj.chan1_raw);
             Assert.AreEqual(dto.chan2_raw, obj.chan2_raw);
@@ -448,7 +449,7 @@ namespace Tests
             Assert.AreEqual(data.servo8_raw, obj.servo8_raw);
             Assert.AreEqual(data.time_usec, obj.time_usec);
 
-            ServoOutputRawDTO dto = new ServoOutputRawDTO(obj);
+            ServoOutputRawDTO dto = DTOFactory.createServoOutputRawDTO(obj);
 
             Assert.AreEqual(dto.port, obj.port);
             Assert.AreEqual(dto.servo1_raw, obj.servo1_raw);
@@ -475,7 +476,7 @@ namespace Tests
 
             Assert.AreEqual(data.seq, obj.seq);
 
-            MissionCurrentDTO dto = new MissionCurrentDTO(obj);
+            MissionCurrentDTO dto = DTOFactory.createMissionCurrentDTO(obj);
 
             Assert.AreEqual(dto.seq, obj.seq);
         }
@@ -506,7 +507,7 @@ namespace Tests
             Assert.AreEqual(data.wp_dist, obj.wp_dist);
             Assert.AreEqual(data.xtrack_error, obj.xtrack_error);
 
-            NavControllerOutputDTO dto = new NavControllerOutputDTO(obj);
+            NavControllerOutputDTO dto = DTOFactory.createNavControllerOutputDTO(obj);
 
             Assert.AreEqual(dto.alt_error, obj.alt_error);
             Assert.AreEqual(dto.aspd_error, obj.aspd_error);
@@ -541,7 +542,7 @@ namespace Tests
             Assert.AreEqual(data.heading, obj.heading);
             Assert.AreEqual(data.throttle, obj.throttle);
 
-            VfrHudDTO dto = new VfrHudDTO(obj);
+            VfrHudDTO dto = DTOFactory.createVfrHudDTO(obj);
 
             Assert.AreEqual(dto.airspeed, obj.airspeed);
             Assert.AreEqual(dto.alt, obj.alt);
@@ -576,7 +577,7 @@ namespace Tests
             Assert.AreEqual(data.spacing, obj.spacing);
             Assert.AreEqual(data.terrain_height, obj.terrain_height);
 
-            TerrainReportDTO dto = new TerrainReportDTO(obj);
+            TerrainReportDTO dto = DTOFactory.createTerrainReportDTO(obj);
 
             Assert.AreEqual(dto.current_height, obj.current_height);
             Assert.AreEqual(dto.lat, obj.lat);
@@ -618,7 +619,7 @@ namespace Tests
             Assert.AreEqual(data.zgyro, obj.zgyro);
             Assert.AreEqual(data.zmag, obj.zmag);
 
-            ScaledImu2DTO dto = new ScaledImu2DTO(obj);
+            ScaledImu2DTO dto = DTOFactory.createScaledImu2DTO(obj);
 
             Assert.AreEqual(dto.time_boot_ms, obj.time_boot_ms);
             Assert.AreEqual(dto.xacc, obj.xacc);
@@ -649,7 +650,7 @@ namespace Tests
             Assert.AreEqual(data.Vcc, obj.Vcc);
             Assert.AreEqual(1, obj.flags.Count);
 
-            PowerStatusDTO dto = new PowerStatusDTO(obj);
+            PowerStatusDTO dto = DTOFactory.createPowerStatusDTO(obj);
 
             Assert.AreEqual(dto.Vservo, obj.Vservo);
             Assert.AreEqual(dto.Vcc, obj.Vcc);
@@ -671,7 +672,7 @@ namespace Tests
             Assert.AreEqual(obj.command, MAVLink.MAV_CMD.WAYPOINT);
             Assert.AreEqual(obj.result, MAVLink.MAV_RESULT.ACCEPTED);
 
-            CommandAckDTO dto = new CommandAckDTO(obj);
+            CommandAckDTO dto = DTOFactory.createCommandAckDTO(obj);
 
             Assert.AreEqual(dto.command, MAVLink.MAV_CMD.WAYPOINT);
             Assert.AreEqual(dto.result, MAVLink.MAV_RESULT.ACCEPTED);

@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -28,10 +27,5 @@ namespace DataTransferObjects.Messages
         public UInt16 servo8_raw { get; set; }
         /// <summary> Servo output port (set of 8 outputs = 1 port). Most MAVs will just use one, but this allows to encode more than 8 servos. </summary>
         public int port { get; set; }
-
-        public ServoOutputRawDTO(ServoOutputRaw source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

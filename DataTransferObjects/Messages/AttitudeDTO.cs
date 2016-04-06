@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,9 +22,5 @@ namespace DataTransferObjects.Messages
         /// <summary> Yaw angular speed (rad/s) </summary>
         public Single yawspeed { get; set; }
 
-        public AttitudeDTO (Attitude source )
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

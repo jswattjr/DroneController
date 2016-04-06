@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,9 +24,5 @@ namespace DataTransferObjects.Messages
         /// <summary> Distance to active MISSION in meters </summary>
         public UInt16 wp_dist { get; set; }
 
-        public NavControllerOutputDTO(NavControllerOutput source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -18,12 +17,5 @@ namespace DataTransferObjects.Messages
         //public UInt16 flags;
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<MAVLink.MAV_POWER_STATUS> flags { get; set; }
-
-        public PowerStatusDTO (PowerStatus source)
-        {
-            this.Vcc = source.Vcc;
-            this.Vservo = source.Vservo;
-            this.flags = new List<MAVLink.MAV_POWER_STATUS>(source.flags);
-        }
     }
 }

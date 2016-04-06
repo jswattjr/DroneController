@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using DroneParameterReference;
+﻿using DroneParameterReference;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
@@ -30,21 +29,5 @@ namespace DataTransferObjects.Messages
         public String Upper { get; set; }
         public String Lower { get; set; }
 
-        public ParamValueDTO(ParamValue source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-
-            // lookup static metadata about this parameter
-            ParameterMetadata metadataLookup = new ParameterMetadata();
-            ParameterMetadataEntry data = metadataLookup.fetchMetadata(param_id);
-            if (null != data)
-            {
-                DisplayName = data.DisplayName;
-                Description = data.Description;
-                Units = data.Units;
-                Upper = data.Upper;
-                Lower = data.Lower;
-            }
-        }
     }
 }

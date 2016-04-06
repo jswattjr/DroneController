@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -17,10 +16,5 @@ namespace DataTransferObjects.Messages
         public Int16 xmag { get; set; }
         public Int16 ymag { get; set; }
         public Int16 zmag { get; set; }
-
-        public RawImuDTO (RawImu source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

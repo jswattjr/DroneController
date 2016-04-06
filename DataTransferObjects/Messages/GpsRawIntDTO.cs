@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,11 +17,7 @@ namespace DataTransferObjects.Messages
         public UInt16 vel { get; set; }
         public UInt16 cog { get; set; }
         public UInt16 satellites_visible { get; set; }
-        public GpsRawInt.FixType fixTypeEnum { get; set; }
+        public String fixTypeEnum { get; set; }
 
-        public GpsRawIntDTO( GpsRawInt source )
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

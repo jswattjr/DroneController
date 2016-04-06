@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -30,11 +29,6 @@ namespace DataTransferObjects.Messages
         public byte port { get; set; }
         /// <summary> Receive signal strength indicator, 0: 0%, 100: 100%, 255: invalid/unknown. </summary>
         public byte rssi { get; set; }
-
-        public RcChannelsRawDTO(RcChannelsRaw source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
 
     }
 }

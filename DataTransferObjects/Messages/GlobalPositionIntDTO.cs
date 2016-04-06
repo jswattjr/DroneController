@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -43,10 +42,5 @@ namespace DataTransferObjects.Messages
         public Int16 vz { get; set; }
         /// <summary> Compass heading in degrees * 100, 0.0..359.99 degrees. If unknown, set to: UINT16_MAX </summary>
         public UInt16 hdg { get; set; }
-
-        public GlobalPositionIntDTO (GlobalPositionInt source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }

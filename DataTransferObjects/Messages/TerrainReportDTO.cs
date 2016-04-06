@@ -1,5 +1,4 @@
-﻿using DroneManager.Models.MessageContainers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,9 +22,5 @@ namespace DataTransferObjects.Messages
         /// <summary> Number of 4x4 terrain blocks in memory </summary>
         public UInt16 loaded { get; set; }
 
-        public TerrainReportDTO (TerrainReport source)
-        {
-            Utilities.CopySimilar.CopyAll(source, this);
-        }
     }
 }
