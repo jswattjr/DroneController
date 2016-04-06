@@ -109,6 +109,7 @@ namespace DroneController.DTOFactory
         {
             GpsRawIntDTO result = new GpsRawIntDTO();
             Utilities.CopySimilar.CopyAll(source, result);
+            result.fixTypeLabel = source.fixTypeEnum.ToString();
             return result;
         }
 
