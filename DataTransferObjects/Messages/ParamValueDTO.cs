@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DroneController.DataTransferObjects
+namespace DataTransferObjects.Messages
 {
     public class ParamValueDTO
     {

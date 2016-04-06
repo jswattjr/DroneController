@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DroneController.DataTransferObjects
+namespace DataTransferObjects.Messages
 {
-    public class MissionCurrentDTO
+    public class SystemTimeDTO
     {
-        /// <summary> Sequence </summary>
-        public UInt16 seq { get; set; }
+        public UInt64 time_unix_sec { get; set; }
+        public UInt32 time_boot_ms { get; set; }
 
-        public MissionCurrentDTO( MissionCurrent source)
+        public SystemTimeDTO(SystemTime source)
         {
             Utilities.CopySimilar.CopyAll(source, this);
         }

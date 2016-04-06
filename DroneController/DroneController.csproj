@@ -110,33 +110,6 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\DroneController.cs" />
-    <Compile Include="DataTransferObjects\AttitudeDTO.cs" />
-    <Compile Include="DataTransferObjects\CommandAckDTO.cs" />
-    <Compile Include="DataTransferObjects\Commands\LandAtLocationAction.cs" />
-    <Compile Include="DataTransferObjects\Commands\LocationBasedAction.cs" />
-    <Compile Include="DataTransferObjects\Commands\LoiterTimeAction.cs" />
-    <Compile Include="DataTransferObjects\Commands\LoiterTurnsAction.cs" />
-    <Compile Include="DataTransferObjects\Commands\LoiterUnlimitedAction.cs" />
-    <Compile Include="DataTransferObjects\Commands\NavigateWaypointAction.cs" />
-    <Compile Include="DataTransferObjects\Commands\TakeoffAction.cs" />
-    <Compile Include="DataTransferObjects\DroneDTO.cs" />
-    <Compile Include="DataTransferObjects\GlobalPositionIntDTO.cs" />
-    <Compile Include="DataTransferObjects\GpsRawIntDTO.cs" />
-    <Compile Include="DataTransferObjects\HeartbeatDTO.cs" />
-    <Compile Include="DataTransferObjects\MissionCurrentDTO.cs" />
-    <Compile Include="DataTransferObjects\NavControllerOutputDTO.cs" />
-    <Compile Include="DataTransferObjects\ParametersDTO.cs" />
-    <Compile Include="DataTransferObjects\ParamValueDTO.cs" />
-    <Compile Include="DataTransferObjects\PowerStatusDTO.cs" />
-    <Compile Include="DataTransferObjects\RawImuDTO.cs" />
-    <Compile Include="DataTransferObjects\RcChannelsRawDTO.cs" />
-    <Compile Include="DataTransferObjects\ScaledImu2DTO.cs" />
-    <Compile Include="DataTransferObjects\ScaledPressureDTO.cs" />
-    <Compile Include="DataTransferObjects\ServoOutputRawDTO.cs" />
-    <Compile Include="DataTransferObjects\SystemStatusDTO.cs" />
-    <Compile Include="DataTransferObjects\SystemTimeDTO.cs" />
-    <Compile Include="DataTransferObjects\TerrainReportDTO.cs" />
-    <Compile Include="DataTransferObjects\VfrHudDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -146,6 +119,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj">
+      <Project>{299ffc76-5896-49ca-8d0f-12690df76762}</Project>
+      <Name>DataTransferObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DroneConnection\DroneConnection.csproj">
       <Project>{279f99cc-960c-4145-9e7c-28e52e71de5b}</Project>
       <Name>DroneConnection</Name>

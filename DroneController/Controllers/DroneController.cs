@@ -7,9 +7,10 @@ using System.Web.Http;
 using DroneManager.Models;
 using DroneManager;
 using NLog;
-using DroneController.DataTransferObjects;
+using DataTransferObjects;
 using DroneManager.Models.MessageContainers;
-using DroneController.DataTransferObjects.Commands;
+using DataTransferObjects.Commands;
+using DataTransferObjects.Messages;
 
 namespace DroneController.Controllers
 {

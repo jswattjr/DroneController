@@ -73,6 +73,10 @@
     <Compile Include="UnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj">
+      <Project>{299ffc76-5896-49ca-8d0f-12690df76762}</Project>
+      <Name>DataTransferObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DroneConnection\DroneConnection.csproj">
       <Project>{279f99cc-960c-4145-9e7c-28e52e71de5b}</Project>
       <Name>DroneConnection</Name>

@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DroneController.DataTransferObjects
+namespace DataTransferObjects.Messages
 {
-    public class SystemTimeDTO
+    public class ScaledPressureDTO
     {
-        public UInt64 time_unix_sec { get; set; }
         public UInt32 time_boot_ms { get; set; }
+        public Single press_abs { get; set; }
+        public Single press_diff { get; set; }
+        public Int16 temperature { get; set; }
 
-        public SystemTimeDTO(SystemTime source)
+        public ScaledPressureDTO( ScaledPressure source)
         {
             Utilities.CopySimilar.CopyAll(source, this);
         }

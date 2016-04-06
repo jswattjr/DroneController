@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Util
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DroneParameterReference", "DroneParameterReference\DroneParameterReference.csproj", "{49516657-7CD4-4327-BBB5-2B7FCD23387E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransferObjects", "DataTransferObjects\DataTransferObjects.csproj", "{299FFC76-5896-49CA-8D0F-12690DF76762}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{49516657-7CD4-4327-BBB5-2B7FCD23387E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49516657-7CD4-4327-BBB5-2B7FCD23387E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49516657-7CD4-4327-BBB5-2B7FCD23387E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{299FFC76-5896-49CA-8D0F-12690DF76762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{299FFC76-5896-49CA-8D0F-12690DF76762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{299FFC76-5896-49CA-8D0F-12690DF76762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{299FFC76-5896-49CA-8D0F-12690DF76762}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

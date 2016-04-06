@@ -3,7 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DroneConnection;
 using Newtonsoft.Json;
 using DroneManager.Models.MessageContainers;
-using DroneController.DataTransferObjects;
+using DataTransferObjects;
+using DataTransferObjects.Messages;
+using DataTransferObjects.Commands;
 using DroneParameterReference;
 
 namespace Tests

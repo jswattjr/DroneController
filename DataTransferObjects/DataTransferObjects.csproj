@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{299FFC76-5896-49CA-8D0F-12690DF76762}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataTransferObjects</RootNamespace>
+    <AssemblyName>DataTransferObjects</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\LandAtLocationAction.cs" />
+    <Compile Include="Commands\LocationBasedAction.cs" />
+    <Compile Include="Commands\LoiterTimeAction.cs" />
+    <Compile Include="Commands\LoiterTurnsAction.cs" />
+    <Compile Include="Commands\LoiterUnlimitedAction.cs" />
+    <Compile Include="Commands\NavigateWaypointAction.cs" />
+    <Compile Include="Commands\TakeoffAction.cs" />
+    <Compile Include="Messages\AttitudeDTO.cs" />
+    <Compile Include="Messages\CommandAckDTO.cs" />
+    <Compile Include="Messages\GlobalPositionIntDTO.cs" />
+    <Compile Include="Messages\GpsRawIntDTO.cs" />
+    <Compile Include="Messages\HeartbeatDTO.cs" />
+    <Compile Include="Messages\MissionCurrentDTO.cs" />
+    <Compile Include="Messages\NavControllerOutputDTO.cs" />
+    <Compile Include="Messages\ParametersDTO.cs" />
+    <Compile Include="Messages\ParamValueDTO.cs" />
+    <Compile Include="Messages\PowerStatusDTO.cs" />
+    <Compile Include="Messages\RawImuDTO.cs" />
+    <Compile Include="Messages\RcChannelsRawDTO.cs" />
+    <Compile Include="Messages\ScaledImu2DTO.cs" />
+    <Compile Include="Messages\ScaledPressureDTO.cs" />
+    <Compile Include="Messages\ServoOutputRawDTO.cs" />
+    <Compile Include="Messages\SystemStatusDTO.cs" />
+    <Compile Include="Messages\SystemTimeDTO.cs" />
+    <Compile Include="Messages\TerrainReportDTO.cs" />
+    <Compile Include="Messages\VfrHudDTO.cs" />
+    <Compile Include="DroneDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DroneConnection\DroneConnection.csproj">
+      <Project>{279f99cc-960c-4145-9e7c-28e52e71de5b}</Project>
+      <Name>DroneConnection</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroneManager\DroneManager.csproj">
+      <Project>{fd29626e-9f38-4fd4-9eb1-0131d656d4fa}</Project>
+      <Name>DroneManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DroneParameterReference\DroneParameterReference.csproj">
+      <Project>{49516657-7cd4-4327-bbb5-2b7fcd23387e}</Project>
+      <Name>DroneParameterReference</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mavlink\MAVLink.csproj">
+      <Project>{20296734-5f3c-4593-a0d5-dd20b440b13a}</Project>
+      <Name>MAVLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{23124535-e558-45c3-b5e0-c2c35d50f9a6}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
