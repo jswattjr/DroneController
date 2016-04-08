@@ -59,7 +59,8 @@ namespace DroneController.DTOFactory
         public static CommandAckDTO createCommandAckDTO(CommandAck source)
         {
             CommandAckDTO result = new CommandAckDTO();
-            Utilities.CopySimilar.CopyAll(source, result);
+            result.command = source.command.ToString();
+            result.result = source.result.ToString();
             return result;
         }
 
@@ -88,11 +89,15 @@ namespace DroneController.DTOFactory
             HeartbeatDTO result = new HeartbeatDTO();
             if (null != data)
             {
-                result.type = data.type;
-                result.autopilot = data.autopilot;
+                result.type = data.type.ToString();
+                result.autopilot = data.autopilot.ToString();
                 result.custom_mode = data.custom_mode;
-                result.base_mode = data.base_mode;
-                result.system_status = data.system_status;
+                result.base_mode = new List<string>();
+                foreach(MAVLink.MAV_MODE_FLAG flag in data.base_mode)
+                {
+                    result.base_mode.Add(flag.ToString());
+                }
+                result.system_status = data.system_status.ToString();
                 result.mavlink_version = data.mavlink_version;
             }
             return result;
@@ -145,7 +150,11 @@ namespace DroneController.DTOFactory
             PowerStatusDTO result = new PowerStatusDTO();
             result.Vcc = source.Vcc;
             result.Vservo = source.Vservo;
-            result.flags = new List<MAVLink.MAV_POWER_STATUS>(source.flags);
+            result.flags = new List<String>();
+            foreach (MAVLink.MAV_POWER_STATUS flag in source.flags)
+            {
+                result.flags.Add(flag.ToString());
+            }
             return result;
         }
 
@@ -188,9 +197,21 @@ namespace DroneController.DTOFactory
         {
             SystemStatusDTO result = new SystemStatusDTO();
             Utilities.CopySimilar.CopyAll(source, result);
-            result.sensorsEnabled = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsEnabled);
-            result.sensorsHealth = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsHealth);
-            result.sensorsPresent = new List<MAVLink.MAV_SYS_STATUS_SENSOR>(source.sensorsPresent);
+            result.sensorsEnabled = new List<String>();
+            foreach (MAVLink.MAV_SYS_STATUS_SENSOR flag in source.sensorsEnabled)
+            {
+                result.sensorsEnabled.Add(flag.ToString());
+            }
+            result.sensorsHealth = new List<String>();
+            foreach (MAVLink.MAV_SYS_STATUS_SENSOR flag in source.sensorsHealth)
+            {
+                result.sensorsHealth.Add(flag.ToString());
+            }
+            result.sensorsPresent = new List<String>();
+            foreach(MAVLink.MAV_SYS_STATUS_SENSOR flag in source.sensorsPresent)
+            {
+                result.sensorsPresent.Add(flag.ToString());
+            }
             return result;
         }
 

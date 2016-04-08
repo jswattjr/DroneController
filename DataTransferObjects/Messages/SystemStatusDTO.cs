@@ -9,12 +9,9 @@ namespace DataTransferObjects.Messages
 {
     public class SystemStatusDTO
     {
-        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<MAVLink.MAV_SYS_STATUS_SENSOR> sensorsPresent = new List<MAVLink.MAV_SYS_STATUS_SENSOR>();
-        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<MAVLink.MAV_SYS_STATUS_SENSOR> sensorsEnabled = new List<MAVLink.MAV_SYS_STATUS_SENSOR>();
-        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<MAVLink.MAV_SYS_STATUS_SENSOR> sensorsHealth = new List<MAVLink.MAV_SYS_STATUS_SENSOR>();
+        public List<String> sensorsPresent = new List<String>();
+        public List<String> sensorsEnabled = new List<String>();
+        public List<String> sensorsHealth = new List<String>();
         public UInt16 voltage_battery {get; set;}
         public Int16 current_battery { get; set; }
         public Int16 battery_remaining { get; set; }

@@ -85,12 +85,12 @@ namespace Tests
 
             HeartbeatDTO dto = DTOFactory.createHeartbeatDTO(heartbeatContainer);
 
-            Assert.AreEqual(dto.autopilot, heartbeatContainer.autopilot);
+            Assert.AreEqual(dto.autopilot, heartbeatContainer.autopilot.ToString());
             Assert.AreEqual(dto.base_mode.Count, heartbeatContainer.base_mode.Count);
             Assert.AreEqual(dto.custom_mode, heartbeatContainer.custom_mode);
             Assert.AreEqual(dto.mavlink_version, heartbeatContainer.mavlink_version);
-            Assert.AreEqual(dto.system_status, heartbeatContainer.system_status);
-            Assert.AreEqual(dto.type, heartbeatContainer.type);
+            Assert.AreEqual(dto.system_status, heartbeatContainer.system_status.ToString());
+            Assert.AreEqual(dto.type, heartbeatContainer.type.ToString());
 
             String json = JsonConvert.SerializeObject(dto);
         }
@@ -674,8 +674,8 @@ namespace Tests
 
             CommandAckDTO dto = DTOFactory.createCommandAckDTO(obj);
 
-            Assert.AreEqual(dto.command, MAVLink.MAV_CMD.WAYPOINT);
-            Assert.AreEqual(dto.result, MAVLink.MAV_RESULT.ACCEPTED);
+            Assert.AreEqual(dto.command, MAVLink.MAV_CMD.WAYPOINT.ToString());
+            Assert.AreEqual(dto.result, MAVLink.MAV_RESULT.ACCEPTED.ToString());
 
         }
 
