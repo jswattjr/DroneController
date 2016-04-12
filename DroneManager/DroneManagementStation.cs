@@ -65,9 +65,7 @@ namespace DroneManager
                         logger.Debug("Mavlink device on port {0} is new, creating database entry.", connection.port);
 
                         // create new business object around this record and assign it to connection
-                        Drone drone = new Drone();
-                        drone.connection = connection;
-                        drone.openMessageFeed();
+                        Drone drone = new Drone(connection);
 
                         // add this object to the list of active connections
                         this.connections.Add(drone);

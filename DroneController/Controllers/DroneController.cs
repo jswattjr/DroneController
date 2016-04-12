@@ -145,6 +145,39 @@ namespace DroneController.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("drones/{id}/parameters")]
+        public IHttpActionResult putParameters(string id, [FromBody] ParametersDTO values)
+        {
+            logger.Debug("setting parameters for /drones/{0}", id);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                foreach (String key in values.parameters.Keys)
+                {
+                    ParamValueDTO parameter = values.parameters[key];
+                    target.setParameter(parameter.param_id, parameter.param_value, (MAVLink.MAV_PARAM_TYPE)Enum.Parse(typeof(MAVLink.MAV_PARAM_TYPE), parameter.param_type));
+                }
+                Dictionary<String, ParamValue> parameters = target.Parameters;
+                if (null != parameters)
+                {
+                    return Ok(DTOFactory.DTOFactory.createParametersDTO(parameters));
+                }
+                else
+                {
+                    return Ok();
+                }
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         [Route("drones/{id}/arm")]
         public IHttpActionResult armCommand(string id)
@@ -346,5 +379,7 @@ namespace DroneController.Controllers
                 return NotFound();
             }
         }
+
+
     }
 }

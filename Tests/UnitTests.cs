@@ -8,6 +8,7 @@ using DataTransferObjects.Messages;
 using DataTransferObjects.Commands;
 using DroneParameterReference;
 using DroneController.DTOFactory;
+using System.Text;
 
 namespace Tests
 {
@@ -687,6 +688,36 @@ namespace Tests
             Assert.AreEqual(entity.DisplayName, "Arming check");
             entity = data.fetchMetadata("SYSID_SW_TYPE");
             Assert.AreEqual(entity.DisplayName, "Software Type");
+        }
+
+        [TestMethod]
+        public void CheckParameterValueObject()
+        {
+            MAVLink.mavlink_param_value_t data = new MAVLink.mavlink_param_value_t();
+            data.param_count = 1;
+            data.param_id = Encoding.ASCII.GetBytes("foo");
+            data.param_index = 3;
+            data.param_type = 4;
+            data.param_value = 5;
+
+            MavLinkMessage message = createSampleMessage(MAVLink.MAVLINK_MSG_ID.PARAM_VALUE, data);
+
+            ParamValue obj = new ParamValue(message);
+
+            Assert.AreEqual(obj.param_count, data.param_count);
+            Assert.AreEqual(Encoding.ASCII.GetBytes(obj.param_id)[0], data.param_id[0]);
+            Assert.AreEqual(obj.param_index, data.param_index);
+            Assert.AreEqual((int)obj.param_type, data.param_type);
+            Assert.AreEqual(obj.param_value, data.param_value);
+
+            ParamValueDTO dto = DTOFactory.createParamValueDTO(obj);
+
+            Assert.AreEqual(dto.param_count, obj.param_count);
+            Assert.AreEqual(dto.param_id, obj.param_id);
+            Assert.AreEqual(dto.param_index, obj.param_index);
+            Assert.AreEqual(dto.param_type, obj.param_type.ToString());
+            Assert.AreEqual(dto.param_value, obj.param_value);
+
         }
     }
 }

@@ -67,7 +67,6 @@ namespace DroneController.DTOFactory
         public static ParamValueDTO createParamValueDTO(ParamValue source)
         {
             ParamValueDTO result = new ParamValueDTO();
-            Utilities.CopySimilar.CopyAll(source, result);
 
             // lookup static metadata about result parameter
             ParameterMetadata metadataLookup = new ParameterMetadata();
@@ -80,6 +79,11 @@ namespace DroneController.DTOFactory
                 result.Upper = data.Upper;
                 result.Lower = data.Lower;
             }
+            result.param_type = source.param_type.ToString();
+            result.param_value = source.param_value;
+            result.param_index = source.param_index;
+            result.param_id = source.param_id;
+            result.param_count = source.param_count;
 
             return result;
         }

@@ -7,6 +7,7 @@ using System.Text;
 using RabbitMQ.Client;
 using System.Collections.Generic;
 using DroneManager.Models.MessageContainers;
+using System.Threading;
 
 namespace DroneManager.Models
 {
@@ -14,29 +15,60 @@ namespace DroneManager.Models
     {
 
         static Logger logger = LogManager.GetLogger("applog");
+        
         // special logger defined in nlog config for drone messages
         static Logger messageDump = LogManager.GetLogger("rawmessages");
 
-        // live connection
-        public MavLinkConnection connection { get; set; }
+        /// <summary>
+        /// Accessor to serial port connection
+        /// </summary>
+        public MavLinkConnection connection { get; private set; }
 
+        /// <summary>
+        /// Connection Unique Identifier
+        /// </summary>
         public Guid id { get; set; }
 
         // events connection with MavLinkConnection
         MavLinkEvents events;
 
-        Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
+        // multithreaded object where requests await responses from the device after command send messages
+        volatile Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
+
+        // multithreaded object where requests await responses from the device after parameter set messages
+        volatile ParamValue parameterSetAckObj = null;
+
+        // lock object for parameter set requests
+        Object parameterSetLock = new object();
+
+        // timeout value for parameter set requets
+        uint parameterSetTimeout_ms = 2000;
+        int parameterSetPollrate_ms = 100;
 
         // RabbitMQ consumer identifier ID
         string consumerTag;
 
+        // Dictionary of all current device parameter values
         Dictionary<MAVLink.MAVLINK_MSG_ID, MavLinkMessage> currentState = new Dictionary<MAVLink.MAVLINK_MSG_ID, MavLinkMessage>();
 
-        public Drone()
+        /// <summary>
+        /// Constructor, takes a live MavLinkConnection object and begins monitoring device state
+        /// </summary>
+        /// <param name="connection">live, connected MavLinkConnection. Call MavLinkConnection.createConnection(port) and check port is open prior to calling this.</param>
+        public Drone(MavLinkConnection connection)
         {
             this.id = Guid.NewGuid();
+            this.connection = connection;
+            this.openMessageFeed();
         }
 
+
+        /// <summary>
+        /// Checks connection status of object by querying serial port state
+        /// </summary>
+        /// <returns>
+        /// Returns true if port is open.
+        /// </returns>
         public Boolean isConnected()
         {
             if (null != connection)
@@ -50,6 +82,9 @@ namespace DroneManager.Models
             return false;
         }
 
+        /// <summary>
+        /// Dictionary of all current connected device parameter values
+        /// </summary>
         public Dictionary<String, ParamValue> Parameters { get {
                 if (null != parameters)
                 {
@@ -63,7 +98,6 @@ namespace DroneManager.Models
 
         volatile private Dictionary<String, ParamValue> parameters = null;
 
-        //state
         public Heartbeat getHearbeat()
         {
             return getCurrentMessage<Heartbeat>(MAVLink.MAVLINK_MSG_ID.HEARTBEAT);
@@ -154,9 +188,8 @@ namespace DroneManager.Models
             return (T)Activator.CreateInstance(typeof(T), new object[] { message });
         }
 
-        // events
-        // attempts to open listen feed
-        public Boolean openMessageFeed()
+        // start listening to device message feed
+        private Boolean openMessageFeed()
         {
             logger.Debug("Opening Listening/Processing Feed for {0}", connection.port.PortName);
            
@@ -185,6 +218,68 @@ namespace DroneManager.Models
             return true;
         }
 
+        /// <summary>
+        /// Set Parameter on target device.
+        /// </summary>
+        /// <param name="parameterName">String unique identifier for parameter</param>
+        /// <param name="parameterValue">Parameter value in string format</param>
+        /// <param name="type">Parameter type, enumerated in MAV_PARAM_TYPE</param>
+        public Boolean setParameter(string parameterName, Single parameterValue, MAVLink.MAV_PARAM_TYPE type)
+        {
+            if (this.isConnected())
+            {
+                // don't send updates for same values
+                if (this.Parameters.ContainsKey(parameterName))
+                {
+                    if (this.parameters[parameterName].param_value.Equals(parameterValue))
+                    {
+                        return true;
+                    }
+                }
+
+                // wait here on multiple parameter set requests
+                lock (parameterSetLock)
+                {
+                    connection.sendParamUpdate(parameterName, parameterValue, type);
+                    return fetchParameterSetAck(parameterName);
+                }
+            }
+            return false;
+        }
+
+
+        private Boolean fetchParameterSetAck(String parameterName)
+        {
+            DateTime deadline = DateTime.Now.AddMilliseconds(this.parameterSetTimeout_ms);
+            while (DateTime.Now < deadline)
+            {
+                if ((null != this.parameterSetAckObj)&&(this.parameterSetAckObj.param_id.Equals(parameterName)))
+                {
+                    this.parameterSetAckObj = null;
+                    return true;
+                }
+                // sleep 
+                Thread.Sleep(this.parameterSetPollrate_ms);
+            }
+            logger.Error("Error: timeout waiting for result for setting parameter {0}", parameterName);
+            return false;
+        }
+
+        // function for processing new parameter message
+        private void parameterReceived(ParamValue param)
+        {
+            if (this.parameters.ContainsKey(param.param_id))
+            {
+                this.parameters[param.param_id] = param;
+            }
+            else
+            {
+                this.parameters.Add(param.param_id, param);
+            }
+            logger.Debug("Parameter {0} received with value {1}", param.param_id, param.param_value);
+        }
+
+        // main events function, which processes messages from the device
         void eventsCallback(BasicDeliverEventArgs eventArguments)
         {
             try
@@ -248,9 +343,12 @@ namespace DroneManager.Models
                 {
                     lock (parameters)
                     {
+                        // set this value in the global parameter set
                         ParamValue param = new ParamValue(message);
-                        this.parameters.Add(param.param_id, param);
-                        logger.Debug("Parameter {0} found with value {1}", param.param_id, param.param_value);
+                        parameterReceived(param);
+
+                        // set this object in case there is a thread waiting on a param_value 'ack' message on a param set request
+                        parameterSetAckObj = param;
                     }
                 }
 

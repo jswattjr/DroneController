@@ -222,6 +222,35 @@ namespace DroneConnection
             return message;
         }
 
+        public void sendParamUpdate(string parameterName, float parameterValue, MAVLink.MAV_PARAM_TYPE type)
+        {
+            MAVLink.mavlink_param_set_t paramset = new MAVLink.mavlink_param_set_t();
+            paramset.target_component = (byte)this.componentId;
+            paramset.target_system = (byte)this.systemId;
+            paramset.param_value = parameterValue;
+
+            // have to set fixed 16 byte value for param_id
+            byte[] byteArray = new byte[16];
+            for (int i = 0; i < 16; i++)
+            {
+                if (i < parameterName.Length)
+                {
+                    byteArray[i] = (byte)parameterName[i];
+                }
+                else
+                {
+                    byteArray[i] = (byte)'\0';
+                }
+            }
+            paramset.param_id = byteArray;
+
+            paramset.param_type = (byte)type;
+
+            byte[] packet = this.mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.PARAM_SET, paramset);
+
+            this.port.Write(packet, 0, packet.Length);
+        }
+
         private void sendHeartbeat()
         {
             MAVLink.mavlink_heartbeat_t heartbeat = new MAVLink.mavlink_heartbeat_t();
