@@ -157,19 +157,21 @@ namespace DroneController.Controllers
                 {
                     return BadRequest("Target system is not connected, refusing request");
                 }
+                Boolean result = true;
                 foreach (String key in values.parameters.Keys)
                 {
                     ParamValueDTO parameter = values.parameters[key];
-                    target.setParameter(parameter.param_id, parameter.param_value, (MAVLink.MAV_PARAM_TYPE)Enum.Parse(typeof(MAVLink.MAV_PARAM_TYPE), parameter.param_type));
+                    bool parameterSetResult = target.setParameter(parameter.param_id, parameter.param_value, (MAVLink.MAV_PARAM_TYPE)Enum.Parse(typeof(MAVLink.MAV_PARAM_TYPE), parameter.param_type));
+                    result = result && parameterSetResult;
                 }
                 Dictionary<String, ParamValue> parameters = target.Parameters;
-                if (null != parameters)
+                if ((null != parameters)&&(result))
                 {
                     return Ok(DTOFactory.DTOFactory.createParametersDTO(parameters));
                 }
                 else
                 {
-                    return Ok();
+                    return ResponseMessage(new HttpResponseMessage(HttpStatusCode.RequestTimeout));
                 }
             }
             else
