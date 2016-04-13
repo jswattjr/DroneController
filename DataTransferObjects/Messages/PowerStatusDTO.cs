@@ -15,7 +15,6 @@ namespace DataTransferObjects.Messages
         public UInt16 Vservo { get; set; }
         /// <summary> power supply status flags (see MAV_POWER_STATUS enum) </summary>
         //public UInt16 flags;
-        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<String> flags { get; set; }
     }
 }
