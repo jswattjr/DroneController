@@ -32,7 +32,22 @@ namespace DroneController.Controllers
         private List<DroneDTO> getActiveRecords()
         {
             // return list of active connection data records (trying to serialize the pure connection object will fail due to the data stream)
-            return droneMgr.connections.Select(x => DTOFactory.DTOFactory.createDroneDTO(x)).ToList();
+            List<DroneDTO> result = new List<DroneDTO>();
+            List<Drone> drones = droneMgr.connections;
+            foreach (Drone drone in drones)
+            {
+                // make sure returned results are valid
+                if (drone.isConnected())
+                {
+                    result.Add(DTOFactory.DTOFactory.createDroneDTO(drone));
+                }
+                else
+                {
+                    // remove stale entries
+                    droneMgr.disconnect(drone.id);
+                }
+            }
+            return result;
         }
 
         [HttpGet]
