@@ -17,6 +17,8 @@ namespace DroneController.DTOFactory
         {
             DroneDTO result = new DroneDTO();
             result.id = droneObj.id;
+            result.sysid = droneObj.connection.systemId.ToString();
+            result.componentid = droneObj.connection.componentId.ToString();
             result.name = droneObj.id.ToString();
             if (null != droneObj.connection)
             {
@@ -51,6 +53,10 @@ namespace DroneController.DTOFactory
 
         public static AttitudeDTO createAttitudeDTO(Attitude source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             AttitudeDTO result = new AttitudeDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -58,6 +64,10 @@ namespace DroneController.DTOFactory
 
         public static CommandAckDTO createCommandAckDTO(CommandAck source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             CommandAckDTO result = new CommandAckDTO();
             result.command = source.command.ToString();
             result.result = source.result.ToString();
@@ -66,6 +76,10 @@ namespace DroneController.DTOFactory
 
         public static ParamValueDTO createParamValueDTO(ParamValue source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             ParamValueDTO result = new ParamValueDTO();
 
             // lookup static metadata about result parameter
@@ -90,6 +104,10 @@ namespace DroneController.DTOFactory
 
         public static HeartbeatDTO createHeartbeatDTO(Heartbeat data)
         {
+            if (null == source)
+            {
+                return null;
+            }
             HeartbeatDTO result = new HeartbeatDTO();
             if (null != data)
             {
@@ -109,6 +127,10 @@ namespace DroneController.DTOFactory
 
         public static GlobalPositionIntDTO createGlobalPositionIntDTO(GlobalPositionInt source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             GlobalPositionIntDTO result = new GlobalPositionIntDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -116,6 +138,10 @@ namespace DroneController.DTOFactory
 
         public static GpsRawIntDTO createGpsRawIntDTO(GpsRawInt source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             GpsRawIntDTO result = new GpsRawIntDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             result.fixTypeLabel = source.fixTypeEnum.ToString();
@@ -124,6 +150,10 @@ namespace DroneController.DTOFactory
 
         public static MissionCurrentDTO createMissionCurrentDTO(MissionCurrent source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             MissionCurrentDTO result = new MissionCurrentDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -131,6 +161,10 @@ namespace DroneController.DTOFactory
 
         public static NavControllerOutputDTO createNavControllerOutputDTO(NavControllerOutput source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             NavControllerOutputDTO result = new NavControllerOutputDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -138,6 +172,10 @@ namespace DroneController.DTOFactory
 
         public static ParametersDTO createParametersDTO(Dictionary<String, ParamValue> source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             ParametersDTO result = new ParametersDTO();
             result.parameters = new Dictionary<string, ParamValueDTO>();
             foreach (String key in source.Keys)
@@ -151,6 +189,10 @@ namespace DroneController.DTOFactory
 
         public static PowerStatusDTO createPowerStatusDTO(PowerStatus source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             PowerStatusDTO result = new PowerStatusDTO();
             result.Vcc = source.Vcc;
             result.Vservo = source.Vservo;
@@ -164,6 +206,10 @@ namespace DroneController.DTOFactory
 
         public static RawImuDTO createRawImuDTO(RawImu source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             RawImuDTO result = new RawImuDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -171,6 +217,10 @@ namespace DroneController.DTOFactory
 
         public static RcChannelsRawDTO createRcChannelsRawDTO(RcChannelsRaw source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             RcChannelsRawDTO result = new RcChannelsRawDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -178,6 +228,10 @@ namespace DroneController.DTOFactory
 
         public static ScaledImu2DTO createScaledImu2DTO(ScaledImu2 source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             ScaledImu2DTO result = new ScaledImu2DTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -185,6 +239,10 @@ namespace DroneController.DTOFactory
 
         public static ScaledPressureDTO createScaledPressureDTO(ScaledPressure source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             ScaledPressureDTO result = new ScaledPressureDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -192,6 +250,10 @@ namespace DroneController.DTOFactory
 
         public static ServoOutputRawDTO createServoOutputRawDTO(ServoOutputRaw source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             ServoOutputRawDTO result = new ServoOutputRawDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -199,6 +261,10 @@ namespace DroneController.DTOFactory
 
         public static SystemStatusDTO createSystemStatusDTO(SystemStatus source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             SystemStatusDTO result = new SystemStatusDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             result.sensorsEnabled = new List<String>();
@@ -221,6 +287,10 @@ namespace DroneController.DTOFactory
 
         public static SystemTimeDTO createSystemTimeDTO(SystemTime source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             SystemTimeDTO result = new SystemTimeDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -228,6 +298,10 @@ namespace DroneController.DTOFactory
 
         public static TerrainReportDTO createTerrainReportDTO(TerrainReport source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             TerrainReportDTO result = new TerrainReportDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;
@@ -235,6 +309,10 @@ namespace DroneController.DTOFactory
 
         public static VfrHudDTO createVfrHudDTO(VfrHud source)
         {
+            if (null == source)
+            {
+                return null;
+            }
             VfrHudDTO result = new VfrHudDTO();
             Utilities.CopySimilar.CopyAll(source, result);
             return result;

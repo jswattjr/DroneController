@@ -69,6 +69,11 @@ namespace DroneConnection
             this.port = port;
         }
 
+        ~MavLinkConnection()
+        {
+            this.disconnect();
+        }
+
         // attempts port connect and spawns listening thread
         public Boolean connect ()
         {

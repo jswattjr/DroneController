@@ -13,6 +13,8 @@ namespace DataTransferObjects
     {
         public Guid id { get; set; }
         public String name { get; set; }
+        public String sysid { get; set; }
+        public String componentid { get; set; }
         public String port { get; set; }
 
         public ConnectionState state { get; set; }
