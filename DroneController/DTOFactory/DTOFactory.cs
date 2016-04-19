@@ -104,7 +104,7 @@ namespace DroneController.DTOFactory
 
         public static HeartbeatDTO createHeartbeatDTO(Heartbeat data)
         {
-            if (null == source)
+            if (null == data)
             {
                 return null;
             }
