@@ -23,7 +23,7 @@ namespace DroneConnection
         static Logger logger = LogManager.GetLogger("applog");
 
         // serial port where communication is taking place
-        public SerialPort port { get; private set; }
+        private SerialPort port { get; set; }
 
         // MAVLink library parse helper
         MAVLink.MavlinkParse mavlinkParse = new MAVLink.MavlinkParse();
@@ -130,6 +130,24 @@ namespace DroneConnection
             {
                 return false;
             }
+        }
+
+        public Boolean isOpen()
+        {
+            if (null == port)
+            {
+                return false;
+            }
+            return this.port.IsOpen;
+        }
+
+        public String portName()
+        {
+            if (null == port)
+            {
+                return "";
+            }
+            return this.port.PortName;
         }
 
         // listening thread, reads from serial port and populates readQueue

@@ -73,11 +73,11 @@ namespace DroneManager.Models
         {
             if (null != connection)
             {
-                if (connection.port.IsOpen)
+                if (connection.isOpen())
                 {
                     return true;
                 }
-                logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.id, connection.port.PortName);
+                logger.Debug("Drone {0} is not connected on port {1}. Port is closed.", this.id, connection.portName());
             }
             return false;
         }
@@ -191,12 +191,12 @@ namespace DroneManager.Models
         // start listening to device message feed
         private Boolean openMessageFeed()
         {
-            logger.Debug("Opening Listening/Processing Feed for {0}", connection.port.PortName);
+            logger.Debug("Opening Listening/Processing Feed for {0}", connection.portName());
            
             events = new MavLinkEvents(connection.systemId, connection.componentId);
             if ((null == events) || (null == events.channel))
             {
-                logger.Error("Failed to open event message queue for {0}", connection.port.PortName);
+                logger.Error("Failed to open event message queue for {0}", connection.portName());
                 return false;
             }
 
@@ -330,7 +330,7 @@ namespace DroneManager.Models
 
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
-                    logger.Trace("Heartbeat received on port {0} {1}", connection.port.PortName, jsonBody);
+                    logger.Trace("Heartbeat received on port {0} {1}", connection.portName(), jsonBody);
                 }
 
                 if (null == parameters)

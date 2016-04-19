@@ -22,8 +22,8 @@ namespace DroneController.DTOFactory
             result.name = droneObj.id.ToString();
             if (null != droneObj.connection)
             {
-                result.port = droneObj.connection.port.PortName;
-                if (droneObj.connection.port.IsOpen)
+                result.port = droneObj.connection.portName();
+                if (droneObj.connection.isOpen())
                 {
                     result.state = DroneDTO.ConnectionState.CONNECTED;
                 }

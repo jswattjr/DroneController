@@ -58,11 +58,11 @@ namespace DroneManager
                 {
                     logger.Debug("Port {0} is currently closed, attempting new connection.", portName);
                     MavLinkConnection connection = MavLinkConnection.createConnection(port);
-                    if ((null != connection)&&(connection.port.IsOpen))
+                    if ((null != connection)&&(connection.isOpen()))
                     {
                         // TODO: Look up existing record
-                        logger.Debug("Connection established on port {0}", connection.port.PortName);
-                        logger.Debug("Mavlink device on port {0} is new, creating database entry.", connection.port);
+                        logger.Debug("Connection established on port {0}", connection.portName());
+                        logger.Debug("Mavlink device on port {0} is new, creating database entry.", connection.portName());
 
                         // create new business object around this record and assign it to connection
                         Drone drone = new Drone(connection);
