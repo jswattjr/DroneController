@@ -169,6 +169,7 @@ namespace DroneConnection
             catch (Exception e)
             {
                 logger.Debug("Connection FAILED for port {0} with message: {1}", port.PortName, e.Message);
+                logger.Debug("StackTrace: {0}", e.StackTrace.ToString());
             }
             finally
             {
