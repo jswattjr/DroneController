@@ -12,7 +12,7 @@ namespace DroneManager.Models
 {
     public partial class Drone
     {
-        private volatile Commands command = null;
+        private Commands command = null;
         private Object lockObj = new object();
         public Commands Command
         {

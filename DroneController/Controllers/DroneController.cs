@@ -33,7 +33,7 @@ namespace DroneController.Controllers
         {
             // return list of active connection data records (trying to serialize the pure connection object will fail due to the data stream)
             List<DroneDTO> result = new List<DroneDTO>();
-            List<Drone> drones = droneMgr.connections;
+            List<Drone> drones = droneMgr.Connections;
             foreach (Drone drone in drones)
             {
                 // make sure returned results are valid

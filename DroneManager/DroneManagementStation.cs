@@ -9,6 +9,7 @@ using DroneConnection;
 using System.Threading;
 using DroneManager.Models;
 using NLog;
+using Utilities;
 
 namespace DroneManager
 {
@@ -16,12 +17,23 @@ namespace DroneManager
     {
         Logger logger = LogManager.GetLogger("applog");
 
-        public List<Drone> connections = new List<Drone>();
+        SafeList<Drone> connections = new SafeList<Drone>();
+        public List<Drone> Connections
+        {
+            get
+            {
+                lock (connections)
+                {
+                    return new List<Drone>(connections);
+                }
+            }
+        }
+
 
         public Drone getById(Guid guid)
         {
             logger.Debug("Fetching Drone Information by Id: {0}", guid.ToString());
-            Drone result = connections.FirstOrDefault(drone => drone.id == guid);
+            Drone result = Connections.FirstOrDefault(drone => drone.id == guid);
             if (null == result)
             {
                 logger.Debug("Drone info on {0} not found", guid.ToString());
@@ -36,10 +48,10 @@ namespace DroneManager
         public Boolean disconnect(Guid guid)
         {
             logger.Debug("Disconnecting Drone: {0}", guid.ToString());
-            Drone result = connections.FirstOrDefault(drone => drone.id == guid);
+            Drone result = Connections.FirstOrDefault(drone => drone.id == guid);
             if (null != result)
             {
-                connections.Remove(result);
+                this.connections.Remove(result);
                 result.connection.disconnect();
                 return true;
             }

@@ -33,10 +33,10 @@ namespace DroneManager.Models
         MavLinkEvents events;
 
         // multithreaded object where requests await responses from the device after command send messages
-        volatile Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
+        Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
 
         // multithreaded object where requests await responses from the device after parameter set messages
-        volatile ParamValue parameterSetAckObj = null;
+        ParamValue parameterSetAckObj = null;
 
         // lock object for parameter set requests
         Object parameterSetLock = new object();
@@ -96,7 +96,7 @@ namespace DroneManager.Models
                 return null;
             } private set { parameters = value; } }
 
-        volatile private Dictionary<String, ParamValue> parameters = null;
+        private Dictionary<String, ParamValue> parameters = null;
 
         public Heartbeat getHearbeat()
         {
