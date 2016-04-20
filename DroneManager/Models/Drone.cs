@@ -325,7 +325,10 @@ namespace DroneManager.Models
                     {
                         this.commandAckStacks[cmdack.command] = new Stack<CommandAck>();
                     }
-                    this.commandAckStacks[cmdack.command].Push(cmdack);
+                    lock (commandAckStacks[cmdack.command])
+                    {
+                        this.commandAckStacks[cmdack.command].Push(cmdack);
+                    }
                 }
 
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))

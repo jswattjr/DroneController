@@ -75,12 +75,15 @@ namespace DroneManager.Models
                 {
                     if (drone.commandAckStacks.ContainsKey(cmdType))
                     {
-                        Stack <CommandAck> stack = drone.commandAckStacks[cmdType];
-                        if (stack.Count > 0)
+                        lock (drone.commandAckStacks[cmdType])
                         {
-                            CommandAck result = stack.Pop();
-                            logger.Debug("Command Ack received for {0} command with status {1}", cmdType, result.result.ToString());
-                            return result;
+                            Stack<CommandAck> stack = drone.commandAckStacks[cmdType];
+                            if (stack.Count > 0)
+                            {
+                                CommandAck result = stack.Pop();
+                                logger.Debug("Command Ack received for {0} command with status {1}", cmdType, result.result.ToString());
+                                return result;
+                            }
                         }
                     }
                     // sleep 
