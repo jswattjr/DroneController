@@ -82,8 +82,8 @@ namespace DroneConnection
             {
                 if (port.IsOpen)
                 {
-                    logger.Debug("Port {0} is open, closing.", port.PortName);
-                    port.Close();
+                    logger.Debug("Port {0} is already open, disconnecting...", port.PortName);
+                    this.disconnect();
                 }
 
                 // set the comport options
@@ -97,7 +97,7 @@ namespace DroneConnection
             catch (Exception e)
             {
                 logger.Error("Exception while attempting to connect to port {0}. Message: {1}", port.PortName, e.Message);
-                port.Close();
+                this.disconnect();
                 return false;
             }
 
@@ -173,12 +173,11 @@ namespace DroneConnection
             }
             finally
             {
-                logger.Debug("Closing port {0}", port.PortName);
                 if (null != events)
                 {
                     events.destroyQueue();
                 }
-                port.Close();
+                this.disconnect();
             }
 
         }

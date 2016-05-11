@@ -36,7 +36,7 @@ namespace DroneManager.Models
         Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
 
         // multithreaded object where requests await responses from the device after parameter set messages
-        ParamValue parameterSetAckObj = null;
+        Dictionary<string, ParamValue> parameterSetAckObj = new Dictionary<string, ParamValue>();
 
         // lock object for parameter set requests
         Object parameterSetLock = new object();
@@ -253,9 +253,9 @@ namespace DroneManager.Models
             DateTime deadline = DateTime.Now.AddMilliseconds(this.parameterSetTimeout_ms);
             while (DateTime.Now < deadline)
             {
-                if ((null != this.parameterSetAckObj)&&(this.parameterSetAckObj.param_id.Equals(parameterName)))
+                if ((null != this.parameterSetAckObj)&&(this.parameterSetAckObj.ContainsKey(parameterName)))
                 {
-                    this.parameterSetAckObj = null;
+                    this.parameterSetAckObj.Remove(parameterName);
                     return true;
                 }
                 // sleep 
@@ -351,7 +351,7 @@ namespace DroneManager.Models
                         parameterReceived(param);
 
                         // set this object in case there is a thread waiting on a param_value 'ack' message on a param set request
-                        parameterSetAckObj = param;
+                        parameterSetAckObj.Add(param.param_id, param);
                     }
                 }
 
