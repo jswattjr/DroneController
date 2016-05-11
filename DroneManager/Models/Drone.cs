@@ -351,7 +351,10 @@ namespace DroneManager.Models
                         parameterReceived(param);
 
                         // set this object in case there is a thread waiting on a param_value 'ack' message on a param set request
-                        parameterSetAckObj.Add(param.param_id, param);
+                        if (!parameterSetAckObj.ContainsKey(param.param_id))
+                        {
+                            parameterSetAckObj.Add(param.param_id, param);
+                        }
                     }
                 }
 

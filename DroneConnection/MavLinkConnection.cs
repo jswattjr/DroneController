@@ -241,8 +241,13 @@ namespace DroneConnection
         MavLinkMessage ReadMessage(Stream BaseStream)
         {
             byte[] buffer = this.mavlinkParse.ReadPacket(BaseStream);
-            MavLinkMessage message = new MavLinkMessage(buffer);
-            return message;
+            if (buffer.Length >= 6)
+            {
+                MavLinkMessage message = new MavLinkMessage(buffer);
+                return message;
+            }
+            logger.Error("Bad Message recieved with size less than 6: ", System.Text.Encoding.Default.GetString(buffer));
+            return null;
         }
 
         public void sendParamUpdate(string parameterName, float parameterValue, MAVLink.MAV_PARAM_TYPE type)
