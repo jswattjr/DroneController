@@ -50,6 +50,7 @@
     <Compile Include="Commands\LoiterTurnsAction.cs" />
     <Compile Include="Commands\LoiterUnlimitedAction.cs" />
     <Compile Include="Commands\NavigateWaypointAction.cs" />
+    <Compile Include="Commands\SetModeAction.cs" />
     <Compile Include="Commands\TakeoffAction.cs" />
     <Compile Include="Messages\AttitudeDTO.cs" />
     <Compile Include="Messages\CommandAckDTO.cs" />

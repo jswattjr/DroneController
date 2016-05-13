@@ -12,6 +12,7 @@ using DroneManager.Models.MessageContainers;
 using DataTransferObjects.Commands;
 using DataTransferObjects.Messages;
 using DroneController.DTOFactory;
+using DroneController.Responses;
 
 namespace DroneController.Controllers
 {
@@ -388,6 +389,45 @@ namespace DroneController.Controllers
                 if (null == result)
                 {
                     return NotFound();
+                }
+                return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [Route("drones/{id}/setMode")]
+        public IHttpActionResult setMode(string id, [FromBody] SetModeAction parameters)
+        {
+            String action = "setMode";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            if (null == parameters)
+            {
+                return BadRequest("Missing Required Parameters");
+            }
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                MAVLink.MAV_MODE mode = 0;
+                try
+                {
+                    mode = (MAVLink.MAV_MODE)Enum.Parse(typeof(MAVLink.MAV_MODE), parameters.mode);
+                }
+                catch (Exception e)
+                {
+                    return BadRequest(e.Message);
+                }
+                CommandAck result = target.Command.setMode(mode);
+                if (null == result)
+                {
+                    return new CustomResponse("Null command result.", HttpStatusCode.RequestTimeout);
                 }
                 return Ok(DTOFactory.DTOFactory.createCommandAckDTO(result));
             }

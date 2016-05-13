@@ -237,6 +237,23 @@ namespace DroneManager.Models
                     default(Int32));
             }
 
+            /*
+            176	MAV_CMD_DO_SET_MODE	Set system mode.
+            Mission Param #1	Mode, as defined by ENUM MAV_MODE
+            Mission Param #2	Custom mode - this is system specific, please refer to the individual autopilot specifications for details.
+            Mission Param #3	Custom sub mode - this is system specific, please refer to the individual autopilot specifications for details.
+            Mission Param #4	Empty
+            Mission Param #5	Empty
+            Mission Param #6	Empty
+            Mission Param #7	Empty
+            */
+
+            public CommandAck setMode(MAVLink.MAV_MODE mode)
+            {
+                return runCommand(MAVLink.MAV_CMD.DO_SET_MODE, (int)mode, default(Int32), default(Int32), 
+                    default(Int32), default(Int32), default(Int32), default(Int32));
+            }
+
             private Object commandLock = new Object();
             private CommandAck runCommand(MAVLink.MAV_CMD command, Int32 param1,
                 Int32 param2,
