@@ -241,6 +241,10 @@ namespace DroneConnection
         MavLinkMessage ReadMessage(Stream BaseStream)
         {
             byte[] buffer = this.mavlinkParse.ReadPacket(BaseStream);
+            if (null == buffer)
+            {
+                return null;
+            }
             if (buffer.Length >= 6)
             {
                 MavLinkMessage message = new MavLinkMessage(buffer);
