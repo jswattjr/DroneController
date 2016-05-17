@@ -218,6 +218,30 @@ namespace DroneManager.Models
             return true;
         }
 
+
+        public void EnableRcOverride()
+        {
+            // setup initial values for 'virtual radio'
+            MAVLink.mavlink_rc_channels_override_t neutralRadio = new MAVLink.mavlink_rc_channels_override_t();
+            neutralRadio.chan1_raw = 1100;
+            neutralRadio.chan2_raw = 1100;
+            neutralRadio.chan3_raw = 1100;
+            neutralRadio.chan4_raw = 1100;
+            neutralRadio.chan5_raw = 1100;
+            neutralRadio.chan6_raw = 1100;
+            neutralRadio.chan7_raw = 1100;
+            neutralRadio.chan8_raw = 1100;
+
+            // set radio input and enable broadcast
+            this.connection.RcInput = neutralRadio;
+            this.connection.EnableRcOverride = true;
+        }
+
+        public void DisableRcOverride()
+        {
+            this.connection.EnableRcOverride = false;
+        }
+
         /// <summary>
         /// Set Parameter on target device.
         /// </summary>

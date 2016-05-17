@@ -437,6 +437,48 @@ namespace DroneController.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("drones/{id}/rcOverrideEnable")]
+        public IHttpActionResult rcOverrideEnable(string id)
+        {
+            String action = "rcOverrideEnable";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                target.EnableRcOverride();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost]
+        [Route("drones/{id}/rcOverrideDisable")]
+        public IHttpActionResult rcOverrideDisable(string id)
+        {
+            String action = "rcOverrideDisable";
+            logger.Debug("running command {1} on /drones/{0}", id, action);
+            Drone target = droneMgr.getById(new Guid(id));
+            if (null != target)
+            {
+                if (!target.isConnected())
+                {
+                    return BadRequest("Target system is not connected, refusing request");
+                }
+                target.DisableRcOverride();
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
 
     }
 }

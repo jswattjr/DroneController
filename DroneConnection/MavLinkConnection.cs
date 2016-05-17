@@ -48,6 +48,10 @@ namespace DroneConnection
         public int systemId = -1;
         public int componentId = -1;
 
+        // RC override input value, if enabled this value will be streamed to the target
+        MAVLink.mavlink_rc_channels_override_t rc_input = new MAVLink.mavlink_rc_channels_override_t();
+        bool rc_override_enabled = false;
+
         // static constructor/initializer, attempts a connection and returns null if connection fails
         public static MavLinkConnection createConnection(SerialPort port)
         {
@@ -150,6 +154,31 @@ namespace DroneConnection
             return this.port.PortName;
         }
 
+        public MAVLink.mavlink_rc_channels_override_t RcInput
+        {
+            get
+            {
+                return this.rc_input;
+            }
+            set
+            {
+                this.rc_input = value;
+            }
+
+        }
+
+        public Boolean EnableRcOverride
+        {
+            get
+            {
+                return this.rc_override_enabled;
+            }
+            set
+            {
+                this.rc_override_enabled = value;
+            }
+        }
+
         // listening thread, reads from serial port and populates readQueue
         private void listen()
         {
@@ -158,8 +187,17 @@ namespace DroneConnection
                 logger.Debug("Starting listening thread for port {0}.", port.PortName);
                 while (port.IsOpen)
                 {
-
+                    // read latest message from the stream
                     readFromStream();
+
+                    // send heartbeat to target
+                    sendHeartbeat();
+
+                    // if rc override is enable, stream 'virtual' rc input to the target
+                    if (this.rc_override_enabled)
+                    {
+                        sendRcOverride(this.rc_input);
+                    }
 
                     Thread.Sleep(MavLinkConnection.sleeptime_ms);
                 }
@@ -211,12 +249,6 @@ namespace DroneConnection
                 this.systemId = message.sysid;
                 this.componentId = message.compid;
                 this.postMessageToLocalEventQueue(message);
-
-                // respond to heartbeat messages with heartbeat of our own
-                if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
-                {
-                    sendHeartbeat();
-                }
             }
         }
 
@@ -357,6 +389,14 @@ namespace DroneConnection
             this.port.Write(packet, 0, packet.Length);
         }
 
+        public void sendRcOverride(MAVLink.mavlink_rc_channels_override_t input)
+        {
+            input.target_component = (byte)this.componentId;
+            input.target_component = (byte)this.systemId;
 
+            byte[] packet = this.mavlinkParse.GenerateMAVLinkPacket(MAVLink.MAVLINK_MSG_ID.RC_CHANNELS_OVERRIDE, input);
+
+            this.port.Write(packet, 0, packet.Length);
+        }
     }
 }
