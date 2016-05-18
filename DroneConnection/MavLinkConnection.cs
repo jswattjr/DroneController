@@ -8,7 +8,6 @@ using System.IO.Ports;
 using System.Threading;
 using System.IO;
 using System.Collections.Concurrent;
-using RabbitMQ.Client;
 using Newtonsoft.Json;
 
 namespace DroneConnection
@@ -31,8 +30,9 @@ namespace DroneConnection
         // thread listening to port
         Thread listenThread;
 
-        // Events object posting messages to RabbitMQ events broker
-        MavLinkEvents events { get; set; }
+        // c# event handler for MavLink events
+        public event MavLinkEventHandler MavLinkMessages;
+        public delegate void MavLinkEventHandler(MavLinkConnection source, MavLinkEventArgs e);
 
         // 9600, 14400, 19200, 28800, 38400, 57600, 115200
         public int baudValue = 57600;
@@ -211,10 +211,6 @@ namespace DroneConnection
             }
             finally
             {
-                if (null != events)
-                {
-                    events.destroyQueue();
-                }
                 this.disconnect();
             }
 
@@ -260,13 +256,7 @@ namespace DroneConnection
                 return;
             }
 
-            // create events object
-            if (null == events)
-            {
-                this.events = new MavLinkEvents(this.systemId, this.componentId);
-            }
-
-            events.postToMessageQueue(message);
+            MavLinkMessages(this, new MavLinkEventArgs(message));
         }
 
         // parses data from stream into MavLinkMessage objects

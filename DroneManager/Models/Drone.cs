@@ -29,9 +29,6 @@ namespace DroneManager.Models
         /// </summary>
         public Guid id { get; set; }
 
-        // events connection with MavLinkConnection
-        MavLinkEvents events;
-
         // multithreaded object where requests await responses from the device after command send messages
         Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>> commandAckStacks = new Dictionary<MAVLink.MAV_CMD, Stack<CommandAck>>();
 
@@ -59,8 +56,8 @@ namespace DroneManager.Models
         {
             this.id = Guid.NewGuid();
             this.connection = connection;
-            this.openMessageFeed();
-        }
+            connection.MavLinkMessages += new MavLinkConnection.MavLinkEventHandler(messageRecieved);
+         }
 
 
         /// <summary>
@@ -188,37 +185,6 @@ namespace DroneManager.Models
             return (T)Activator.CreateInstance(typeof(T), new object[] { message });
         }
 
-        // start listening to device message feed
-        private Boolean openMessageFeed()
-        {
-            logger.Debug("Opening Listening/Processing Feed for {0}", connection.portName());
-           
-            events = new MavLinkEvents(connection.systemId, connection.componentId);
-            if ((null == events) || (null == events.channel))
-            {
-                logger.Error("Failed to open event message queue for {0}", connection.portName());
-                return false;
-            }
-
-            logger.Debug("Creating Basic Consumer");
-            EventingBasicConsumer consumer = new EventingBasicConsumer(events.channel);
-
-            logger.Debug("Adding callback function");
-            consumer.Received += (model, ea) =>
-            {
-                eventsCallback(ea);
-            };
-
-            logger.Debug("Inserting consumer into the channel");
-            this.consumerTag = events.channel.BasicConsume(queue: events.getMessageQueueName(),
-                                    noAck: true,
-                                    consumer: consumer);
-
-            logger.Debug("Consumer created successfully");
-            return true;
-        }
-
-
         public void EnableRcOverride()
         {
             // setup initial values for 'virtual radio'
@@ -303,35 +269,16 @@ namespace DroneManager.Models
             logger.Debug("Parameter {0} received with value {1}", param.param_id, param.param_value);
         }
 
-        // main events function, which processes messages from the device
-        void eventsCallback(BasicDeliverEventArgs eventArguments)
+        void messageRecieved(MavLinkConnection connection, MavLinkEventArgs args)
+        {
+            logger.Debug("Received message {0} on native event channel", args.message.messid.ToString());
+            processMessage(args.message);
+        }
+
+        void processMessage(MavLinkMessage message)
         {
             try
             {
-                if (null == eventArguments)
-                {
-                    logger.Error("events callback with no eventArguments");
-                    return;
-                }
-                var body = eventArguments.Body;
-                if (null == body)
-                {
-                    logger.Error("events callback with null body");
-                    return;
-                }
-                String jsonBody = Encoding.UTF8.GetString(body);
-
-                if (null == jsonBody)
-                {
-                    logger.Error("failed to parse JSON in events callback");
-                    return;
-                }
-
-                // log message text to file
-                messageDump.Trace(jsonBody);
-
-                JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-                MavLinkMessage message = JsonConvert.DeserializeObject<MavLinkMessage>(jsonBody, settings);
                 if (null == message)
                 {
                     logger.Error("Failed to parse MavLinkMessage from JSON in events callback");
@@ -357,7 +304,7 @@ namespace DroneManager.Models
 
                 if (message.messid.Equals(MAVLink.MAVLINK_MSG_ID.HEARTBEAT))
                 {
-                    logger.Trace("Heartbeat received on port {0} {1}", connection.portName(), jsonBody);
+                    logger.Trace("Heartbeat received on port {0} {1}", connection.portName(), JsonConvert.SerializeObject(message));
                 }
 
                 if (null == parameters)
@@ -366,7 +313,7 @@ namespace DroneManager.Models
                     this.connection.sendParamsListRequest();
                 }
 
-                if ((message.messid.Equals(MAVLink.MAVLINK_MSG_ID.PARAM_VALUE))&&(null != parameters))
+                if ((message.messid.Equals(MAVLink.MAVLINK_MSG_ID.PARAM_VALUE)) && (null != parameters))
                 {
                     lock (parameters)
                     {
@@ -388,5 +335,6 @@ namespace DroneManager.Models
                 logger.Error("Failure in parsing message, exception with message {0}", e.Message);
             }
         }
+
     }
 }

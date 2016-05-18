@@ -38,10 +38,6 @@
       <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RabbitMQ.Client, Version=3.6.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.Client.3.6.0\lib\net45\RabbitMQ.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,7 +50,7 @@
   <ItemGroup>
     <Compile Include="FixedSizeQueue.cs" />
     <Compile Include="MavLinkConnection.cs" />
-    <Compile Include="MavLinkEvents.cs" />
+    <Compile Include="MavLinkEventArgs.cs" />
     <Compile Include="MavLinkMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
