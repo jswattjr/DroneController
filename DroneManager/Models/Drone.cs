@@ -4,7 +4,6 @@ using NLog;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 using System.Text;
-using RabbitMQ.Client;
 using System.Collections.Generic;
 using DroneManager.Models.MessageContainers;
 using System.Threading;
