@@ -1,7 +1,6 @@
 ﻿using System;
 using DroneConnection;
 using NLog;
-using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 using System.Text;
 using System.Collections.Generic;
